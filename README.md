@@ -1,2 +1,3 @@
 # Pibic-TRI
-Repositório criado para o desenvolvimento do PIBIC sobre TRI aplicado aos dados de PE. Alunos: Lucas e Vitor.
+Repositório criado para o desenvolvimento do PIBIC sobre TRI aplicado aos dados de PE. Alunos: Lucas e Vitor. 
+2/2019.
