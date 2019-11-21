@@ -1,0 +1,49 @@
+---
+title: "Combinando multiplos gráficos"
+author: "Guilherme Rodrigues"
+date: "13 de novembro de 2018"
+header-includes:
+   - \usepackage{caption, graphicx, subfig, epstopdf, enumitem}
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(leaflet, ggmap)
+```
+
+## Gráficos a partir de figuras em eps
+
+Em diversas situações, queremos combinar varios gráficos lado-a-lado, em uma única figura. Há algumas formas de se fazer isso. O código abaixo (incluído apenas no arquivo *Markdown*) indica como usar o comando `\begin{figure}` do latex. Note que foi preciso incluir a linha 
+`- \usepackage{caption, graphicx, subfig, epstopdf, enumitem}` 
+no cabeçalho do arquivo para carregar os pacotes (do latex) utilizados.
+
+Neste exemplo, usamos arquivos de gráficos criados no `R` em formato eps. Outros formatos, como pdf, são permitidos, mas podem exigir pequenas alterações no código.
+
+\begin{figure}[tb]
+  \centering
+  \subfloat[\footnotesize{Densities for $y|\theta=(0, 1)^\top$}. \label{Density}]{\includegraphics[width=7cm,height=7cm,angle=-90]{Example_likelihood}}
+  \subfloat[\footnotesize{Posterior density estimates}. \label{Posterior}]{\includegraphics[width=7cm,height=7cm,angle=-90]{Example_KDEs}} \\
+  \subfloat[\footnotesize{Realised samples from $G_{y}(p)$}. \label{pvalues}]{\includegraphics[width=7cm,height=7cm,angle=-90]{Example_pvalues}}
+  \subfloat[\footnotesize{Marginal distributions of $p_1$ and $p_2$}. \label{Histograms}]{\includegraphics[width=7cm,height=7cm,angle=-90]{Example_histograms}}
+  %
+  \caption{\small Panel (a) compares the true density (histogram), $p_Y(y|theta=(0,1)^\top)$, with the corresponding Fenton--Wilkinson approximation $p_Z(y|\theta=(0,1)^\top)$ (solid line).
+Panel (b) compares kernel density estimates (KDE) of the approximate posterior resulting from: a low-$h$ ABC sampler (dashed line), the Fenton--Wilkinson auxiliary model (shading) and the recalibrated posterior (solid lines). Panels (c) and (d) respectively present the joint and marginal $p=(p_1,p_2)^\top$ values obtained during recalibration.}
+  \label{fig:example}
+\end{figure}
+
+
+## Gráficos a partir de outsputs do R
+
+Em outras situações, deseja-se criar e incluir os gráficos diretamente pelo Markdown. A título de ilustração, utilizamos o código abaixo para combinar uma sequência de gráficos em uma única figura.
+
+```{r fig-sub, echo=FALSE, error=FALSE, message=FALSE, fig.cap='Quatro gráficos', fig.subcap=c('Primeiro', 'Segundo', 'Terceiro', 'Quarto'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
+x <- rnorm(10) ; y <- x + rnorm(10) 
+qplot(y, x, geom = "point")
+qplot(x, y, geom = "point")
+qplot(y, -x, geom = "point")
+qplot(x, -y, geom = "point")
+```
+
+
