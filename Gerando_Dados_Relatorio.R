@@ -5,6 +5,40 @@ pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt
 
 dados.original <- read.csv2(choose.files(multi = FALSE, caption = "Escolha o arquivo com o Banco de Respostas"))
 
+# Correção do nome dos Cursos
+erros <- c("Ã¢", "Ã§Ã£", "Ã", "Engenharia Quí.....", "Educação Fí.....", 
+           "íª", "í´", "í©")
+correcoes <- c("â", "çã", "í", "Engenharia Química", "Educação Física",
+               "ê", "ô", "é")
+for (i in 1:length(erros)){
+  dados.original$Curso <- gsub(erros[i], correcoes[i], dados.original$Curso)
+}
+
+# Variável Nota_prova
+np <- dados.original[,c("Matricula", "Acertou", "Numero.prova")]
+for (aluno in 1:length(dados.original$Matricula)){
+  if(np$Numero.prova==1){
+    s <- np[np$Matricula==dados.original$Matricula[aluno], ]
+    dados.original$Nota_prova[aluno] <- 
+      sum(s[s$Numero.prova==1, "Acertou"]==TRUE)
+  }
+  else if(np$Numero.prova==2){
+    s <- np[np$Matricula==dados.original$Matricula[aluno], ]
+    dados.original$Nota_prova[aluno] <- 
+      sum(s[s$Numero.prova==2, "Acertou"]==TRUE)
+  }
+  else if(np$Numero.prova==3){
+    s <- np[np$Matricula==dados.original$Matricula[aluno], ]
+    dados.original$Nota_prova[aluno] <- 
+      sum(s[s$Numero.prova==3, "Acertou"]==TRUE)
+  }
+  else if(np$Numero.prova==4){
+    s <- np[np$Matricula==dados.original$Matricula[aluno], ]
+    dados.original$Nota_prova[aluno] <- 
+      sum(s[s$Numero.prova==4, "Acertou"]==TRUE)
+  }
+    }
+
 # Carregando o arquivo com as funções 
 source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"))
 
@@ -96,7 +130,7 @@ cluster <- kmeans(t(cor.tema), 3)
 # Array final para o balanceamento das provas, com o número de simulações, turmas, questões,
 #provas e vetor com a probabilidade de acerto e o resultado da binomial se acertou ou não:
 dados.balanceamento <- array(dim=c(n.sim, n.turmas, n.questoes.prova, n.provas, 2),
-                             dimnames = list(dimnames(mcmc.itens[[prova]])[[1]],
+                             dimnames = list(dimnames(mcmc.itens[[1]])[[1]],
                                              dimnames(mapa.questoes)[[1]],
                                              dimnames(mapa.questoes)[[2]],
                                              dimnames(mapa.questoes)[[3]],
@@ -113,18 +147,6 @@ dados.finais <- dados.fim()
 P.am.passar <- array(dim = c(n.turmas, n.provas+1), dimnames = list(dimnames(mapa.questoes)[[1]], c(dimnames(mapa.questoes)[[3]],"Turma")))
 P.am.passar <- prob.aluno.mediano.passar()
 P.am.passar[,5] <- dimnames(mapa.questoes)[[1]]
-
-# Medidas decritivas
-
-turma <- list(dados.original$Turma)
-medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
-medturmaprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Turma,dados.original$Numero.prova),mean)
-colnames(medturmaprova) <- c("Turma", "Prova", "Media")
-medcurso <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Curso),mean)
-medprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Numero.prova),mean)
-medano <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Ano),mean)
-mediaaluno <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula),mean)
-mediaaluno.prova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula,dados.original$Numero.prova),mean)
 
 # Notas dos alunos por prova
 notaaluno <- vector(n.provas, mode="list")
@@ -276,3 +298,209 @@ nota.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaalu
 
 mencao.3 <- mencao.m.prova[mencao.m.prova$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],4]
 mencao.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],7]
+
+# Medidas decritivas
+
+turma <- list(dados.original$Turma)
+medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
+medturmaprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Turma,dados.original$Numero.prova),mean)
+colnames(medturmaprova) <- c("Turma", "Prova", "Media")
+medcurso <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Curso),mean)
+medprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Numero.prova),mean)
+medano <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Ano),mean)
+mediaaluno <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula),mean)
+mediaaluno.prova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula,dados.original$Numero.prova),mean)
+
+# Para os gráficos
+
+dados.original1 <- dados.original
+
+dados.original1$Curso <- factor(dados.original1$Curso, 
+                                levels = c(unique(dados.original$Curso[str_detect(dados.original$Curso,"Outros")])[-2],
+                                                                  unique(dados.original$Curso[str_detect(dados.original$Curso,"Comp")])[-1],                                unique(dados.original$Curso[str_detect(dados.original$Curso,"Econ")])[-2],     
+                                                                  unique(dados.original$Curso[str_detect(dados.original$Curso,"Educ")])[-2],
+                                                                  unique(dados.original$Curso[str_detect(dados.original$Curso,"Engenharia ")])[-9])[-15])
+#
+medpturma <- matrix(c(rep(c('AA', 'AB', 'BA', 'BB', 'CA', 'CB', 'CC', 'DA', 'DB', 'EA'),4),
+                      rep("Media Geral", 4), rep(c(1,2,3,4), each=10), 1,2,3,4, rep(0, 44)),
+                    nrow=44, ncol=3)
+medpturma[1:40, 3] <- medturmaprova$Media
+medpturma[41:44, 3] <- medprova$x
+medpturma <- data.frame(medpturma)
+colnames(medpturma) <- c("Turma", "Prova", "Media")
+medpturma$Media <- as.numeric(as.character(medpturma$Media))
+
+#
+d.tema <- dplyr::filter(dados.original, Numero.prova==1) %>% 
+  dplyr::select(Matricula, Acertou, Tema, Turma) 
+
+data <- data.frame(tapply(d.tema$Acertou, list(d.tema$Turma, d.tema$Tema), sum))
+
+tema <- colnames(data)
+turma <- rownames(data)
+datan <- matrix(0, ncol=ncol(data), nrow=nrow(data))
+for (i in 1:n.turmas){
+  for (r in 1:10)
+    datan[i,r] <- length(d.tema$Tema[d.tema$Turma==turma[i]][d.tema$Tema[d.tema$Turma==turma[i]]==tema[r]])
+  
+}
+
+data <- data/datan
+
+data1 <- rbind(data[which.max(rowMeans(data, na.rm=T)),], data[which.min(rowMeans(data, na.rm=T)[-c(1,2)]),], rowMeans(data, na.rm=T))
+rownames(data1)[3] <- 'Média geral'
+
+data <- rbind(rep(1,10), rep(0,10) , data)
+
+data1 <- rbind(rep(1,3), rep(0,3) , data1)
+
+#
+prob.v <- c(nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MM",][mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MS",][mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="SS",][mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MM",][mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MS",][mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="SS",][mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="II",][mencao.m.prova[mencao.m.prova$Prova2=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MM",][mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MS",][mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="II",][mencao.m.prova[mencao.m.prova$Prova2=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MM",][mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MS",][mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="II",][mencao.m.prova[mencao.m.prova$Prova2=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="II",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="II",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova2=="MM",][mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="II",][,1],]),
+            
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="SS",][mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MS",][mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MM",][mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MI",][mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="SS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="SS",][mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MS",][mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MM",][mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MI",][mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MS",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MS",][mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MM",][mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MI",][mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="II",][mencao.m.prova[mencao.m.prova$Prova3=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MM",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MS",][mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MM",][mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MI",][mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="II",][mencao.m.prova[mencao.m.prova$Prova3=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MM",][mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="II",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="MI",][mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="II",][,1],]),
+            nrow(mencao.m.prova[mencao.m.prova$Prova3=="II",][mencao.m.prova[mencao.m.prova$Prova3=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova2=="II",][,1],]),
+            
+            nrow(notas.finais[notas.finais$Mencao=="SS",][notas.finais[notas.finais$Mencao=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MS",][notas.finais[notas.finais$Mencao=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MM",][notas.finais[notas.finais$Mencao=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MI",][notas.finais[notas.finais$Mencao=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="SS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="SS",][notas.finais[notas.finais$Mencao=="SS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MS",][notas.finais[notas.finais$Mencao=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MM",][notas.finais[notas.finais$Mencao=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MI",][notas.finais[notas.finais$Mencao=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MS",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MS",][notas.finais[notas.finais$Mencao=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MM",][notas.finais[notas.finais$Mencao=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MI",][notas.finais[notas.finais$Mencao=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="II",][notas.finais[notas.finais$Mencao=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MM",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MS",][notas.finais[notas.finais$Mencao=="MS",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MM",][notas.finais[notas.finais$Mencao=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MI",][notas.finais[notas.finais$Mencao=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="II",][notas.finais[notas.finais$Mencao=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="MI",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MM",][notas.finais[notas.finais$Mencao=="MM",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="II",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="MI",][notas.finais[notas.finais$Mencao=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="II",][,1],]),
+            nrow(notas.finais[notas.finais$Mencao=="II",][notas.finais[notas.finais$Mencao=="II",][,1] %in% mencao.m.prova[mencao.m.prova$Prova3=="II",][,1],])
+)
+
+
+library(networkD3)
+
+links <- data.frame(
+  source=c("SS1", "SS1", "SS1", "SS1", 
+           "MS1", "MS1", "MS1", "MS1", 
+           "MM1", "MM1", "MM1", "MM1",
+           "MI1", "MI1", "MI1", "MI1", 
+           "II1", "II1", "II1",        "SS2", "SS2", "SS2", "SS2",
+           "MS2", "MS2", "MS2", "MS2",
+           "MM2", "MM2", "MM2", "MM2", 
+           "MI2", "MI2", "MI2", "MI2",
+           "II2", "II2", "II2",         
+           "SS3", "SS3", "SS3", "SS3",
+           "MS3", "MS3", "MS3", "MS3",
+           "MM3", "MM3", "MM3", "MM3", 
+           "MI3", "MI3", "MI3", "MI3",
+           "II3", "II3", "II3"), 
+  
+  target=c("MI2", "MM2", "MS2", "SS2",
+           "MI2", "MM2", "MS2", "SS2",
+           "II2", "MI2", "MM2", "MS2",
+           "II2", "MI2", "MM2", "MS2",
+           "II2", "MI2", "MM2",        "SS3", "MS3", "MM3", "MI3",               
+           "SS3", "MS3", "MM3", "MI3",                                                              "MS3", "MM3", "MI3", "II3",                                                              "MS3", "MM3", "MI3", "II3",                                                              "MM3", "MI3", "II3",
+           "SS4", "MS4", "MM4", "MI4",               
+           "SS4", "MS4", "MM4", "MI4",                                                              "MS4", "MM4", "MI4", "II4",                                                              "MS4", "MM4", "MI4", "II4",                                                              "MM4", "MI4", "II4"), 
+  
+  value=c(prob.v))
+
+links <- links %>% filter(value>0)
+
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+         as.character(links$target)) %>% unique(),
+  
+  name2=substring(c(as.character(links$source), 
+                    as.character(links$target)) %>% unique(),1,nchar(c(as.character(links$source), 
+                                                                       as.character(links$target)) %>% unique())-1)
+)
+
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+
+links$energy_type <- as.character(links$source)
+
+color_scale <- data.frame(
+  range = c(rep(c("darkgreen", "green", "lightgreen", "red", "darkred"),4)),
+  domain = c("SS1", "MS1", "MM1", "MI1", "II1", "SS2", "MS2", "MM2", "MI2", "II2",
+             "SS3", "MS3", "MM3", "MI3", "II3", "SS4", "MS4", "MM4", "MI4", "II4"),
+  nodes = nodes,
+  stringsAsFactors = FALSE
+)
+
+#
+tabela1 <- as.data.frame(table(mencao.3, mencao.subs))
+colnames(tabela1) <- c("MencaosemP4", "MencaoposP4", "Quantidade")
+class(tabela1$MencaosemP4) <- "numeric"
+class(tabela1$MencaoposP4) <- "numeric"
+class(tabela1$Quantidade) <- "numeric"
+tabela1[, 1:2] <- tabela1[, 1:2] - 1
+
+#
+data.g <- data.frame(Probabilidade=c(as.numeric(P.am.passar[,1]),as.numeric(P.am.passar[,2]),
+                                     as.numeric(P.am.passar[,3]),as.numeric(P.am.passar[,4])),
+                     Turma=c(rep(dimnames(mapa.questoes)[[1]],4)), Prova=rep(c(dimnames(mapa.questoes)[[3]]),each=10))
+
+#
+P.sim.passar <- t(data.frame(P.sim.passar))
+P.sim.passar <- data.frame(P.sim.passar,Turma=c(dimnames(mapa.questoes)[[1]]), Linha=c(rep(1,10)))
+
+#
+adjm <- as.matrix(cor.tema)
+adjm[abs(adjm)<0.3] <- 0
+
+network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=F, mode = "undirected")
+
+my_color <- c(rep("green", 10),
+              rep("blue", 10),
+              rep("red", 10))
+
+#
+tabela <- as.data.frame(table(notas.finais$Mencao, notas.finais.estimadas$Mencao))
+colnames(tabela) <- c("Classico", "TRI", "Quantidade")
+class(tabela$Classico) <- "numeric"
+class(tabela$TRI) <- "numeric"
+class(tabela$Quantidade) <- "numeric"
+tabela[, 1:2] <- tabela[, 1:2] - 1

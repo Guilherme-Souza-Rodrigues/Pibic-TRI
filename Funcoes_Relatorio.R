@@ -276,7 +276,7 @@ acertou.tema1 <- function(){for (aluno in 1:ncol(mcmc.theta[[1]])){
   
   if(length(at)==0) {Acerto.tema1[aluno,] <- tix} 
   else if(length(at)==1){Acerto.tema1[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acerto.tema1[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  else if(length(at)==2){Acerto.tema1[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
 Acerto.tema1 <- data.frame(Acerto.tema1)
@@ -298,7 +298,7 @@ acertou.tema2 <- function(){for (aluno in 1:ncol(mcmc.theta[[2]])){
   
   if(length(at)==0) {Acerto.tema2[aluno,] <- tix} 
   else if(length(at)==1){Acerto.tema2[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acerto.tema2[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  else if(length(at)==2){Acerto.tema2[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
 Acerto.tema2 <- data.frame(Acerto.tema2)
@@ -320,7 +320,7 @@ acertou.tema3 <- function(){for (aluno in 1:ncol(mcmc.theta[[3]])){
   
   if(length(at)==0) {Acerto.tema3[aluno,] <- tix} 
   else if(length(at)==1){Acerto.tema3[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acerto.tema3[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  else if(length(at)==2){Acerto.tema3[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
 Acerto.tema3 <- data.frame(Acerto.tema3)
@@ -417,19 +417,6 @@ prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
 }
 
 
-# Medidas decritivas
-
-turma <- list(dados.original$Turma)
-medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
-medturmaprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Turma,dados.original$Numero.prova),mean)
-colnames(medturmaprova) <- c("Turma", "Prova", "Media")
-medcurso <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Curso),mean)
-medprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Numero.prova),mean)
-medano <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Ano),mean)
-mediaaluno <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula),mean)
-mediaaluno.prova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula,dados.original$Numero.prova),mean)
-
-
 # Notas dos alunos por prova
 nota.prova <- function(){for (prova in 1:n.provas) {
   notaaluno[[prova]] <- aggregate(dados.original$Nota_prova[dados.original$Numero.prova==prova],list(dados.original$Matricula[dados.original$Numero.prova==prova]),mean) 
@@ -509,3 +496,85 @@ p.sim.passar <- function(){for (turma in 1:n.turmas){
 
 return(P.sim.passar)
 }
+
+
+### GRÁFICOS ###
+g_notas_curso <- function(){ggplot(dados.original1[complete.cases(dados.original1),], aes(Curso, Nota_prova)) + 
+  geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
+  stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
+  ylab("Notas") + xlab("Curso") + 
+  ggtitle("Notas por Curso") +
+  coord_flip() + theme_classic()}
+
+g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + geom_point() +
+  geom_line() + ylim(0,10) + scale_color_manual(values=c(rep("grey",10),'black')) +
+  ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
+}
+
+g_radar <- function(){radarchart(data1,  axistype=2, pcol=c('blue', 'red','black'), plwd=1, plty=1, cglcol="grey", cglty=1, caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+legend(x=1.8, y=1, legend = rownames(data1[-c(1,2),]), bty = "n", pch=20 , text.col = c('blue', 'red','black'),
+       col=c('blue', 'red','black'),
+       cex=0.6, pt.cex=1)}
+
+g_fluxo_sankey <- function(){
+  require(networkD3)
+  sankeyNetwork(Links = links, Nodes = nodes,
+                                Source = "IDsource", Target = "IDtarget",
+                                Value = "value", NodeID = "name2", 
+                                LinkGroup = 'energy_type', colourScale = JS(
+                                  sprintf(
+                                    'd3.scaleOrdinal() .domain(%s)
+                                    .range(%s)',
+                                    jsonlite::toJSON(color_scale$domain),
+                                    jsonlite::toJSON(color_scale$range)
+                                  )
+                                ), fontSize = 15, iteration=0)}
+
+g_confusao_subs <- function(){tabela1 %>% 
+  ggplot(aes(tabela1$MencaosemP4, tabela1$MencaoposP4)) +
+  geom_tile(aes(fill=tabela1$Quantidade)) +
+  scale_fill_gradient(low="white", high="black") +
+  scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
+            color="black", alpha=0, size=1)}
+
+g_prob_mediano_passar_prova <- function(){ggplot(data.g, aes(Turma, Probabilidade, color=Prova, group=Prova)) + 
+  geom_point() + geom_line() + ggtitle("Probabilidade de um aluno mediano passar por prova e por turma") +
+  ylim(0,1) + theme_light()}
+
+g_prob_mediano_passar <- function(){ggplot(P.sim.passar, aes(Turma, Probabilidade, group=Linha)) + geom_point() + geom_line() + ggtitle("Probabilidade de um aluno mediano passar em PE por turma") + ylim(0,1) +
+  theme_light()}
+
+g_correlograma <- function(){ggcorr(adjm)}
+
+g_rede_associacao <- function(){
+  par(bg="grey13", mar=c(0,0,0,0))
+  plot(network, 
+       vertex.size=9,
+       vertex.color=my_color, 
+       vertex.label.cex=0.7,
+       vertex.label.color="white",
+       vertex.frame.color="transparent"
+  )
+  
+  text(1.1,1,"Tema cluster network",col="white", cex=1.5)
+  legend(x=1.5, y=1, 
+         legend=levels(as.factor(cluster$cluster)), 
+         col = c("green", "blue", "red") , 
+         bty = "n", pch=20 , pt.cex = 2, cex = 1,
+         text.col="white" , horiz = F)
+}
+
+g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
+                                         ggtheme = theme_minimal(),
+                                         main = "Partição dos temas em Clusters")}
+
+g_confusao_tri <- function(){tabela %>% 
+  ggplot(aes(Classico, TRI)) +
+  geom_tile(aes(fill=Quantidade)) +
+  scale_fill_gradient(low="white", high="black") +
+  scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
+            color="black", alpha=0, size=1)}
