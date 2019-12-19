@@ -16,7 +16,7 @@ Finalmente, uma análise via TRI será apresentada, verificando caso os temas de
 #Lendo os dados das provas e carregando os pacotes:
 if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","rstan")
 
 source(choose.files(multi = FALSE, caption = "Escolha o arquivo de geração dos dados"))
 
