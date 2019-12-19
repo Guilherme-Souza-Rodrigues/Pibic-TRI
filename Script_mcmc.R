@@ -36,7 +36,7 @@ banco_respostas <- dados%>%
 ###  Parâmetros das simulações
 ###############################
 nchains <- 4
-niter <- 4000
+niter <- 1000
 
 ##############
 #  P1
@@ -226,13 +226,14 @@ itens <- cbind(a[,c("Nome.questao","prova","a")],b=b[,"b"],c=c[,"c"])%>%
          tema=str_sub(Nome.questao,4,str_length(Nome.questao)-3))%>%
   dplyr::select(-Nome.questao)
 
-itens <- itens[,c("tema","questao","a","b","c","prova")]%>%
+itens <- itens[,c("a","b","c","prova","tema","questao")]%>%
   arrange(prova)
 
 itens_tabela <- itens
 
 mcmc.itens <- list(itens.p1,itens.p2,itens.p3,itens.p4)
 mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
+
 itens.p <- list(prova1=subset(itens,prova==1,select = -prova),
             prova2=subset(itens,prova==2,select = -prova),
             prova3=subset(itens,prova==3,select = -prova),
