@@ -129,7 +129,7 @@ cluster <- kmeans(t(cor.tema), 3)
 
 # Array final para o balanceamento das provas, com o número de simulações, turmas, questões,
 #provas e vetor com a probabilidade de acerto e o resultado da binomial se acertou ou não:
-dados.balanceamento <- array(dim=c(n.sim, n.turmas, n.questoes.prova, n.provas, 2),
+dados.balanceamento <- array(dim=c(nchains*(niter/2), n.turmas, n.questoes.prova, n.provas, 2),
                              dimnames = list(dimnames(mcmc.itens[[1]])[[1]],
                                              dimnames(mapa.questoes)[[1]],
                                              dimnames(mapa.questoes)[[2]],
