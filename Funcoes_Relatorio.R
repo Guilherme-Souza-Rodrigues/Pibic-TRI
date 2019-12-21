@@ -565,7 +565,7 @@ dados.fim <- function(){for(prova in 1:n.provas) {
 # Probabilidade de um aluno mediano passar por prova
 prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
   for (turma in 1:n.turmas){
-    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/n.sim
+    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/nchains*(niter/2)
   }
 }
   return(P.am.passar)
@@ -634,7 +634,7 @@ return(Passou)
 
 
 # Dataframe com as probabilidades das simulaÃ§Ãµes com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (simulacao in 1:n.sim){
+Sim.passar <- function(){for (simulacao in 1:nchains*(niter/2)){
   for (turma in 1:n.turmas){
     sim.passar[simulacao,turma] <- (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
   }
@@ -646,7 +646,7 @@ Sim.passar <- function(){for (simulacao in 1:n.sim){
 
 # Probabilidade de um aluno mediano passar em PE por turma
 p.sim.passar <- function(){for (turma in 1:n.turmas){
-  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/n.sim
+  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/nchains*(niter/2)
 }
 
 return(P.sim.passar)
