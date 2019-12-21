@@ -1,7 +1,7 @@
 #Lendo os dados das provas e carregando os pacotes:
 if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander","rstan")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, caption = "Escolha o arquivo com o Banco de Respostas"))
 
@@ -136,7 +136,7 @@ dados.balanceamento <- array(dim=c(nchains*(niter/2), n.turmas, n.questoes.prova
                                              dimnames(mapa.questoes)[[3]],
                                              c("prob.acerto", "sim.acerto")))
 dados.balanceamento <- balanceamento()
-dados.balanceamento[,,,,2] <- rbinom(n.sim*n.questoes.prova*n.turmas*n.provas, 1, c(dados.balanceamento[,,,,1]))
+dados.balanceamento[,,,,2] <- rbinom(nchains*(niter/2)*n.questoes.prova*n.turmas*n.provas, 1, c(dados.balanceamento[,,,,1]))
 
 
 # Array final 
@@ -173,7 +173,7 @@ N.passou <- vector(n.provas, mode="list")
 N.passou <- n.passou()
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-sim.passar <- array(dim = c(n.sim,n.turmas), dimnames = list(paste("Simulacao", 1:n.sim),dimnames(mapa.questoes)[[1]]))
+sim.passar <- array(dim = c(nchains*(niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:nchains*(niter/2)),dimnames(mapa.questoes)[[1]]))
 sim.passar <- Sim.passar()
 
 # Probabilidade de um aluno mediano passar em PE por turma
