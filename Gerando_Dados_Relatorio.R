@@ -57,8 +57,8 @@ mcmc.itens <- vector(n.provas, mode="list")
 mcmc.theta <- vector(n.provas, mode="list")
 mod <- vector(n.provas, mode="list")
 
-mcmc.itens <- mcmci()
-mcmc.theta <- mcmct()
+mcmc.itens <- mcmc()[["itens"]]
+mcmc.theta <- mcmc()[["thetas"]]
 
 # Dataframes dos coeficientes de cada questao
 itens.p <- vector(n.provas, mode="list")

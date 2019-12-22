@@ -261,14 +261,7 @@ mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
 save(mcmc.itens, file = "Parametros_Itens.RData")
 return(list(thetas=mcmc.theta,itens=mcmc.itens))
 }
-mcmci<- function(){
-  mcmc.itens <- mcmc()[["itens"]]
-  save(mcmc.itens, file = "Parametros_Itens.RData")
-  return(mcmc.itens)
-}
-mcmct <- function(){
-  mcmc()[["thetas"]]
-}
+
 # Dataframe dos coeficientes de cada questao
 data.i <- function(){for (prova in 1:n.provas){
   itens.p[[prova]] <- matrix(0, nrow = ncol(mcmc.itens[[prova]][,,1]), ncol = 3)
