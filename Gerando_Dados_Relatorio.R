@@ -164,7 +164,7 @@ Passou.hat <- passou.hat()
 
 # Dataframes dos alunos que não passariam por TRI, em cada prova 
 N.passou.hat <- vector(n.provas, mode="list")
-N.passou.hat <- n.passou.hat
+N.passou.hat <- n.passou.hat()
 
 # Dataframes dos alunos que passaram, em cada prova
 Passou <- vector(n.provas, mode="list")
@@ -175,7 +175,7 @@ N.passou <- vector(n.provas, mode="list")
 N.passou <- n.passou()
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-sim.passar <- array(dim = c(nchains*(niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:nchains*(niter/2)),dimnames(mapa.questoes)[[1]]))
+sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
 sim.passar <- Sim.passar()
 
 # Probabilidade de um aluno mediano passar em PE por turma
