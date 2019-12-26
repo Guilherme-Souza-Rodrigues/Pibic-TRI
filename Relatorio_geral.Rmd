@@ -1,9 +1,10 @@
 ---
-indent: yes
-output:
-  pdf_document: default
-  html_document:
-    df_print: paged
+title: "Relatório Geral"
+author: "Guilherme Rodrigues"
+date: "13 de novembro de 2019"
+header-includes:
+   - \usepackage{caption, graphicx, subfig, epstopdf, enumitem}
+output: pdf_document
 ---
 
 Primeiramente, apresentaremos alguns gráficos descritivos do desempenho dos alunos de PE durante o semestre e ao longo deste, com análises por turma, curso e número da prova.
@@ -16,24 +17,19 @@ Finalmente, uma análise via TRI será apresentada, verificando caso os temas de
 #Lendo os dados das provas e carregando os pacotes:
 if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","rstan")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3")
+
+dados.original <- read.csv2(choose.files(multi = FALSE, 
+                                         caption = "Escolha o arquivo com o Banco de Respostas"),
+                            fileEncoding = "UTF-8")
 
 source(choose.files(multi = FALSE, caption = "Escolha o arquivo de geração dos dados"))
-
-# Correção do nome dos Cursos
-erros <- c("Ã¢", "Ã§Ã£", "Ã", "Engenharia Quí.....", "Educação Fí.....", 
-           "íª", "í´", "í©", "í¡")
-correcoes <- c("â", "çã", "í", "Engenharia Química", "Educação Física",
-               "ê", "ô", "é","á")
-for (i in 1:length(erros)){
-  dados.original$Curso <- gsub(erros[i], correcoes[i], dados.original$Curso)
-}
 
 # Nova variavel para agrupar os cursos
 dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
 dados.original$Grupo[str_detect(dados.original$Curso,"Comp")] <- 'Computação'
 dados.original$Grupo[str_detect(dados.original$Curso,"Educ")] <- 'Ed. Física'
-dados.original$Grupo[str_detect(dados.original$Curso,"Econ")] <- 'Econômicas'
+dados.original$Grupo[str_detect(dados.original$Curso,"Ciências")] <- 'Econômicas e Contábeis'
 dados.original$Grupo[str_detect(dados.original$Curso,"Outros")] <- 'Outros'
 dados.original$Grupo[is.na(dados.original$Curso)] <- 'NA'
   
@@ -54,20 +50,11 @@ Nosso primeiro gráfico mostra as notas dos alunos distribuídas de acordo com o
 
 A maioria dos cursos obteve uma média final próxima de 5, Engenharia Civil e Engenharia Mecânica obtiveram média `r round(medcurso[medcurso$Group.1=='Engenharia Civil',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Mecânica',2],2)`, respectivamente, e Computação e Engenharia Ambiental obtiveram as menores notas, `r round(medcurso[medcurso$Group.1=='Computação',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Ambiental',2],2)`.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+```{r fig-sub, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
 
 g_media_provas()
-```
-
-
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
-library(fmsb)
-require(dplyr)
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
 
 g_radar()
 ```
@@ -97,16 +84,11 @@ Esta matriz de confusão compara as menções obtidas somente pelos alunos que f
 
 #Avaliações e Banco de Questões
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+```{r fig-sub, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilidades de  que um aluno mediano passe', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
 
 g_prob_mediano_passar_prova()
-```
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
 
 g_prob_mediano_passar()
 ```
@@ -116,7 +98,7 @@ Há uma diferença de `r max(as.numeric(P.am.passar), na.rm = T) - min(as.numeri
 
 #TRI
 
-```{r, echo=FALSE}
+```{r fig-sub, echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
@@ -124,24 +106,14 @@ pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt
 g_correlograma()
 
 g_rede_associacao()
+
+g_componentes_principais()
+
+g_confusao_tri()
 ```
 
 Esta rede foi obtida a partir do cálculo dos resíduos feito para cada questão feita por cada aluno. O gráfico mostra a associação dos resíduos de cada tema. Há também um correlograma dos temas acima.
 
-```{r, echo=FALSE}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
-
-g_componentes_principais()
-```
-
 Clusterização feita com uso de Componentes Principais.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "knitr")
-
-g_confusao_tri()
-```
 
 Esta matriz de confusão compara as menções reais obtidas com as menções que seriam atribuídas por TRI. Espera-se que haja uma concentração maior na diagonal.
