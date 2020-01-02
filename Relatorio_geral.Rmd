@@ -2,8 +2,9 @@
 title: "Relatório Geral"
 author: "Guilherme Rodrigues"
 date: "13 de novembro de 2019"
+always_allow_html: true
 header-includes:
-   - \usepackage{caption, graphicx, subfig, epstopdf, enumitem}
+   - \usepackage{caption,subfig, graphicx,  epstopdf, enumitem}
 output: pdf_document
 ---
 
@@ -13,11 +14,11 @@ Logo após, avaliaremos a qualidade das quatro provas aplicadas aos alunos de ac
 
 Finalmente, uma análise via TRI será apresentada, verificando caso os temas de cada prova estão realmente relacionados entre si (clusterização), e uma comparação entre a a avaliação por TRI e a Clássica, investigando se haveria algum benefício na utilização daquele.
 
-```{r echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, results='hide'}
+```{r ,echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, results='hide'}
 #Lendo os dados das provas e carregando os pacotes:
 if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","fmsb")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
@@ -50,9 +51,9 @@ Nosso primeiro gráfico mostra as notas dos alunos distribuídas de acordo com o
 
 A maioria dos cursos obteve uma média final próxima de 5, Engenharia Civil e Engenharia Mecânica obtiveram média `r round(medcurso[medcurso$Group.1=='Engenharia Civil',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Mecânica',2],2)`, respectivamente, e Computação e Engenharia Ambiental obtiveram as menores notas, `r round(medcurso[medcurso$Group.1=='Computação',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Ambiental',2],2)`.
 
-```{r fig-sub, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","fmsb")
 
 g_media_provas()
 
@@ -84,7 +85,7 @@ Esta matriz de confusão compara as menções obtidas somente pelos alunos que f
 
 #Avaliações e Banco de Questões
 
-```{r fig-sub, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilidades de  que um aluno mediano passe', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilidades de  que um aluno mediano passe', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
 
@@ -98,7 +99,7 @@ Há uma diferença de `r max(as.numeric(P.am.passar), na.rm = T) - min(as.numeri
 
 #TRI
 
-```{r fig-sub, echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
+```{r , echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")

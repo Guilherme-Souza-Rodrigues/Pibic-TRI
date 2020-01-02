@@ -3,7 +3,7 @@ if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt",
                "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally",
-               "pander", "rstan")
+               "pander", "rstan","fmsb")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
