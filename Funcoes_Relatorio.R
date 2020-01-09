@@ -893,3 +893,16 @@ g_confusao_tri <- function(){tabela %>%
   scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
             color="red", alpha=0, size=1)}
+
+g_Pm.probs.means <- function(){
+  ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
+    geom_point(aes(color=Prob),show.legend = FALSE)+
+    scale_x_continuous(limits = c(0,1))+
+    facet_grid(prova ~ ., scales="free_y", space="free_y")+
+    scale_colour_gradient(low="red",high="green")+
+    xlab(aes(label=" "))+
+    ylab(aes(label=" "))+
+    theme_bw()
+}
+
+

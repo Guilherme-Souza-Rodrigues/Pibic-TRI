@@ -3,7 +3,7 @@ if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt",
                "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally",
-               "pander", "rstan","fmsb")
+               "pander", "rstan","fmsb","tibble","stringr")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
@@ -74,6 +74,20 @@ list_of_datasets <- list("Prova 1" = itens.p[[1]], "Prova 2" = itens.p[[2]],
 Pm.probs <- vector(n.provas, mode="list")
 names(Pm.probs) <- paste0("Prova", 1:n.provas)
 Pm.probs <- sim.aluno.medio()
+
+Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
+  as.data.frame()%>%
+  rownames_to_column()%>%
+  rename(Prob=".",aux='rowname')%>%
+  mutate(prova=str_sub(aux,6,6),
+         tema=str_sub(aux,11,str_length(aux)-7),
+         questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
+  dplyr::select(tema,prova,questao,Prob)%>%
+  filter(prova!=4)
+  
+
+
+
 
 # Probabilidade de acerto de cada questão feita por cada aluno
 P.probs <- vector(n.provas, mode="list")
