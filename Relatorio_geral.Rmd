@@ -119,10 +119,11 @@ Clusterização feita com uso de Componentes Principais.
 
 Esta matriz de confusão compara as menções reais obtidas com as menções que seriam atribuídas por TRI. Espera-se que haja uma concentração maior na diagonal.
 
-#Avaliação das questões
 
 
-```{r , echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Probabilida de um aluno mediano acertar a questão'), out.width='.49\\linewidth', fig.asp=1}
+
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano acertar a questão',fig.height=9,fig.width=7}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
