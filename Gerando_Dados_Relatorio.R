@@ -79,7 +79,7 @@ Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
   as.data.frame()%>%
   rownames_to_column()%>%
   rename(Prob=".",aux='rowname')%>%
-  mutate(prova=str_sub(aux,6,6),
+  mutate(prova=paste0("Prova ",str_sub(aux,6,6)),
          tema=str_sub(aux,11,str_length(aux)-7),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,prova,questao,Prob)%>%
