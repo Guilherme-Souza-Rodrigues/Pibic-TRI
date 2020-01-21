@@ -24,7 +24,7 @@ dados.original <- read.csv2(choose.files(multi = FALSE,
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
                             fileEncoding = "UTF-8")
 
-source(choose.files(multi = FALSE, caption = "Escolha o arquivo de geração dos dados"))
+load(choose.files(multi = FALSE, caption = "Escolha o arquivo com os dados do curso de PE")) # "DadosPE.RData"
 
 # Nova variavel para agrupar os cursos
 dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
