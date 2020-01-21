@@ -514,3 +514,7 @@ class(tabela$Classico) <- "numeric"
 class(tabela$TRI) <- "numeric"
 class(tabela$Quantidade) <- "numeric"
 tabela[, 1:2] <- tabela[, 1:2] - 1
+    
+    
+# Savando os dados 
+save.image(file = "DadosPE.RData")
