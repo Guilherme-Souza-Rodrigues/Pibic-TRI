@@ -826,10 +826,9 @@ g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, gr
   ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
 }
 
-g_radar <- function(){radarchart(data1,  axistype=2, pcol=c('blue', 'red','black'), plwd=1, plty=1, cglcol="grey", cglty=1, caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
-legend(x=1.8, y=1, legend = rownames(data1[-c(1,2),]), bty = "n", pch=20 , text.col = c('blue', 'red','black'),
-       col=c('blue', 'red','black'),
-       cex=0.6, pt.cex=1)}
+g_radar <- function(){radarchart(data,  axistype=2, pcol=c(rep("grey",10), 'black'), plwd=1, plty=1, cglcol="grey", cglty=1,
+                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+}
 
 g_fluxo_sankey <- function(){
   require(networkD3)
