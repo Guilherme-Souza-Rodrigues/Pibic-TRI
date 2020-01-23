@@ -9,6 +9,9 @@ dados.original <- read.csv2(choose.files(multi = FALSE,
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
                             fileEncoding = "UTF-8")
 
+# Carregando o arquivo com as funções 
+source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"))
+
 # Variável Acertou como 0 e 1
 dados.original$Acertou[dados.original$Acertou==TRUE] <- 1
 dados.original$Acertou[dados.original$Acertou==FALSE] <- 0
@@ -37,9 +40,6 @@ for (aluno in 1:length(dados.original$Matricula)){
       sum(s[s$Numero.prova==4, "Acertou"]==TRUE)
   }
     }
-
-# Carregando o arquivo com as funções 
-source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"))
 
 # Criando o mapa de questões
 mapa.questoes <- array(dim=c(n.turmas, n.questoes.prova, n.provas), 
