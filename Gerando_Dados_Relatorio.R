@@ -307,10 +307,11 @@ notas.finais.estimadas <- nota.prova.estimada %>%
                     labels=c("II", "MI", "MM", "MS", "SS")))
 
 # Nova variavel para agrupar os cursos
-dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
 dados.original$Grupo[str_detect(dados.original$Curso,"Comp")] <- 'Computação'
+dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
 dados.original$Grupo[str_detect(dados.original$Curso,"Educ")] <- 'Ed. Física'
 dados.original$Grupo[str_detect(dados.original$Curso,"Econ")] <- 'Econômicas'
+dados.original$Grupo[str_detect(dados.original$Curso,"Cont")] <- 'Contábeis'
 dados.original$Grupo[str_detect(dados.original$Curso,"Outros")] <- 'Outros'
 dados.original$Grupo[is.na(dados.original$Curso)] <- 'NA'
 
@@ -327,6 +328,7 @@ medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
 medturmaprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Turma,dados.original$Numero.prova),mean)
 colnames(medturmaprova) <- c("Turma", "Prova", "Media")
 medcurso <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Curso),mean)
+medcurso <- medcurso %>% arrange(x)
 medprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Numero.prova),mean)
 medano <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Ano),mean)
 mediaaluno <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula),mean)
@@ -339,7 +341,9 @@ dados.original1$Curso <- factor(dados.original1$Curso,
                                           as.character(unique(dados.original$Curso[str_detect(dados.original$Curso,"Comp")])[-1]),   
                                           as.character(unique(dados.original$Curso[str_detect(dados.original$Curso,"Ciências")])),
                                           as.character(unique(dados.original$Curso[str_detect(dados.original$Curso,"Engenharia ")]))))
-
+    
+dados.original1 <- dados.original1[complete.cases(dados.original1[,"Grupo"]),]
+    
 #
 medpturma <- matrix(c(rep(c('AA', 'AB', 'BA', 'BB', 'CA', 'CB', 'CC', 'DA', 'DB', 'EA'),4),
                     rep("Media Geral", 4), rep(c(1,2,3,4), each=10), 1,2,3,4, rep(0, 44)),
