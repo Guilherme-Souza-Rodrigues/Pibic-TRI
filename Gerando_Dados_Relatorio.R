@@ -369,7 +369,9 @@ for (i in 1:n.turmas){
   }
 
 data <- data/datan
-data1 <- rbind(data[which.max(rowMeans(data, na.rm=T)),], data[which.min(rowMeans(data, na.rm=T)[-c(1,2)]),], rowMeans(data, na.rm=T))
+data <- rbind(data, colMeans(data, na.rm=T))
+rownames(data)[11] <- 'Média geral'
+data1 <- rbind(data[which.max(rowMeans(data, na.rm=T)),], data[which.min(rowMeans(data, na.rm=T)[-c(1,2)]),], colMeans(data, na.rm=T))
 rownames(data1)[3] <- 'Média geral'
 data <- rbind(rep(1,10), rep(0,10) , data)
 data1 <- rbind(rep(1,3), rep(0,3) , data1)
