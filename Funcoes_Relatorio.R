@@ -1,11 +1,3 @@
-# CorreÃ§Ã£o do nome dos Cursos
-erros <- c("ÃÂ¢", "ÃÂ§ÃÂ£", "Ã", "Engenharia QuÃ­.....", "EducaÃ§Ã£o FÃ­.....", 
-           "Ã­Âª", "Ã­Â´", "Ã­Â©")
-correcoes <- c("Ã¢", "Ã§Ã£", "Ã­", "Engenharia QuÃ­mica", "EducaÃ§Ã£o FÃ­sica",
-               "Ãª", "Ã´", "Ã©")
-for (i in 1:length(erros)){
-  dados.original$Curso <- gsub(erros[i], correcoes[i], dados.original$Curso)
-}
 # Criacao da variavel Tema no banco de dados
 nomes.q <- c("...medida_probabilidade.......", "...propriedade_probabilidade.......",
            "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
@@ -16,7 +8,7 @@ nomes.q <- c("...medida_probabilidade.......", "...propriedade_probabilidade....
            "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
            "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
            "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
-           "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporÃ§Ã£o.......",
+           "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......",
            "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
            "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
            "...valor_esperado_e_variancia.......")
@@ -29,7 +21,7 @@ temas <- c("medida_probabilidade", "propriedade_probabilidade",
            "distribuicao_normal", "distribuicao_normal", "aproximacao_normal_binomial",
            "distribuicao_condicional", "covariancia_correlacao", "distribuicao_media",
            "distribuicao_proporcao", "maxima_verossimilhanca",
-           "IC_media_normal", "IC_media_t", "IC_proporÃ§Ã£o",
+           "IC_media_normal", "IC_media_t", "IC_proporção",
            "TH_media", "tamanho_media", "TH_proporcao", 
            "pvalor_media", "tamanho_prop", "pvalor_proporcao", 
            "valor_esperado_e_variancia")
@@ -42,18 +34,25 @@ for (i in 1:length(temas)){
 }
 
 
-# Alguns parÃ¢metros 
+# Alguns parâmetros 
 nchains <- 4
+
 niter <- 2500
+
 n.questoes.prova <- 10
+
 n.mcmc <- 1000
+
 thin.mcmc <- 10
+
 n.turmas <- length(unique(dados.original$Turma))
+
 n.provas <- length(unique(dados.original$Numero.prova))
+
 turmas <- c("AA","AB","BA","BB","CA","CB","CC","DA","DB","EA")
+n.sim <- n.mcmc/thin.mcmc
 
-
-# Criando o mapa de questÃµes
+# Criando o mapa de questões
 mapa <- function(){for(prova in 1:n.provas) {
   mapa.questoes[,,prova] <- dplyr::filter(dados.original, Numero.prova==prova) %>%
     dplyr::select(Turma, Questao, Nome.questao) %>% 
@@ -66,7 +65,7 @@ mapa <- function(){for(prova in 1:n.provas) {
   return(mapa.questoes)
 }
 
-#Criando dataframe com as respostas dicotÃ´micas de cada aluno:
+#Criando dataframe com as respostas dicotômicas de cada aluno:
 dico <- function(){for(prova in 1:n.provas) {
   data <- dados.original[order(dados.original$Matricula), ] %>%
     dplyr::filter(Numero.prova==prova) %>%
@@ -83,184 +82,359 @@ dico <- function(){for(prova in 1:n.provas) {
 }
   return(respostas.dico)}
 
-# CÃ¡lculo dos estimadores dos parÃ¢metros dos itens e do estimador do parÃ¢metro de habilidade de
+# Cálculo dos estimadores dos parâmetros dos itens e do estimador do parâmetro de habilidade de
 #cada aluno via Monte Carlo Cadeia de Markov:
 mcmc<- function() {
+  
   model <- stan_model(model_code = 
+                        
                         "data {
+                      
                       int<lower=1> N_alunos;              // number of students
+                      
                       int<lower=1> N_itens;              // number of questions
+                      
                       int<lower=1> N;                   // number of observations
+                      
                       int<lower=1,upper=N_alunos> aluno[N];   // student for observation n
+                      
                       int<lower=1,upper=N_itens> item[N];   // question for observation n
+                      
                       int<lower=0,upper=1> y[N];     // correctness for observation n
-                      }
-                      parameters{
-                      vector[N_itens] b;
-                      vector<lower=0,upper=1>[N_itens] c;
-                      vector[N_alunos] theta;
-                      vector<lower=0>[N_itens] a;
-                      }
-                      model{
-                      a~normal(0,1);
-                      b~normal(0,1);
-                      c~beta(5,17);
-                      theta~normal(0,1);
-                      y~bernoulli(c[item]+((1-c[item]).*inv_logit((a[item] .*theta[aluno])-b[item])));
-                      }"
-)
-  
-banco_respostas <- dados.original%>%
-  dplyr::select(Matricula,Nome.questao,Acertou,Numero.prova)%>%
-  mutate(Nome.questao=as.character(Nome.questao),
-         Matricula=as.numeric(Matricula))
-  
-##############
-#  P1
-##############
-
-dados_p1 <- banco_respostas%>%
-  filter(Numero.prova==1)%>%
-  na.omit(Acertou)%>%
-  mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
-         Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
-  arrange(Matricula.mod,Nome.questao.mod)
-
-Matriculas_equivalencia_p1 <- dados_p1%>%
-  dplyr::select(Matricula,Matricula.mod)%>%
-  distinct()%>%
-  arrange(Matricula.mod)
-
-Questoes_equivalencia_p1 <- dados_p1%>%
-  dplyr::select(Nome.questao,Nome.questao.mod)%>%
-  distinct()%>%
-  arrange(Nome.questao.mod)
-fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matricula.mod)),
-                                          N_itens=length(unique(dados_p1$Nome.questao.mod)),
-                                          N=nrow(dados_p1),
-                                          aluno=dados_p1$Matricula.mod,
-                                          item=dados_p1$Nome.questao.mod, 
-                                          y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
-params.p1 <- extract(fit.p1)
-itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
-                  dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p1), 3),
-                  dimnames = list(paste("simulação",1:(nchains*(niter/2))),
-                                  Questoes_equivalencia_p1$Nome.questao,
-                                  c('a','b','c')))
-thetas.mcmc.p1 <- params.p1$theta
-colnames(thetas.mcmc.p1) <- Matriculas_equivalencia_p1$Matricula
-rm(Questoes_equivalencia_p1,Matriculas_equivalencia_p1,dados_p1,fit.p1)
-##############
-#  P2
-##############
-dados_p2 <- banco_respostas%>%
-  filter(Numero.prova==2)%>%
-  na.omit(Acertou)%>%
-  mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
-         Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
-  arrange(Matricula.mod,Nome.questao.mod)
-
-Matriculas_equivalencia_p2 <- dados_p2%>%
-  dplyr::select(Matricula,Matricula.mod)%>%
-  distinct()%>%
-  arrange(Matricula.mod)
-
-Questoes_equivalencia_p2 <- dados_p2%>%
-  dplyr::select(Nome.questao,Nome.questao.mod)%>%
-  distinct()%>%
-  arrange(Nome.questao.mod)
-fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matricula.mod)),
-                                          N_itens=length(unique(dados_p2$Nome.questao.mod)),
-                                          N=nrow(dados_p2),
-                                          aluno=dados_p2$Matricula.mod,
-                                          item=dados_p2$Nome.questao.mod, 
-                                          y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
-params.p2 <- extract(fit.p2)
-itens.p2 <- array(c(params.p2$a,params.p2$b,params.p2$c),
-                  dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p2), 3),
-                  dimnames = list(paste("simulação",1:(nchains*(niter/2))),
-                                  Questoes_equivalencia_p2$Nome.questao,
-                                  c('a','b','c')))
-thetas.mcmc.p2 <- params.p2$theta
-colnames(thetas.mcmc.p2) <- Matriculas_equivalencia_p2$Matricula
-rm(Questoes_equivalencia_p2,Matriculas_equivalencia_p2,dados_p2,fit.p2)
-##############
-#  P3
-##############
-dados_p3 <- banco_respostas%>%
-  filter(Numero.prova==3)%>%
-  na.omit(Acertou)%>%
-  mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
-         Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
-  arrange(Matricula.mod,Nome.questao.mod)
-
-Matriculas_equivalencia_p3 <- dados_p3%>%
-  dplyr::select(Matricula,Matricula.mod)%>%
-  distinct()%>%
-  arrange(Matricula.mod)
-
-Questoes_equivalencia_p3 <- dados_p3%>%
-  dplyr::select(Nome.questao,Nome.questao.mod)%>%
-  distinct()%>%
-  arrange(Nome.questao.mod)
-fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matricula.mod)),
-                                          N_itens=length(unique(dados_p3$Nome.questao.mod)),
-                                          N=nrow(dados_p3),
-                                          aluno=dados_p3$Matricula.mod,
-                                          item=dados_p3$Nome.questao.mod, 
-                                          y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
-params.p3 <- extract(fit.p3)
-itens.p3 <- array(c(params.p3$a,params.p3$b,params.p3$c),
-                  dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p3), 3),
-                  dimnames = list(paste("simulação",1:(nchains*(niter/2))),
-                                  Questoes_equivalencia_p3$Nome.questao,
-                                  c('a','b','c')))
-thetas.mcmc.p3 <- params.p3$theta
-colnames(thetas.mcmc.p3) <- Matriculas_equivalencia_p3$Matricula
-rm(Questoes_equivalencia_p3,Matriculas_equivalencia_p3,dados_p3,fit.p3)
-##############
-#  P4-subs
-##############
-dados_p4 <- banco_respostas%>%
-  filter(Numero.prova==4)%>%
-  na.omit(Acertou)%>%
-  mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
-         Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
-  arrange(Matricula.mod,Nome.questao.mod)
-
-Matriculas_equivalencia_p4 <- dados_p4%>%
-  dplyr::select(Matricula,Matricula.mod)%>%
-  distinct()%>%
-  arrange(Matricula.mod)
-
-Questoes_equivalencia_p4 <- dados_p4%>%
-  dplyr::select(Nome.questao,Nome.questao.mod)%>%
-  distinct()%>%
-  arrange(Nome.questao.mod)
-fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matricula.mod)),
-                                          N_itens=length(unique(dados_p4$Nome.questao.mod)),
-                                          N=nrow(dados_p4),
-                                          aluno=dados_p4$Matricula.mod,
-                                          item=dados_p4$Nome.questao.mod, 
-                                          y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
-params.p4 <- extract(fit.p4)
-itens.p4 <- array(c(params.p4$a,params.p4$b,params.p4$c),
-                  dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p4), 3),
-                  dimnames = list(paste("simulação",1:(nchains*(niter/2))),
-                                  Questoes_equivalencia_p4$Nome.questao,
-                                  c('a','b','c')))
-
-thetas.mcmc.p4 <- params.p4$theta
-colnames(thetas.mcmc.p4) <- Matriculas_equivalencia_p4$Matricula
-rm(Questoes_equivalencia_p4,Matriculas_equivalencia_p4,dados_p4,fit.p4)
-#########################
-#  Juntando tudo
-#########################
-mcmc.itens <- list(itens.p1,itens.p2,itens.p3,itens.p4)
-mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
-save(mcmc.itens, file = "Parametros_Itens.RData")
-return(list(thetas=mcmc.theta,itens=mcmc.itens))
+                      
 }
+
+parameters{
+
+vector[N_itens] b;
+
+vector<lower=0,upper=1>[N_itens] c;
+
+vector[N_alunos] theta;
+
+vector<lower=0>[N_itens] a;
+
+}
+
+model{
+
+a~normal(0,1);
+
+b~normal(0,1);
+
+c~beta(5,17);
+
+theta~normal(0,1);
+
+y~bernoulli(c[item]+((1-c[item]).*inv_logit((a[item] .*theta[aluno])-b[item])));
+
+}"
+
+  )
+  
+  
+  
+  banco_respostas <- dados.original%>%
+    
+    dplyr::select(Matricula,Nome.questao,Acertou,Numero.prova)%>%
+    
+    mutate(Nome.questao=as.character(Nome.questao),
+           
+           Matricula=as.numeric(Matricula))
+  
+  
+  
+  ##############
+  
+  #  P1
+  
+  ##############
+  
+  
+  
+  dados_p1 <- banco_respostas%>%
+    
+    filter(Numero.prova==1)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p1 <- dados_p1%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p1 <- dados_p1%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p1$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p1),
+                                            
+                                            aluno=dados_p1$Matricula.mod,
+                                            
+                                            item=dados_p1$Nome.questao.mod, 
+                                            
+                                            y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p1 <- extract(fit.p1)
+  
+  itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p1), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p1$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p1 <- params.p1$theta
+  
+  colnames(thetas.mcmc.p1) <- Matriculas_equivalencia_p1$Matricula
+  
+  rm(Questoes_equivalencia_p1,Matriculas_equivalencia_p1,dados_p1,fit.p1)
+  
+  ##############
+  
+  #  P2
+  
+  ##############
+  
+  dados_p2 <- banco_respostas%>%
+    
+    filter(Numero.prova==2)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p2 <- dados_p2%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p2 <- dados_p2%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p2$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p2),
+                                            
+                                            aluno=dados_p2$Matricula.mod,
+                                            
+                                            item=dados_p2$Nome.questao.mod, 
+                                            
+                                            y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p2 <- extract(fit.p2)
+  
+  itens.p2 <- array(c(params.p2$a,params.p2$b,params.p2$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p2), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p2$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p2 <- params.p2$theta
+  
+  colnames(thetas.mcmc.p2) <- Matriculas_equivalencia_p2$Matricula
+  
+  rm(Questoes_equivalencia_p2,Matriculas_equivalencia_p2,dados_p2,fit.p2)
+  
+  ##############
+  
+  #  P3
+  
+  ##############
+  
+  dados_p3 <- banco_respostas%>%
+    
+    filter(Numero.prova==3)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p3 <- dados_p3%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p3 <- dados_p3%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p3$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p3),
+                                            
+                                            aluno=dados_p3$Matricula.mod,
+                                            
+                                            item=dados_p3$Nome.questao.mod, 
+                                            
+                                            y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p3 <- extract(fit.p3)
+  
+  itens.p3 <- array(c(params.p3$a,params.p3$b,params.p3$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p3), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p3$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p3 <- params.p3$theta
+  
+  colnames(thetas.mcmc.p3) <- Matriculas_equivalencia_p3$Matricula
+  
+  rm(Questoes_equivalencia_p3,Matriculas_equivalencia_p3,dados_p3,fit.p3)
+  
+  ##############
+  
+  #  P4-subs
+  
+  ##############
+  
+  dados_p4 <- banco_respostas%>%
+    
+    filter(Numero.prova==4)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p4 <- dados_p4%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p4 <- dados_p4%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p4$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p4),
+                                            
+                                            aluno=dados_p4$Matricula.mod,
+                                            
+                                            item=dados_p4$Nome.questao.mod, 
+                                            
+                                            y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p4 <- extract(fit.p4)
+  
+  itens.p4 <- array(c(params.p4$a,params.p4$b,params.p4$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p4), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p4$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  
+  
+  thetas.mcmc.p4 <- params.p4$theta
+  
+  colnames(thetas.mcmc.p4) <- Matriculas_equivalencia_p4$Matricula
+  
+  rm(Questoes_equivalencia_p4,Matriculas_equivalencia_p4,dados_p4,fit.p4)
+  
+  #########################
+  
+  #  Juntando tudo
+  
+  #########################
+  
+  mcmc.itens <- list(itens.p1,itens.p2,itens.p3,itens.p4)
+  
+  mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
+  
+  save(mcmc.itens, file = "Parametros_Itens.RData")
+  
+  return(list(thetas=mcmc.theta,itens=mcmc.itens))
+  
+  }
 
 # Dataframe dos coeficientes de cada questao
 data.i <- function(){for (prova in 1:n.provas){
@@ -278,20 +452,21 @@ save(itens.p, file = "Parametros_Itens_Prova.RData")
 return(itens.p)
 }
 
-# SimulaÃ§Ã£o com as probabilidades de que um aluno mediano acerte a questÃ£o para cada questÃ£o 
+# Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
 sim.aluno.medio <- function(){
   for(prova in 1:n.provas){
-  Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
-                                 (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                 pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
-                             dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
-                                           colnames(respostas.dico[[prova]][, -c(1,2)])))
-  } 
+    Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
+                                   (1-as.numeric(mcmc.itens[[prova]][,,3]))*
+                                   pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),
+                               dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
+                               dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
+                                             colnames(respostas.dico[[prova]][, -c(1,2)])))
+    } 
   return(Pm.probs)
 }
 
-# Probabilidade de acerto de cada questÃ£o feita por cada aluno
+# Probabilidade de acerto de cada questão feita por cada aluno
 prob.acerto.questoes <- function(){for (prova in 1:n.provas){
   P.probs[[prova]] <- matrix(0, nrow = nrow(respostas.dico[[prova]]), ncol=ncol(respostas.dico[[prova]][, -c(1,2)]))
   for (aluno in 1:nrow(respostas.dico[[prova]])){
@@ -312,7 +487,7 @@ prob.acerto.questoes <- function(){for (prova in 1:n.provas){
 }
 
 
-# Dataframes de cada prova com a probabilidade de acerto por tema (questÃ£o que o aluno fez do tema) para cada aluno 
+# Dataframes de cada prova com a probabilidade de acerto por tema (questão que o aluno fez do tema) para cada aluno 
 prob.tema1 <- function(){for (aluno in 1:ncol(mcmc.theta[[1]])){
   Prob.tema1 <- data.frame(Prob.tema1)
   
@@ -479,7 +654,7 @@ return(Acerto.tema3)
 }
 
 
-# CÃ¡lculo das componentes do desvio
+# Cálculo das componentes do desvio
 c.d <- function(){
   for (aluno in 1:nrow(Acerto.tema)){
   for (tema in 1:30){
@@ -496,7 +671,7 @@ return(cd)
 }
 
 
-# CorrelaÃ§Ãµes entre os temas
+# Correlações entre os temas
 corr.tema <- function(){for (tema in 1:30){
   for (tema2 in 1:30){
     cor.tema[tema,tema2] <- 
@@ -510,12 +685,8 @@ colnames(cor.tema) <- colnames(Acerto.tema)
 return(cor.tema)
 }
 
-#cluster <- kmeans(t(cor.tema), 3) 
-# distribuicao_geometrica (1 -> 2),  funcao_densidade (2 -> 3), valor_esperado_e_variancia (2 -> 3), distribuicao_exponencial (2 -> 1), distribuicao_normal (2 -> 3), distribuicao_condicional (2 -> 1)
-
-
-# Array final para o balanceamento das provas, com o nÃºmero de simulaÃ§Ãµes, turmas, questÃµes,
-#provas e vetor com a probabilidade de acerto e o resultado da binomial se acertou ou nÃ£o:
+# Array final para o balanceamento das provas, com o número de simulações, turmas, questões,
+#provas e vetor com a probabilidade de acerto e o resultado da binomial se acertou ou não:
 
 balanceamento <- function(){for(questao in 1:n.questoes.prova) {
   for(turma in 1:n.turmas) {
@@ -558,7 +729,7 @@ dados.fim <- function(){for(prova in 1:n.provas) {
 # Probabilidade de um aluno mediano passar por prova
 prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
   for (turma in 1:n.turmas){
-    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/nchains*(niter/2)
+    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/(nchains*(niter/2))
   }
 }
   return(P.am.passar)
@@ -587,11 +758,9 @@ notas.estim <- function(){for (prova in 1:n.provas){
   return(notas.estimadas)
 }
 
-# Dataframes dos alunos que nÃ£o passariam e passariam por TRI, em cada prova
-
+# Dataframes dos alunos que não passariam e passariam por TRI, em cada prova
 n.passou.hat <- function(){for (prova in 1:n.provas) {
   N.passou.hat[[prova]] <- array(dim = c(length(notas.estimadas[[prova]][notas.estimadas[[prova]]>=0 & notas.estimadas[[prova]]<5]),1), dimnames = list(as.numeric(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=0 & notas.estimadas[[prova]][,2]<5]),"Nota Estimada"))
-  
   N.passou.hat[[prova]][,1] <- notas.estimadas[[prova]][notas.estimadas[[prova]]>=0 & notas.estimadas[[prova]]<5]
 }
   return(N.passou.hat)
@@ -600,14 +769,13 @@ n.passou.hat <- function(){for (prova in 1:n.provas) {
 passou.hat <- function(){
   for (prova in 1:n.provas) {  
   Passou.hat[[prova]] <- array(dim = c(length(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=5 ]),1), dimnames = list(as.numeric(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=5]),"Nota Estimada"))
-  
   Passou.hat[[prova]][,1] <- notas.estimadas[[prova]][,2][notas.estimadas[[prova]][,2]>=5]
 }
   return(Passou.hat)
 }
 
 
-# Dataframes dos alunos que nÃ£o passaram e passaram, em cada prova 
+# Dataframes dos alunos que não passaram e passaram, em cada prova 
 
 n.passou <- function(){for (prova in 1:n.provas) {
   N.passou[[prova]] <- array(dim = c(length(notaaluno[[prova]][notaaluno[[prova]]>=0 & notaaluno[[prova]]<5]),1), dimnames = list(as.numeric(notaaluno[[prova]][,1][notaaluno[[prova]][,2]>=0 & notaaluno[[prova]][,2]<5]),"Nota"))
@@ -626,28 +794,27 @@ return(Passou)
 }
 
 
-# Dataframe com as probabilidades das simulaÃ§Ãµes com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (simulacao in 1:nchains*(niter/2)){
+# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
+Sim.passar <- function(){for (simulacao in 1:(nchains*(niter/2))){
   for (turma in 1:n.turmas){
-    sim.passar[simulacao,turma] <- (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
+    sim.passar[simulacao,turma] <- 
+      (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-
+         min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
   }
 }
   return(sim.passar)
 }
 
-
-
 # Probabilidade de um aluno mediano passar em PE por turma
 p.sim.passar <- function(){for (turma in 1:n.turmas){
-  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/nchains*(niter/2)
+  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/(nchains*(niter/2))
 }
-
 return(P.sim.passar)
 }
 
 
-### GRÃFICOS ###
-g_notas_curso <- function(){ggplot(dados.original1[complete.cases(dados.original1),], aes(Curso, Nota_prova)) + 
+### GRÁFICOS ###
+g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
   geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
   stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
   ylab("Notas") + xlab("Curso") + 
@@ -656,13 +823,12 @@ g_notas_curso <- function(){ggplot(dados.original1[complete.cases(dados.original
 
 g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + geom_point() +
   geom_line() + ylim(0,10) + scale_color_manual(values=c(rep("grey",10),'black')) +
-  ggtitle("MÃ©dia das Turmas por Prova e MÃ©dia Geral") + theme_classic() + theme(legend.position = "none")
+  ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
 }
 
-g_radar <- function(){radarchart(data1,  axistype=2, pcol=c('blue', 'red','black'), plwd=1, plty=1, cglcol="grey", cglty=1, caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
-legend(x=1.8, y=1, legend = rownames(data1[-c(1,2),]), bty = "n", pch=20 , text.col = c('blue', 'red','black'),
-       col=c('blue', 'red','black'),
-       cex=0.6, pt.cex=1)}
+g_radar <- function(){radarchart(data,  axistype=2, pcol=c(rep("grey",10), 'black'), plwd=1, plty=1, cglcol="grey", cglty=1,
+                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+}
 
 g_fluxo_sankey <- function(){
   require(networkD3)
@@ -681,11 +847,11 @@ g_fluxo_sankey <- function(){
 g_confusao_subs <- function(){tabela1 %>% 
   ggplot(aes(tabela1$MencaosemP4, tabela1$MencaoposP4)) +
   geom_tile(aes(fill=tabela1$Quantidade)) +
-  scale_fill_gradient(low="white", high="black") +
+  scale_fill_gradient(low="white", high="red") +
   scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
-            color="black", alpha=0, size=1)}
+            color="red", alpha=0, size=1)}
 
 g_prob_mediano_passar_prova <- function(){ggplot(data.g, aes(Turma, Probabilidade, color=Prova, group=Prova)) + 
   geom_point() + geom_line() + ggtitle("Probabilidade de um aluno mediano passar por prova e por turma") +
@@ -697,32 +863,45 @@ g_prob_mediano_passar <- function(){ggplot(P.sim.passar, aes(Turma, Probabilidad
 g_correlograma <- function(){ggcorr(adjm)}
 
 g_rede_associacao <- function(){
-  par(bg="grey13", mar=c(0,0,0,0))
+  par(bg="white", mar=c(0,0,0,0))
   plot(network, 
        vertex.size=9,
        vertex.color=my_color, 
        vertex.label.cex=0.7,
-       vertex.label.color="white",
-       vertex.frame.color="transparent"
+       vertex.label.color="black",
+       vertex.frame.color="black"
   )
   
-  text(1.1,1,"Tema cluster network",col="white", cex=1.5)
+  text(1.1,1,"Tema cluster network",col="black", cex=1.5)
   legend(x=1.5, y=1, 
          legend=levels(as.factor(cluster$cluster)), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
-         text.col="white" , horiz = F)
+         text.col="black" , horiz = F)
 }
 
 g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
                                          ggtheme = theme_minimal(),
-                                         main = "PartiÃ§Ã£o dos temas em Clusters")}
+                                         main = "Partição dos temas em Clusters")}
 
 g_confusao_tri <- function(){tabela %>% 
   ggplot(aes(Classico, TRI)) +
   geom_tile(aes(fill=Quantidade)) +
-  scale_fill_gradient(low="white", high="black") +
+  scale_fill_gradient(low="white", high="red") +
   scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
-            color="black", alpha=0, size=1)}
+            color="red", alpha=0, size=1)}
+
+g_Pm.probs.means <- function(){
+  ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
+    geom_point(aes(color=Prob),show.legend = FALSE)+
+    scale_x_continuous(limits = c(0,1))+
+    facet_grid(prova ~ ., scales="free_y", space="free_y")+
+    scale_colour_gradient(low="red",high="green")+
+    xlab(aes(label=" "))+
+    ylab(aes(label=" "))+
+    theme_bw()
+}
+
+
