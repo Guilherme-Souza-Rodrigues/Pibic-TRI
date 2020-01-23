@@ -220,6 +220,7 @@ media.prova[,3] <- .5*nota.prova[,2] + .5*nota.prova[,3]
 media.prova[,4] <- .3*nota.prova[,2] + .3*nota.prova[,3] + .4*nota.prova[,4]
 media.prova <- data.frame(media.prova)
 colnames(media.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")
+media.prova <- media.prova %>% arrange(Matricula)  
 
 lim.mencao <- c(3, 4.8, 6.8, 8.8)
 
@@ -238,6 +239,7 @@ for (prova in 2:4){
 mencao.m.prova[,1] <- unique(dados.original$Matricula)
 mencao.m.prova <- data.frame(mencao.m.prova)
 colnames(mencao.m.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")
+mencao.m.prova <- mencao.m.prova %>% arrange(Matricula)    
 
 matriz.notas <- cbind(coalesce(nota.prova$`Prova 1`, 0),
                       coalesce(nota.prova$`Prova 2`, 0),
@@ -480,7 +482,7 @@ color_scale <- data.frame(
 )
 
 #
-tabela1 <- as.data.frame(table(mencao.3, mencao.subs))
+tabela1 <- as.data.frame(table(mencao.m.prova[,4], notas.finais[,7]))
 colnames(tabela1) <- c("MencaosemP4", "MencaoposP4", "Quantidade")
 class(tabela1$MencaosemP4) <- "numeric"
 class(tabela1$MencaoposP4) <- "numeric"
