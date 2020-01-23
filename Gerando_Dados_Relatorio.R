@@ -507,7 +507,13 @@ P.sim.passar <- data.frame(P.sim.passar,Turma=c(dimnames(mapa.questoes)[[1]]), L
 #
 adjm <- as.matrix(cor.tema)
 
-adjm[abs(adjm)<0.2] <- 0
+#adjm[abs(adjm)<0.23] <- 0
+
+for (lim in seq(0,1,.0001)){
+  if(length(adjm[abs(adjm)>lim]) == 60){return(lim)} 
+}
+
+adjm[abs(adjm)<lim] <- 0 # 
 
 network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=F, mode = "undirected")
 
