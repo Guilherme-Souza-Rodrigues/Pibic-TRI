@@ -814,7 +814,7 @@ return(P.sim.passar)
 
 
 ### GRÁFICOS ###
-g_notas_curso <- function(){ggplot(dados.original1, aes(Curso, Nota_prova)) + 
+g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
   geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
   stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
   ylab("Notas") + xlab("Curso") + 
