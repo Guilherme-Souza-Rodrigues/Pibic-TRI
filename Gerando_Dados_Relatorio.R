@@ -306,6 +306,16 @@ notas.finais.estimadas <- nota.prova.estimada %>%
   mutate(Mencao=cut(Nota_final, righ=F, c(0.1,lim.mencao,10.1), 
                     labels=c("II", "MI", "MM", "MS", "SS")))
 
+#
+notas.ord <- notas.finais[order(notas.finais$Nota_final),]
+notas.ord.tri <- notas.finais.estimadas[order(notas.finais.estimadas$Nota_final),-7]
+notas.ord.tri$Mencao <- c(rep("II", 100),
+                          rep("MI", 100),
+                          rep("MM", 100),
+                          rep("MS", 100),
+                          rep("SS", 98))    
+    
+    
 # Nova variavel para agrupar os cursos
 dados.original$Grupo[str_detect(dados.original$Curso,"Comp")] <- 'Computação'
 dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
@@ -522,7 +532,7 @@ my_color <- c(rep("green", 10),
               rep("red", 10))
 
 #
-tabela <- as.data.frame(table(notas.finais$Mencao, notas.finais.estimadas$Mencao))
+tabela <- as.data.frame(table(notas.ord$Mencao, notas.ord.tri$Mencao))
 colnames(tabela) <- c("Classico", "TRI", "Quantidade")
 class(tabela$Classico) <- "numeric"
 class(tabela$TRI) <- "numeric"
