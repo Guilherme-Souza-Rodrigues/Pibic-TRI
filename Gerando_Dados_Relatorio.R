@@ -309,12 +309,82 @@ notas.finais.estimadas <- nota.prova.estimada %>%
 #
 notas.ord <- notas.finais[order(notas.finais$Nota_final),]
 notas.ord.tri <- notas.finais.estimadas[order(notas.finais.estimadas$Nota_final),-7]
-notas.ord.tri$Mencao <- c(rep("II", 100),
-                          rep("MI", 100),
-                          rep("MM", 100),
-                          rep("MS", 100),
-                          rep("SS", 98))    
-    
+
+len.men <- c(length(notas.ord$Mencao[notas.ord$Mencao=="II"]),
+             length(notas.ord$Mencao[notas.ord$Mencao=="MI"]),
+             length(notas.ord$Mencao[notas.ord$Mencao=="MM"]),
+             length(notas.ord$Mencao[notas.ord$Mencao=="MS"]),
+             length(notas.ord$Mencao[notas.ord$Mencao=="SS"]))
+notas.ord.tri$Mencao <- c(rep("II", len.men[1]),
+                          rep("MI", len.men[2]),
+                          rep("MM", len.men[3]),
+                          rep("MS", len.men[4]),
+                          rep("SS", len.men[5]))
+freq <- c(rep(0,25))
+for (aluno in 1:len.men[1]){
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="II"){
+    freq[1] <- freq[1] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MI"){
+    freq[6] <- freq[6] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MM"){
+    freq[11] <- freq[11] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MS"){
+    freq[16] <- freq[16] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="SS"){
+    freq[21] <- freq[21] + 1}
+}
+
+for (aluno in (len.men[1]+1):(len.men[1]+len.men[2])){
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="II"){
+    freq[2] <- freq[2] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MI"){
+    freq[7] <- freq[7] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MM"){
+    freq[12] <- freq[12] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MS"){
+    freq[17] <- freq[17] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="SS"){
+    freq[22] <- freq[22] + 1}
+}
+
+for (aluno in (len.men[1]+len.men[2]+1):(len.men[1]+len.men[2]+len.men[3])){
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="II"){
+    freq[3] <- freq[3] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MI"){
+    freq[8] <- freq[8] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MM"){
+    freq[13] <- freq[13] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MS"){
+    freq[18] <- freq[18] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="SS"){
+    freq[23] <- freq[23] + 1}
+}
+
+for (aluno in (len.men[1]+len.men[2]+len.men[3]+1):(len.men[1]+len.men[2]+len.men[3]+len.men[4])){
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="II"){
+    freq[4] <- freq[4] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MI"){
+    freq[9] <- freq[9] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MM"){
+    freq[14] <- freq[14] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MS"){
+    freq[19] <- freq[19] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="SS"){
+    freq[24] <- freq[24] + 1}
+}
+
+for (aluno in (len.men[1]+len.men[2]+len.men[3]+len.men[4]+1):(len.men[1]+len.men[2]+len.men[3]+len.men[4]+len.men[5])){
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="II"){
+    freq[5] <- freq[5] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MI"){
+    freq[10] <- freq[10] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MM"){
+    freq[15] <- freq[15] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="MS"){
+    freq[20] <- freq[20] + 1}
+  if (notas.ord.tri[notas.ord.tri$Matricula==notas.ord.tri$Matricula[aluno],"Mencao"]=="SS"){
+    freq[25] <- freq[25] + 1}
+}
     
 # Nova variavel para agrupar os cursos
 dados.original$Grupo[str_detect(dados.original$Curso,"Comp")] <- 'Computação'
@@ -364,27 +434,34 @@ medpturma <- data.frame(medpturma)
 colnames(medpturma) <- c("Turma", "Prova", "Media")
 medpturma$Media <- as.numeric(as.character(medpturma$Media))
 #
-d.tema <- dplyr::filter(dados.original, Numero.prova==1) %>% 
+d.tema <- vector(n.provas, mode="list")
+data <- vector(n.provas, mode="list")
+tema <- vector(n.provas, mode="list")
+turma <- vector(n.provas, mode="list")
+datan <- vector(n.provas, mode="list")
+data1 <- vector(n.provas, mode="list")
+
+for (prova in 1:n.provas){
+d.tema[[prova]] <- dplyr::filter(dados.original, Numero.prova==prova) %>% 
   dplyr::select(Matricula, Acertou, Tema, Turma) 
 
-data <- data.frame(tapply(d.tema$Acertou, list(d.tema$Turma, d.tema$Tema), sum))
+data[[prova]] <- data.frame(tapply(d.tema[[prova]]$Acertou, list(d.tema[[prova]]$Turma, d.tema[[prova]]$Tema), sum))
 
-tema <- colnames(data)
-turma <- rownames(data)
-datan <- matrix(0, ncol=ncol(data), nrow=nrow(data))
+tema[[prova]] <- colnames(data[[prova]])
+turma[[prova]] <- rownames(data[[prova]])
+datan[[prova]] <- matrix(0, ncol=ncol(data[[prova]]), nrow=nrow(data[[prova]]))
 
 for (i in 1:n.turmas){
   for (r in 1:10)
-    datan[i,r] <- length(d.tema$Tema[d.tema$Turma==turma[i]][d.tema$Tema[d.tema$Turma==turma[i]]==tema[r]])
+    datan[[prova]][i,r] <- length(d.tema[[prova]]$Tema[d.tema[[prova]]$Turma==turma[[prova]][i]][d.tema[[prova]]$Tema[d.tema[[prova]]$Turma==turma[[prova]][i]]==tema[[prova]][r]])
   }
 
-data <- data/datan
-data <- rbind(data, colMeans(data, na.rm=T))
-rownames(data)[11] <- 'Média geral'
-data1 <- rbind(data[which.max(rowMeans(data, na.rm=T)),], data[which.min(rowMeans(data, na.rm=T)[-c(1,2)]),], colMeans(data, na.rm=T))
-rownames(data1)[3] <- 'Média geral'
-data <- rbind(rep(1,10), rep(0,10) , data)
-data1 <- rbind(rep(1,3), rep(0,3) , data1)
+data[[prova]] <- data[[prova]]/datan[[prova]]
+data[[prova]] <- rbind(data[[prova]], colMeans(data[[prova]], na.rm=T))
+rownames(data[[prova]])[11] <- 'Média geral'
+data[[prova]] <- rbind(rep(1,10), rep(0,10) , data[[prova]])
+
+}
 
 #
 prob.v <- c(nrow(mencao.m.prova[mencao.m.prova$Prova2=="MI",][mencao.m.prova[mencao.m.prova$Prova2=="MI",][,1] %in% mencao.m.prova[mencao.m.prova$Prova1=="SS",][,1],]),
@@ -533,6 +610,7 @@ my_color <- c(rep("green", 10),
 
 #
 tabela <- as.data.frame(table(notas.ord$Mencao, notas.ord.tri$Mencao))
+tabela$Freq <- freq
 colnames(tabela) <- c("Classico", "TRI", "Quantidade")
 class(tabela$Classico) <- "numeric"
 class(tabela$TRI) <- "numeric"
