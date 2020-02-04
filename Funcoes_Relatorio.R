@@ -1,67 +1,59 @@
-#Lendo os dados das provas e carregando os pacotes:
-if(length(ls()) > 0) rm(list = ls())
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander")
+# Criacao da variavel Tema no banco de dados
+nomes.q <- c("...medida_probabilidade.......", "...propriedade_probabilidade.......",
+           "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
+           "...distribuicao_binomial.......", "...distribuicao_binomial.......", "...distribuicao_geometrica.......",
+           "...distribuicao_hipergeometrica.......", "...distribuicao_poisson.......", 
+           "...aproximacao_poisson_binomial.......", "...funcao_densidade.......",
+           "...distribuicao_acumulada.......", "...momentos.......", "...distribuicao_exponencial.......",
+           "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
+           "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
+           "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
+           "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......",
+           "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
+           "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
+           "...valor_esperado_e_variancia.......")
+temas <- c("medida_probabilidade", "propriedade_probabilidade",
+           "probabilidade_total", "teorema_Bayes", "variaveis_aleatorias",
+           "distribuicao_binomial", "distribuicao_binomial", "distribuicao_geometrica",
+           "distribuicao_hipergeometrica", "distribuicao_poisson", 
+           "aproximacao_poisson_binomial", "funcao_densidade",
+           "distribuicao_acumulada", "momentos", "distribuicao_exponencial",
+           "distribuicao_normal", "distribuicao_normal", "aproximacao_normal_binomial",
+           "distribuicao_condicional", "covariancia_correlacao", "distribuicao_media",
+           "distribuicao_proporcao", "maxima_verossimilhanca",
+           "IC_media_normal", "IC_media_t", "IC_proporção",
+           "TH_media", "tamanho_media", "TH_proporcao", 
+           "pvalor_media", "tamanho_prop", "pvalor_proporcao", 
+           "valor_esperado_e_variancia")
+for (i in 1:length(temas)){
+  dados.original$Tema <- gsub(nomes.q[i], temas[i], dados.original$Nome.questao)
+  dados.original$Tema <- gsub(nomes.q[i], temas[i], dados.original$Tema)
+}
+for (i in 1:length(temas)){
+  dados.original$Tema <- gsub(nomes.q[i], temas[i], dados.original$Tema)
+}
 
-dados.original <- read.csv2(file.choose())
 
-# Correção do nome dos Cursos
-dados.original$Curso <- gsub("Ã¢","â",dados.original$Curso)
-dados.original$Curso <- gsub("Ã§Ã£","çã",dados.original$Curso)
-dados.original$Curso <- gsub("Ã","í",dados.original$Curso)
-dados.original$Curso <- gsub("Engenharia Quí.....","Engenharia Química",dados.original$Curso)
-dados.original$Curso <- gsub("Educação Fí.....","Educação Física",dados.original$Curso)
-dados.original$Curso <- gsub("íª","ê",dados.original$Curso)
-dados.original$Curso <- gsub("í´","ô",dados.original$Curso)
-dados.original$Curso <- gsub("í©","é",dados.original$Curso)
+# Alguns parâmetros 
+nchains <- 4
 
-dados.original$Tema <- gsub("...medida_probabilidade.......", "medida_probabilidade", dados.original$Nome.questao)
-dados.original$Tema <- gsub("...propriedade_probabilidade.......", "propriedade_probabilidade", dados.original$Tema)
-dados.original$Tema <- gsub("...probabilidade_total.......", "probabilidade_total", dados.original$Tema)
-dados.original$Tema <- gsub("...teorema_Bayes.......", "teorema_Bayes", dados.original$Tema)
-dados.original$Tema <- gsub("...variaveis_aleatorias.......", "variaveis_aleatorias", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_binomial.......", "distribuicao_binomial", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_geometrica.......", "distribuicao_geometrica", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_hipergeometrica.......", "distribuicao_hipergeometrica", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_poisson.......", "distribuicao_poisson", dados.original$Tema)
-dados.original$Tema <- gsub("...aproximacao_poisson_binomial.......", "aproximacao_poisson_binomial", dados.original$Tema)
-dados.original$Tema <- gsub("...funcao_densidade.......", "funcao_densidade", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_acumulada.......", "distribuicao_acumulada", dados.original$Tema)
-dados.original$Tema <- gsub("...momentos.......", "momentos", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_exponencial.......", "distribuicao_exponencial", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_normal.......", "distribuicao_normal", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_normal...", "distribuicao_normal", dados.original$Tema)
-dados.original$Tema <- gsub("...aproximacao_normal_binomial.......", "aproximacao_normal_binomial", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_condicional.......", "distribuicao_condicional", dados.original$Tema)
-dados.original$Tema <- gsub("...covariancia_correlacao.......", "covariancia_correlacao", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_media.......", "distribuicao_media", dados.original$Tema)
-dados.original$Tema <- gsub("...distribuicao_proporcao.......", "distribuicao_proporcao", dados.original$Tema)
-dados.original$Tema <- gsub("...maxima_verossimilhanca.......", "maxima_verossimilhanca", dados.original$Tema)
-dados.original$Tema <- gsub("...IC_media_normal.......", "IC_media_normal", dados.original$Tema)
-dados.original$Tema <- gsub("...IC_media_t.......", "IC_media_t", dados.original$Tema)
-dados.original$Tema <- gsub("...IC_proporção.......", "IC_proporção", dados.original$Tema)
-dados.original$Tema <- gsub("...IC_proporcao.......", "IC_proporção", dados.original$Tema)
-dados.original$Tema <- gsub("...TH_media.......", "TH_media", dados.original$Tema)
-dados.original$Tema <- gsub("...tamanho_media.......", "tamanho_media", dados.original$Tema)
-dados.original$Tema <- gsub("...TH_proporcao.......", "TH_proporcao", dados.original$Tema)
-dados.original$Tema <- gsub("...pvalor_media.......", "pvalor_media", dados.original$Tema)
-dados.original$Tema <- gsub("...tamanho_prop.......", "tamanho_prop", dados.original$Tema)
-dados.original$Tema <- gsub("...pvalor_proporcao.......", "pvalor_proporcao", dados.original$Tema)
-dados.original$Tema <- gsub("...valor_esperado_e_variancia.......", "valor_esperado_e_variancia", dados.original$Tema)
-
+niter <- 2500
 
 n.questoes.prova <- 10
+
 n.mcmc <- 1000
+
 thin.mcmc <- 10
+
 n.turmas <- length(unique(dados.original$Turma))
+
 n.provas <- length(unique(dados.original$Numero.prova))
+
 turmas <- c("AA","AB","BA","BB","CA","CB","CC","DA","DB","EA")
+n.sim <- n.mcmc/thin.mcmc
 
-#Criando o mapa de questões
-mapa.questoes <- array(dim=c(n.turmas, n.questoes.prova, n.provas), 
-                       dimnames=list(unique(dados.original$Turma)[order(unique(dados.original$Turma))], paste("Questao", 1:n.questoes.prova), paste("Prova", 1:n.provas)))
-
-for(prova in 1:n.provas) {
+# Criando o mapa de questões
+mapa <- function(){for(prova in 1:n.provas) {
   mapa.questoes[,,prova] <- dplyr::filter(dados.original, Numero.prova==prova) %>%
     dplyr::select(Turma, Questao, Nome.questao) %>% 
     unique() %>% 
@@ -70,12 +62,11 @@ for(prova in 1:n.provas) {
     as.matrix() %>% 
     .[, -1]
 }
-
+  return(mapa.questoes)
+}
 
 #Criando dataframe com as respostas dicotômicas de cada aluno:
-dico <- vector(n.provas, mode="list")
-
-for(prova in 1:n.provas) {
+dico <- function(){for(prova in 1:n.provas) {
   data <- dados.original[order(dados.original$Matricula), ] %>%
     dplyr::filter(Numero.prova==prova) %>%
     droplevels()
@@ -85,42 +76,368 @@ for(prova in 1:n.provas) {
   turma <- data$Turma
   frame <- data.frame(matricula,acerto,questao,turma) %>% 
     dplyr::filter(., complete.cases(.))
-  dico[[prova]] <- reshape(frame, v.names = "acerto", idvar = "matricula", timevar="questao", 
+  respostas.dico[[prova]] <- reshape(frame, v.names = "acerto", idvar = "matricula", timevar="questao", 
                            direction="wide")
-  colnames(dico[[prova]]) <- gsub("^acerto.*?.","",colnames(dico[[prova]]))
+  colnames(respostas.dico[[prova]]) <- gsub("^acerto.*?.","",colnames(respostas.dico[[prova]]))
+}
+  return(respostas.dico)}
+
+# Cálculo dos estimadores dos parâmetros dos itens e do estimador do parâmetro de habilidade de
+#cada aluno via Monte Carlo Cadeia de Markov:
+mcmc<- function() {
+  
+  model <- stan_model(model_code = 
+                        
+                        "data {
+                      
+                      int<lower=1> N_alunos;              // number of students
+                      
+                      int<lower=1> N_itens;              // number of questions
+                      
+                      int<lower=1> N;                   // number of observations
+                      
+                      int<lower=1,upper=N_alunos> aluno[N];   // student for observation n
+                      
+                      int<lower=1,upper=N_itens> item[N];   // question for observation n
+                      
+                      int<lower=0,upper=1> y[N];     // correctness for observation n
+                      
 }
 
-#Cálculo dos estimadores dos parâmetros dos itens e do estimador do parâmetro de habilidade de
-#cada aluno via Monte Carlo Cadeia de Markov:
-set.seed(120173344)
+parameters{
 
-mcmc.itens <- vector(n.provas, mode="list")
-mcmc.theta <- vector(n.provas, mode="list")
-mod <- vector(n.provas, mode="list")
+vector[N_itens] b;
 
-for(prova in 1:n.provas) {
-  mod[[prova]] <- mcmc.3pnob(dico[[prova]][,-c(1,2)], c.prior=select.c.prior(5),iter=n.mcmc,burning=0, thin=thin.mcmc)
+vector<lower=0,upper=1>[N_itens] c;
+
+vector[N_alunos] theta;
+
+vector<lower=0>[N_itens] a;
+
+}
+
+model{
+
+a~normal(0,1);
+
+b~normal(0,1);
+
+c~beta(5,17);
+
+theta~normal(0,1);
+
+y~bernoulli(c[item]+((1-c[item]).*inv_logit((a[item] .*theta[aluno])-b[item])));
+
+}"
+
+  )
   
-  mcmc.theta[[prova]] <- array(dim=c(n.mcmc/thin.mcmc, length(dico[[prova]]$matricula)))
   
-  mcmc.theta[[prova]] <- mod[[prova]]$mcmcobj$theta
-  dimnames(mcmc.theta[[prova]]) <- list(paste("Simulacao", 1:(n.mcmc/thin.mcmc)),
-                                        dico[[prova]]$matricula)
   
-  mcmc.itens[[prova]] <- array(dim=c(n.mcmc/thin.mcmc, ncol(dico[[prova]])-2, 3), 
-                               dimnames=list(paste("Simulacao", 1:(n.mcmc/thin.mcmc)),
-                                             colnames(dico[[prova]][, -c(1,2)]),
-                                             c("a", "b", "c")))
-  mcmc.itens[[prova]][,, 1] <- mod[[prova]]$mcmcobj$a
-  mcmc.itens[[prova]][,, 2] <- mod[[prova]]$mcmcobj$b
-  mcmc.itens[[prova]][,, 3] <- mod[[prova]]$mcmcobj$c
-}  
+  banco_respostas <- dados.original%>%
+    
+    dplyr::select(Matricula,Nome.questao,Acertou,Numero.prova)%>%
+    
+    mutate(Nome.questao=as.character(Nome.questao),
+           
+           Matricula=as.numeric(Matricula))
+  
+  
+  
+  ##############
+  
+  #  P1
+  
+  ##############
+  
+  
+  
+  dados_p1 <- banco_respostas%>%
+    
+    filter(Numero.prova==1)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p1 <- dados_p1%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p1 <- dados_p1%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p1$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p1),
+                                            
+                                            aluno=dados_p1$Matricula.mod,
+                                            
+                                            item=dados_p1$Nome.questao.mod, 
+                                            
+                                            y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p1 <- extract(fit.p1)
+  
+  itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p1), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p1$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p1 <- params.p1$theta
+  
+  colnames(thetas.mcmc.p1) <- Matriculas_equivalencia_p1$Matricula
+  
+  rm(Questoes_equivalencia_p1,Matriculas_equivalencia_p1,dados_p1,fit.p1)
+  
+  ##############
+  
+  #  P2
+  
+  ##############
+  
+  dados_p2 <- banco_respostas%>%
+    
+    filter(Numero.prova==2)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p2 <- dados_p2%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p2 <- dados_p2%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p2$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p2),
+                                            
+                                            aluno=dados_p2$Matricula.mod,
+                                            
+                                            item=dados_p2$Nome.questao.mod, 
+                                            
+                                            y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p2 <- extract(fit.p2)
+  
+  itens.p2 <- array(c(params.p2$a,params.p2$b,params.p2$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p2), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p2$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p2 <- params.p2$theta
+  
+  colnames(thetas.mcmc.p2) <- Matriculas_equivalencia_p2$Matricula
+  
+  rm(Questoes_equivalencia_p2,Matriculas_equivalencia_p2,dados_p2,fit.p2)
+  
+  ##############
+  
+  #  P3
+  
+  ##############
+  
+  dados_p3 <- banco_respostas%>%
+    
+    filter(Numero.prova==3)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p3 <- dados_p3%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p3 <- dados_p3%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p3$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p3),
+                                            
+                                            aluno=dados_p3$Matricula.mod,
+                                            
+                                            item=dados_p3$Nome.questao.mod, 
+                                            
+                                            y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p3 <- extract(fit.p3)
+  
+  itens.p3 <- array(c(params.p3$a,params.p3$b,params.p3$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p3), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p3$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  thetas.mcmc.p3 <- params.p3$theta
+  
+  colnames(thetas.mcmc.p3) <- Matriculas_equivalencia_p3$Matricula
+  
+  rm(Questoes_equivalencia_p3,Matriculas_equivalencia_p3,dados_p3,fit.p3)
+  
+  ##############
+  
+  #  P4-subs
+  
+  ##############
+  
+  dados_p4 <- banco_respostas%>%
+    
+    filter(Numero.prova==4)%>%
+    
+    na.omit(Acertou)%>%
+    
+    mutate(Matricula.mod=as.numeric(as.factor(Matricula)),
+           
+           Nome.questao.mod=as.numeric(as.factor(Nome.questao)))%>%
+    
+    arrange(Matricula.mod,Nome.questao.mod)
+  
+  
+  
+  Matriculas_equivalencia_p4 <- dados_p4%>%
+    
+    dplyr::select(Matricula,Matricula.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Matricula.mod)
+  
+  
+  
+  Questoes_equivalencia_p4 <- dados_p4%>%
+    
+    dplyr::select(Nome.questao,Nome.questao.mod)%>%
+    
+    distinct()%>%
+    
+    arrange(Nome.questao.mod)
+  
+  fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matricula.mod)),
+                                            
+                                            N_itens=length(unique(dados_p4$Nome.questao.mod)),
+                                            
+                                            N=nrow(dados_p4),
+                                            
+                                            aluno=dados_p4$Matricula.mod,
+                                            
+                                            item=dados_p4$Nome.questao.mod, 
+                                            
+                                            y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
+  
+  params.p4 <- extract(fit.p4)
+  
+  itens.p4 <- array(c(params.p4$a,params.p4$b,params.p4$c),
+                    
+                    dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p4), 3),
+                    
+                    dimnames = list(paste("simulação",1:(nchains*(niter/2))),
+                                    
+                                    Questoes_equivalencia_p4$Nome.questao,
+                                    
+                                    c('a','b','c')))
+  
+  
+  
+  thetas.mcmc.p4 <- params.p4$theta
+  
+  colnames(thetas.mcmc.p4) <- Matriculas_equivalencia_p4$Matricula
+  
+  rm(Questoes_equivalencia_p4,Matriculas_equivalencia_p4,dados_p4,fit.p4)
+  
+  #########################
+  
+  #  Juntando tudo
+  
+  #########################
+  
+  mcmc.itens <- list(itens.p1,itens.p2,itens.p3,itens.p4)
+  
+  mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
+  
+  save(mcmc.itens, file = "Parametros_Itens.RData")
+  
+  return(list(thetas=mcmc.theta,itens=mcmc.itens))
+  
+  }
 
-save(mcmc.itens, file = "Parametros_Itens.RData")
-
-itens.p <- vector(n.provas, mode="list")
-
-for (prova in 1:n.provas){
+# Dataframe dos coeficientes de cada questao
+data.i <- function(){for (prova in 1:n.provas){
   itens.p[[prova]] <- matrix(0, nrow = ncol(mcmc.itens[[prova]][,,1]), ncol = 3)
   for (parametro in 1:3){
     for (item in 1:ncol(mcmc.itens[[prova]][,,1])){
@@ -131,34 +448,28 @@ for (prova in 1:n.provas){
     }
   }
 }
-
 save(itens.p, file = "Parametros_Itens_Prova.RData")
-
-list_of_datasets <- list("Prova 1" = itens.p[[1]], "Prova 2" = itens.p[[2]],
-                         "Prova 3" = itens.p[[3]], "Prova 4" = itens.p[[4]])
-
-
-# Simulação com as probabilidade de que um aluno mediano acerte a questão para cada questão 
-#selecionada em cada prova
-Pm.probs <- vector(n.provas, mode="list")
-names(Pm.probs) <- paste0("Prova", 1:n.provas)
-
-for (prova in 1:n.provas){
-  Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
-                                 (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                 pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),dim=c(n.mcmc/thin.mcmc, ncol(dico[[prova]])-2), 
-                             dimnames=list(paste("Simulacao", 1:(n.mcmc/thin.mcmc)),
-                                           colnames(dico[[prova]][, -c(1,2)])))
+return(itens.p)
 }
 
+# Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
+#selecionada em cada prova
+sim.aluno.medio <- function(){
+  for(prova in 1:n.provas){
+    Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
+                                   (1-as.numeric(mcmc.itens[[prova]][,,3]))*
+                                   pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),
+                               dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
+                               dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
+                                             colnames(respostas.dico[[prova]][, -c(1,2)])))
+    } 
+  return(Pm.probs)
+}
 
 # Probabilidade de acerto de cada questão feita por cada aluno
-P.probs <- vector(n.provas, mode="list")
-names(P.probs) <- paste0("Prova", 1:n.provas)
-
-for (prova in 1:n.provas){
-  P.probs[[prova]] <- matrix(0, nrow = nrow(dico[[prova]]), ncol=ncol(dico[[prova]][, -c(1,2)]))
-  for (aluno in 1:nrow(dico[[prova]])){
+prob.acerto.questoes <- function(){for (prova in 1:n.provas){
+  P.probs[[prova]] <- matrix(0, nrow = nrow(respostas.dico[[prova]]), ncol=ncol(respostas.dico[[prova]][, -c(1,2)]))
+  for (aluno in 1:nrow(respostas.dico[[prova]])){
     
     P.probs[[prova]][aluno,] <- c(
       itens.p[[prova]][,3] + (1-itens.p[[prova]][,3])*
@@ -167,17 +478,17 @@ for (prova in 1:n.provas){
     
     P.probs[[prova]] <- data.frame(P.probs[[prova]])
     rownames(P.probs[[prova]]) <- colnames(mcmc.theta[[prova]])
-    colnames(P.probs[[prova]]) <- colnames(dico[[prova]][, -c(1,2)])
+    colnames(P.probs[[prova]]) <- colnames(respostas.dico[[prova]][, -c(1,2)])
     
     
   }
 }
+  return(P.probs)
+}
 
 
 # Dataframes de cada prova com a probabilidade de acerto por tema (questão que o aluno fez do tema) para cada aluno 
-
-Prob.tema1 <- matrix(0, nrow=ncol(mcmc.theta[[1]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[1]])){
+prob.tema1 <- function(){for (aluno in 1:ncol(mcmc.theta[[1]])){
   Prob.tema1 <- data.frame(Prob.tema1)
   
   turma <- dados.original %>% 
@@ -206,8 +517,11 @@ for (aluno in 1:ncol(mcmc.theta[[1]])){
 rownames(Prob.tema1) <- colnames(mcmc.theta[[1]])
 colnames(Prob.tema1) <- substring(names(a), 4, nchar(names(a))-7)
 
-Prob.tema2 <- matrix(0, nrow=ncol(mcmc.theta[[2]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[2]])){
+return(Prob.tema1)
+}
+
+
+prob.tema2 <- function(){for (aluno in 1:ncol(mcmc.theta[[2]])){
   Prob.tema2 <- data.frame(Prob.tema2)
   
   turma <- dados.original %>% 
@@ -236,9 +550,11 @@ for (aluno in 1:ncol(mcmc.theta[[2]])){
 rownames(Prob.tema2) <- colnames(mcmc.theta[[2]])
 colnames(Prob.tema2) <- substring(names(a), 4, nchar(names(a))-7)
 
+return(Prob.tema2)
+}
 
-Prob.tema3 <- matrix(0, nrow=ncol(mcmc.theta[[3]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[3]])){
+
+prob.tema3 <- function(){for (aluno in 1:ncol(mcmc.theta[[3]])){
   Prob.tema3 <- data.frame(Prob.tema3)
   
   turma <- dados.original %>% 
@@ -267,19 +583,12 @@ for (aluno in 1:ncol(mcmc.theta[[3]])){
 rownames(Prob.tema3) <- colnames(mcmc.theta[[3]])
 colnames(Prob.tema3) <- substring(names(a), 4, nchar(names(a))-7)
 
-
-Prob.tema1$Matricula <- colnames(mcmc.theta[[1]])
-Prob.tema2$Matricula <- colnames(mcmc.theta[[2]])
-Prob.tema3$Matricula <- colnames(mcmc.theta[[3]])
-
-Prob.acerto.tema <- full_join(Prob.tema1, Prob.tema2, by="Matricula")
-Prob.acerto.tema <- full_join(Prob.acerto.tema, Prob.tema3, by="Matricula")
-rownames(Prob.acerto.tema) <- Prob.acerto.tema[,11]
-Prob.acerto.tema <- Prob.acerto.tema[,-11]
+return(Prob.tema3)
+}
 
 
-Acertou.tema1 <- matrix(0, nrow=ncol(mcmc.theta[[1]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[1]])){
+# Dataframe com os acertos de cada aluno em cada tema
+acertou.tema1 <- function(){for (aluno in 1:ncol(mcmc.theta[[1]])){
   tx <- dados.original %>% 
     dplyr::filter(Numero.prova==1, Matricula==as.numeric(colnames(mcmc.theta[[1]])[aluno])) %>% 
     dplyr::select(Acertou, Matricula, Tema, Nome.questao)
@@ -288,17 +597,20 @@ for (aluno in 1:ncol(mcmc.theta[[1]])){
   tix <- tix[order(names(tix))]
   at <- which(!(seq(1,10) %in% as.numeric(substring(names(tix), 1,2))))
   
-  if(length(at)==0) {Acertou.tema1[aluno,] <- tix} 
-  else if(length(at)==1){Acertou.tema1[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acertou.tema1[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  if(length(at)==0) {Acerto.tema1[aluno,] <- tix} 
+  else if(length(at)==1){Acerto.tema1[aluno, ] <- insert(tix, at, NA)}
+  else if(length(at)==2){Acerto.tema1[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
-Acertou.tema1 <- data.frame(Acertou.tema1)
-rownames(Acertou.tema1) <- colnames(mcmc.theta[[1]])
-colnames(Acertou.tema1) <- substring(names(tix), 4, nchar(names(tix))-7)
+Acerto.tema1 <- data.frame(Acerto.tema1)
+rownames(Acerto.tema1) <- colnames(mcmc.theta[[1]])
+colnames(Acerto.tema1) <- substring(names(tix), 4, nchar(names(tix))-7)
 
-Acertou.tema2 <- matrix(0, nrow=ncol(mcmc.theta[[2]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[2]])){
+return(Acerto.tema1)
+}
+
+
+acertou.tema2 <- function(){for (aluno in 1:ncol(mcmc.theta[[2]])){
   tx <- dados.original %>% 
     dplyr::filter(Numero.prova==2, Matricula==as.numeric(colnames(mcmc.theta[[2]])[aluno])) %>% 
     dplyr::select(Acertou, Matricula, Tema, Nome.questao)
@@ -307,18 +619,20 @@ for (aluno in 1:ncol(mcmc.theta[[2]])){
   tix <- tix[order(names(tix))]
   at <- which(!(seq(11,20) %in% as.numeric(substring(names(tix), 1,2))))
   
-  if(length(at)==0) {Acertou.tema2[aluno,] <- tix} 
-  else if(length(at)==1){Acertou.tema2[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acertou.tema2[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  if(length(at)==0) {Acerto.tema2[aluno,] <- tix} 
+  else if(length(at)==1){Acerto.tema2[aluno, ] <- insert(tix, at, NA)}
+  else if(length(at)==2){Acerto.tema2[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
-Acertou.tema2 <- data.frame(Acertou.tema2)
-rownames(Acertou.tema2) <- colnames(mcmc.theta[[2]])
-colnames(Acertou.tema2) <- substring(names(tix), 4, nchar(names(tix))-7)
+Acerto.tema2 <- data.frame(Acerto.tema2)
+rownames(Acerto.tema2) <- colnames(mcmc.theta[[2]])
+colnames(Acerto.tema2) <- substring(names(tix), 4, nchar(names(tix))-7)
+
+return(Acerto.tema2)
+}
 
 
-Acertou.tema3 <- matrix(0, nrow=ncol(mcmc.theta[[3]]), ncol=n.questoes.prova)
-for (aluno in 1:ncol(mcmc.theta[[3]])){
+acertou.tema3 <- function(){for (aluno in 1:ncol(mcmc.theta[[3]])){
   tx <- dados.original %>% 
     dplyr::filter(Numero.prova==3, Matricula==as.numeric(colnames(mcmc.theta[[3]])[aluno])) %>% 
     dplyr::select(Acertou, Matricula, Tema, Nome.questao)
@@ -327,36 +641,22 @@ for (aluno in 1:ncol(mcmc.theta[[3]])){
   tix <- tix[order(names(tix))]
   at <- which(!(seq(21,30) %in% as.numeric(substring(names(tix), 1,2))))
   
-  if(length(at)==0) {Acertou.tema3[aluno,] <- tix} 
-  else if(length(at)==1){Acertou.tema3[aluno, ] <- insert(tix, at, NA)}
-  else if(length(at)==2){Acertou.tema3[aluno, ] <- insert(insert(tix, at, NA), at[2], NA)}
+  if(length(at)==0) {Acerto.tema3[aluno,] <- tix} 
+  else if(length(at)==1){Acerto.tema3[aluno, ] <- insert(tix, at, NA)}
+  else if(length(at)==2){Acerto.tema3[aluno, ] <- insert(insert(tix, at[1], NA), at[2], NA)}
   
 }
-Acertou.tema3 <- data.frame(Acertou.tema3)
-rownames(Acertou.tema3) <- colnames(mcmc.theta[[3]])
-colnames(Acertou.tema3) <- substring(names(tix), 4, nchar(names(tix))-7)
+Acerto.tema3 <- data.frame(Acerto.tema3)
+rownames(Acerto.tema3) <- colnames(mcmc.theta[[3]])
+colnames(Acerto.tema3) <- substring(names(tix), 4, nchar(names(tix))-7)
+
+return(Acerto.tema3)
+}
 
 
-Acertou.tema1$Matricula <- colnames(mcmc.theta[[1]])
-Acertou.tema2$Matricula <- colnames(mcmc.theta[[2]])
-Acertou.tema3$Matricula <- colnames(mcmc.theta[[3]])
-
-Acerto.tema <- full_join(Acertou.tema1, Acertou.tema2, by="Matricula")
-Acerto.tema <- full_join(Acerto.tema, Acertou.tema3, by="Matricula")
-rownames(Acerto.tema) <- Acerto.tema[,11]
-Acerto.tema <- Acerto.tema[,-11]
-
-Acerto.tema.0 <- Acerto.tema
-Acerto.tema.0[is.na(Acerto.tema.0)] <- 0
-
-Prob.acerto.tema.0 <- Prob.acerto.tema
-Prob.acerto.tema.0[is.na(Prob.acerto.tema.0)] <- 0
-
-#H.hat <- var(2*(Acerto.tema*log(Acerto.tema/Prob.acerto.tema) + (1-Acerto.tema)*log(1/(1-Prob.acerto.tema))), na.rm = T)
-
-
-cd <- matrix(0, nrow=nrow(Acerto.tema), ncol=30)
-for (aluno in 1:nrow(Acerto.tema)){
+# Cálculo das componentes do desvio
+c.d <- function(){
+  for (aluno in 1:nrow(Acerto.tema)){
   for (tema in 1:30){
     if(is.na(Acerto.tema[aluno,tema])){cd[aluno,tema] <- NA}
     else if(Acerto.tema[aluno,tema]==1){cd[aluno,tema] <- -2*abs(log(Prob.acerto.tema[aluno,tema]))^.5}  
@@ -367,11 +667,12 @@ cd <- data.frame(cd)
 rownames(cd) <- rownames(Acerto.tema)
 colnames(cd) <- colnames(Acerto.tema)
 
-cd.0 <- cd[complete.cases(cd),]
+return(cd)
+}
 
 
-cor.tema <- matrix(0, nrow=30, ncol=30)
-for (tema in 1:30){
+# Correlações entre os temas
+corr.tema <- function(){for (tema in 1:30){
   for (tema2 in 1:30){
     cor.tema[tema,tema2] <- 
       cor(cd[complete.cases(cd[,c(tema,tema2)]),tema], cd[complete.cases(cd[,c(tema,tema2)]),tema2])
@@ -381,61 +682,27 @@ cor.tema <- data.frame(cor.tema)
 rownames(cor.tema) <- colnames(Acerto.tema)
 colnames(cor.tema) <- colnames(Acerto.tema)
 
+return(cor.tema)
+}
 
-cluster <- kmeans(t(cor.tema), 3) 
-# distribuicao_geometrica (1 -> 2),  funcao_densidade (2 -> 3), valor_esperado_e_variancia (2 -> 3), distribuicao_exponencial (2 -> 1), distribuicao_normal (2 -> 3), distribuicao_condicional (2 -> 1)
-
-
-#Array final para o balanceamento das provas, com o número de simulações, turmas, questões,
+# Array final para o balanceamento das provas, com o número de simulações, turmas, questões,
 #provas e vetor com a probabilidade de acerto e o resultado da binomial se acertou ou não:
 
-n.sim <- n.mcmc/thin.mcmc
-
-dados.balanceamento <- array(dim=c(n.sim, n.turmas, n.questoes.prova, n.provas, 2),
-                             dimnames = list(dimnames(mcmc.itens[[prova]])[[1]],
-                                             dimnames(mapa.questoes)[[1]],
-                                             dimnames(mapa.questoes)[[2]],
-                                             dimnames(mapa.questoes)[[3]],
-                                             c("prob.acerto", "sim.acerto")))
-
-for(questao in 1:n.questoes.prova) {
+balanceamento <- function(){for(questao in 1:n.questoes.prova) {
   for(turma in 1:n.turmas) {
     for(prova in 1:n.provas) {
       nome.questao <- mapa.questoes[turma, questao, prova]
-      if(nome.questao %in% dimnames(dico[[prova]])[[2]]) {
+      if(nome.questao %in% dimnames(respostas.dico[[prova]])[[2]]) {
         dados.balanceamento[, turma, questao,prova, 1] <- as.numeric(Pm.probs[[prova]][, nome.questao])
       }
     }
   }
 }
-
-
-dados.balanceamento[,,,,2] <- rbinom(n.sim*n.questoes.prova*n.turmas*n.provas, 1, c(dados.balanceamento[,,,,1]))
-
-
-
-for (prova in 1:n.provas){
-  P.probs[[prova]] <- matrix(0, nrow = nrow(dico[[prova]]), ncol=ncol(dico[[prova]][, -c(1,2)]))
-  for (aluno in 1:nrow(dico[[prova]])){
-    
-    P.probs[[prova]][aluno,] <- c(
-      itens.p[[prova]][,3] + (1-itens.p[[prova]][,3])*
-        pnorm(itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2])
-    )
-    
-    P.probs[[prova]] <- data.frame(P.probs[[prova]])
-    rownames(P.probs[[prova]]) <- colnames(mcmc.theta[[prova]])
-    colnames(P.probs[[prova]]) <- colnames(dico[[prova]][, -c(1,2)])
-    
-    
-  }
+return(dados.balanceamento)
 }
 
-
-
-dados.finais <- vector(n.provas, mode="list")
-
-for(prova in 1:n.provas) {
+# Array final 
+dados.fim <- function(){for(prova in 1:n.provas) {
   dados.finais[[prova]] <- array(dim=c(ncol(mcmc.theta[[prova]]), n.turmas, 
                                        n.questoes.prova, 3),
                                  dimnames = list(colnames(mcmc.theta[[prova]]),
@@ -445,7 +712,7 @@ for(prova in 1:n.provas) {
   for(turma in 1:n.turmas) {
     for(questao in 1:n.questoes.prova) {
       nome.questao <- mapa.questoes[turma, questao, prova]
-      if(nome.questao %in% dimnames(dico[[prova]])[[2]]) {
+      if(nome.questao %in% dimnames(respostas.dico[[prova]])[[2]]) {
         (dados.finais[[prova]][, turma, questao, 1] <-
            as.numeric(P.probs[[prova]][,nome.questao]))}
     }
@@ -455,222 +722,195 @@ for(prova in 1:n.provas) {
       abs(dados.finais[[prova]][,,,2] - dados.finais[[prova]][,,,1])
   }
 }
+  return(dados.finais)
+}
 
 
 # Probabilidade de um aluno mediano passar por prova
-P.am.passar <- array(dim = c(n.turmas, n.provas+1), dimnames = list(dimnames(mapa.questoes)[[1]], c(dimnames(mapa.questoes)[[3]],"Turma")))
-
-for (prova in 1:n.provas){
+prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
   for (turma in 1:n.turmas){
-    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/n.sim
+    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/(nchains*(niter/2))
   }
 }
-
-P.am.passar[,5] <- dimnames(mapa.questoes)[[1]]
-
-
-
-# Medidas decritivas
-
-turma <- list(dados.original$Turma)
-medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
-medturmaprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Turma,dados.original$Numero.prova),mean)
-colnames(medturmaprova) <- c("Turma", "Prova", "Media")
-medcurso <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Curso),mean)
-medprova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Numero.prova),mean)
-medano <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Ano),mean)
-mediaaluno <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula),mean)
-mediaaluno.prova <- aggregate(dados.original[,"Nota_prova"],list(dados.original$Matricula,dados.original$Numero.prova),mean)
+  return(P.am.passar)
+}
 
 
-# notas dos alunos por prova
-notaaluno <- vector(n.provas, mode="list")
-
-for (prova in 1:n.provas) {
+# Notas dos alunos por prova
+nota.prova <- function(){for (prova in 1:n.provas) {
   notaaluno[[prova]] <- aggregate(dados.original$Nota_prova[dados.original$Numero.prova==prova],list(dados.original$Matricula[dados.original$Numero.prova==prova]),mean) 
   colnames(notaaluno[[prova]]) <- c("Matricula", "Nota")
 }
+  return(notaaluno)
+}
 
-
-# notas estimadas por TRI de cada aluno por prova
-notas.estimadas <- vector(n.provas, mode="list")
-
-
-for (prova in 1:n.provas){
+# Notas estimadas por TRI de cada aluno por prova
+notas.estim <- function(){for (prova in 1:n.provas){
   theta2 <- mean(notaaluno[[prova]][,2]) + sd(notaaluno[[prova]][,2])*mcmc.theta[[prova]][100,]
   
   thetaajust <- theta2-min(theta2)
   
-  notas.estimadas[[prova]] <- array(dim = c(length(dico[[prova]]$matricula),2), dimnames = list(1:length(dico[[prova]]$matricula),c("Matricula","Nota Estimada")))
+  notas.estimadas[[prova]] <- array(dim = c(length(respostas.dico[[prova]]$matricula),2), dimnames = list(1:length(respostas.dico[[prova]]$matricula),c("Matricula","Nota Estimada")))
   
-  notas.estimadas[[prova]][,1] <- dico[[prova]]$matricula
+  notas.estimadas[[prova]][,1] <- respostas.dico[[prova]]$matricula
   notas.estimadas[[prova]][,2] <- c(thetaajust*10/max(thetaajust))
 }
+  return(notas.estimadas)
+}
 
-# dataframes dos alunos que não passariam e passariam por TRI, em cada prova 
-N.passou.hat <- vector(n.provas, mode="list")
-Passou.hat <- vector(n.provas, mode="list")
-
-for (prova in 1:n.provas) {
+# Dataframes dos alunos que não passariam e passariam por TRI, em cada prova
+n.passou.hat <- function(){for (prova in 1:n.provas) {
   N.passou.hat[[prova]] <- array(dim = c(length(notas.estimadas[[prova]][notas.estimadas[[prova]]>=0 & notas.estimadas[[prova]]<5]),1), dimnames = list(as.numeric(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=0 & notas.estimadas[[prova]][,2]<5]),"Nota Estimada"))
-  
   N.passou.hat[[prova]][,1] <- notas.estimadas[[prova]][notas.estimadas[[prova]]>=0 & notas.estimadas[[prova]]<5]
-  
+}
+  return(N.passou.hat)
+}
+
+passou.hat <- function(){
+  for (prova in 1:n.provas) {  
   Passou.hat[[prova]] <- array(dim = c(length(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=5 ]),1), dimnames = list(as.numeric(notas.estimadas[[prova]][,1][notas.estimadas[[prova]][,2]>=5]),"Nota Estimada"))
-  
   Passou.hat[[prova]][,1] <- notas.estimadas[[prova]][,2][notas.estimadas[[prova]][,2]>=5]
+}
+  return(Passou.hat)
 }
 
 
-# dataframes dos alunos que não passaram e passaram, em cada prova 
-N.passou <- vector(n.provas, mode="list")
-Passou <- vector(n.provas, mode="list")
+# Dataframes dos alunos que não passaram e passaram, em cada prova 
 
-for (prova in 1:n.provas) {
+n.passou <- function(){for (prova in 1:n.provas) {
   N.passou[[prova]] <- array(dim = c(length(notaaluno[[prova]][notaaluno[[prova]]>=0 & notaaluno[[prova]]<5]),1), dimnames = list(as.numeric(notaaluno[[prova]][,1][notaaluno[[prova]][,2]>=0 & notaaluno[[prova]][,2]<5]),"Nota"))
   
   N.passou[[prova]][,1] <- notaaluno[[prova]][notaaluno[[prova]]>=0 & notaaluno[[prova]]<5]
-  
+}
+ return(N.passou)
+}
+
+passou <- function(){for (prova in 1:n.provas) {
   Passou[[prova]] <- array(dim = c(length(notaaluno[[prova]][,1][notaaluno[[prova]][,2]>=5 ]),1), dimnames = list(as.numeric(notaaluno[[prova]][,1][notaaluno[[prova]][,2]>=5]),"Nota"))
   
   Passou[[prova]][,1] <- notaaluno[[prova]][,2][notaaluno[[prova]][,2]>=5]
 }
-
-
-#dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-
-sim.passar <- array(dim = c(n.sim,n.turmas), dimnames = list(paste("Simulacao", 1:n.sim),dimnames(mapa.questoes)[[1]]))
-
-for (simulacao in 1:n.sim){
-  for (turma in 1:n.turmas){
-    sim.passar[simulacao,turma] <- (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
-  }
+return(Passou)
 }
 
 
+# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
+Sim.passar <- function(){for (simulacao in 1:(nchains*(niter/2))){
+  for (turma in 1:n.turmas){
+    sim.passar[simulacao,turma] <- 
+      (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-
+         min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
+  }
+}
+  return(sim.passar)
+}
 
 # Probabilidade de um aluno mediano passar em PE por turma
-P.sim.passar <- array(dim = c(1,n.turmas), dimnames = list("Probabilidade",dimnames(mapa.questoes)[[1]]))
-
-for (turma in 1:n.turmas){
-  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/n.sim
+p.sim.passar <- function(){for (turma in 1:n.turmas){
+  P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/(nchains*(niter/2))
+}
+return(P.sim.passar)
 }
 
-# Construção de matriz das notas finais
-nota.prova <- matrix(0, ncol = n.provas+1, nrow = length(unique(dados.original$Matricula)))
-nota.prova[,1] <- unique(dados.original$Matricula)
-nota.prova[,2] <- ifelse(unique(dados.original$Matricula) %in% notaaluno[[1]][,1], notaaluno[[1]][,2], 0)
-nota.prova[,3] <- ifelse(unique(dados.original$Matricula) %in% notaaluno[[2]][,1], notaaluno[[2]][,2], 0)
-nota.prova[,4] <- ifelse(unique(dados.original$Matricula) %in% notaaluno[[3]][,1], notaaluno[[3]][,2], 0)
-nota.prova[,5] <- ifelse(unique(dados.original$Matricula) %in% notaaluno[[4]][,1], notaaluno[[4]][,2], 0)
-nota.prova <- data.frame(nota.prova)
-colnames(nota.prova) <- c("Matricula", "Prova 1", "Prova 2", "Prova 3", "Prova 4")
 
-nota.prova1 <- matrix(0, ncol = n.provas, nrow = length(notaaluno[[1]][,1]))
-nota.prova1[,1] <- notaaluno[[1]][,2]
-nota.prova1[,2] <- ifelse(notaaluno[[1]][,1] %in% notaaluno[[2]][,1], notaaluno[[2]][,2], -1)
-nota.prova1[,3] <- ifelse(notaaluno[[1]][,1] %in% notaaluno[[3]][,1], notaaluno[[3]][,2], -1)
-nota.prova1[,4] <- ifelse(notaaluno[[1]][,1] %in% notaaluno[[4]][,1], notaaluno[[4]][,2], -1)
-nota.prova1 <- data.frame(nota.prova1)
-colnames(nota.prova1) <- c("Prova 1", "Prova 2", "Prova 3", "Prova 4")
+### GRÁFICOS ###
+g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
+  geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
+  stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
+  ylab("Notas") + xlab("Curso") + 
+  ggtitle("Notas por Curso") +
+  coord_flip() + theme_classic()}
 
-
-media.prova <- matrix(0, ncol = n.provas, nrow = length(nota.prova[,1]))
-media.prova[,1] <- nota.prova[,1]
-media.prova[,2] <- nota.prova[,2]
-media.prova[,3] <- .5*nota.prova[,2] + .5*nota.prova[,3]
-media.prova[,4] <- .3*nota.prova[,2] + .3*nota.prova[,3] + .4*nota.prova[,4]
-
-media.prova <- data.frame(media.prova)
-colnames(media.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")
-
-lim.mencao <- c(3, 4.8, 6.8, 8.8)
-
-mencao.m.prova <- matrix("SR", ncol = 4, nrow = length(media.prova$Matricula))
-for (prova in 2:4){
-  for (aluno in 1:length(media.prova$Matricula)){
-    if(media.prova[aluno,prova]>=0 & media.prova[aluno,prova]<lim.mencao[1]){mencao.m.prova[aluno,prova] <- "II"}
-    else if(media.prova[aluno,prova]>=lim.mencao[1] & media.prova[aluno,prova]<lim.mencao[2]){mencao.m.prova[aluno,prova] <- "MI"}
-    else if(media.prova[aluno,prova]>=lim.mencao[2] & media.prova[aluno,prova]<lim.mencao[3]){mencao.m.prova[aluno,prova] <- "MM"}
-    else if(media.prova[aluno,prova]>=lim.mencao[3] & media.prova[aluno,prova]<lim.mencao[4]){mencao.m.prova[aluno,prova] <- "MS"}
-    else if(media.prova[aluno,prova]>=lim.mencao[4]){mencao.m.prova[aluno,prova] <- "SS"}
-  }
+g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + geom_point() +
+  geom_line() + ylim(0,10) + scale_color_manual(values=c(rep("grey",10),'black')) +
+  ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
 }
 
-mencao.m.prova[,1] <- unique(dados.original$Matricula)
-
-mencao.m.prova <- data.frame(mencao.m.prova)
-colnames(mencao.m.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")
-
-matriz.notas <- cbind(coalesce(nota.prova$`Prova 1`, 0),
-                      coalesce(nota.prova$`Prova 2`, 0),
-                      coalesce(nota.prova$`Prova 3`, 0),
-                      coalesce(nota.prova$`Prova 4`, 0))
-descartada <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
-condicao <- (pior.prova %in% 1:2) & 
-  ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
-descartada[condicao] <- 3  
-matriz.notas <- cbind(matriz.notas, descartada=descartada)
-Nota_final <- numeric(nrow(nota.prova))
-for(aluno in 1:nrow(nota.prova)) {
-  if (matriz.notas[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
-  else pesos <- c(3,3,4)/10
-  Nota_final[aluno] <- matriz.notas[aluno, -c(matriz.notas[aluno, 5], 5)] %*% pesos
+g_radar1 <- function(){radarchart(data[[1]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
+                                 plwd=1, plty=1, cglcol="grey", cglty=1, 
+                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+}
+g_radar2 <- function(){radarchart(data[[2]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+}
+g_radar3 <- function(){radarchart(data[[3]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
 }
 
-notas.finais <- nota.prova %>%
-  mutate(Nota_final=Nota_final) %>%
-  arrange(Matricula) %>%
-  mutate(Mencao=cut(Nota_final, righ=F, c(0.1,lim.mencao,10.1), 
-                    labels=c("II", "MI", "MM", "MS", "SS")))
+g_fluxo_sankey <- function(){
+  require(networkD3)
+  sankeyNetwork(Links = links, Nodes = nodes,
+                                Source = "IDsource", Target = "IDtarget",
+                                Value = "value", NodeID = "name2", 
+                                LinkGroup = 'energy_type', colourScale = JS(
+                                  sprintf(
+                                    'd3.scaleOrdinal() .domain(%s)
+                                    .range(%s)',
+                                    jsonlite::toJSON(color_scale$domain),
+                                    jsonlite::toJSON(color_scale$range)
+                                  )
+                                ), fontSize = 15, iteration=0)}
 
+g_confusao_subs <- function(){tabela1 %>% 
+  ggplot(aes(tabela1$MencaosemP4, tabela1$MencaoposP4)) + xlab("Menção sem P4") + ylab("Menção pós P4") +
+  geom_tile(aes(fill=Quantidade)) +
+  scale_fill_gradient(low="white", high="red") +
+  scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
+            color="red", alpha=0, size=1)}
 
-#estimadas por TRI  
-# Construção de matriz das notas finais estimadas
-nota.prova.estimada <- matrix(0, ncol = n.provas+1, nrow = length(unique(dados.original$Matricula)))
-nota.prova.estimada[,1] <- unique(dados.original$Matricula)
-nota.prova.estimada[,2] <- ifelse(unique(dados.original$Matricula) %in% notas.estimadas[[1]][,1], notas.estimadas[[1]][,2], 0)
-nota.prova.estimada[,3] <- ifelse(unique(dados.original$Matricula) %in% notas.estimadas[[2]][,1], notas.estimadas[[2]][,2], 0)
-nota.prova.estimada[,4] <- ifelse(unique(dados.original$Matricula) %in% notas.estimadas[[3]][,1], notas.estimadas[[3]][,2], 0)
-nota.prova.estimada[,5] <- ifelse(unique(dados.original$Matricula) %in% notas.estimadas[[4]][,1], notas.estimadas[[4]][,2], 0)
-nota.prova.estimada <- data.frame(nota.prova.estimada)
-colnames(nota.prova.estimada) <- c("Matricula", "Prova 1", "Prova 2", "Prova 3", "Prova 4")
+g_prob_mediano_passar_prova <- function(){ggplot(data.g, aes(Turma, Probabilidade, color=Prova, group=Prova)) + 
+  geom_point() + geom_line() + ggtitle("Probabilidade de um aluno mediano passar por prova e por turma") +
+  ylim(0,1) + theme_light()}
 
+g_prob_mediano_passar <- function(){ggplot(P.sim.passar, aes(Turma, Probabilidade, group=Linha)) + geom_point() + geom_line() + ggtitle("Probabilidade de um aluno mediano passar em PE por turma") + ylim(0,1) +
+  theme_light()}
 
-matriz.notas.estimadas <- cbind(coalesce(nota.prova.estimada$`Prova 1`, 0),
-                                coalesce(nota.prova.estimada$`Prova 2`, 0),
-                                coalesce(nota.prova.estimada$`Prova 3`, 0),
-                                coalesce(nota.prova.estimada$`Prova 4`, 0))
-descartada <- pior.prova <- max.col(-matriz.notas.estimadas, ties.method="last") 
-condicao <- (pior.prova %in% 1:2) & 
-  ((matriz.notas[, 4] - matriz.notas.estimadas[, 3])*4 > (matriz.notas.estimadas[, 4] - matriz.notas.estimadas[, pior.prova])*3)
-descartada[condicao] <- 3  
-matriz.notas.estimadas <- cbind(matriz.notas.estimadas, descartada=descartada)
-Nota_final <- numeric(nrow(nota.prova))
-for(aluno in 1:nrow(nota.prova.estimada)) {
-  if (matriz.notas.estimadas[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
-  else pesos <- c(3,3,4)/10
-  Nota_final[aluno] <- matriz.notas.estimadas[aluno, -c(matriz.notas.estimadas[aluno, 5], 5)] %*% pesos
+g_correlograma <- function(){ggcorr(adjm)}
+
+g_rede_associacao <- function(){
+  par(bg="white", mar=c(0,0,0,0))
+  plot(network, 
+       vertex.size=9,
+       vertex.color=my_color, 
+       vertex.label.cex=0.7,
+       vertex.label.color="black",
+       vertex.frame.color="black"
+  )
+  
+  text(1.1,1,"Tema cluster network",col="black", cex=1.5)
+  legend(x=1.5, y=1, 
+         legend=levels(as.factor(cluster$cluster)), 
+         col = c("green", "blue", "red") , 
+         bty = "n", pch=20 , pt.cex = 2, cex = 1,
+         text.col="black" , horiz = F)
 }
 
-notas.finais.estimadas <- nota.prova.estimada %>%
-  mutate(Nota_final=Nota_final) %>%
-  arrange(Matricula) %>%
-  mutate(Mencao=cut(Nota_final, righ=F, c(0.1,lim.mencao,10.1), 
-                    labels=c("II", "MI", "MM", "MS", "SS")))
+g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
+                                         ggtheme = theme_minimal(),
+                                         main = "Partição dos temas em Clusters")}
+
+g_confusao_tri <- function(){tabela %>% 
+  ggplot(aes(Classico, TRI)) +
+  geom_tile(aes(fill=Quantidade)) +
+  scale_fill_gradient(low="white", high="red") +
+  scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
+  geom_rect(aes(xmin=-.5, xmax=4.5, ymin=-.5, ymax=4.5), 
+            color="red", alpha=0, size=1)}
+
+g_Pm.probs.means <- function(){
+  ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
+    geom_point(aes(color=Prob),show.legend = FALSE)+
+    scale_x_continuous(limits = c(0,1))+
+    facet_grid(prova ~ ., scales="free_y", space="free_y")+
+    scale_colour_gradient(low="red",high="green")+
+    xlab(aes(label=" "))+
+    ylab(aes(label=" "))+
+    theme_bw()
+}
 
 
-# Nova variavel para agrupar os cursos
-dados.original$Grupo[str_detect(dados.original$Curso,"Engenharia ")] <- 'Engenharia'
-dados.original$Grupo[str_detect(dados.original$Curso,"Comp")] <- 'Computação'
-dados.original$Grupo[str_detect(dados.original$Curso,"Educ")] <- 'Ed. Física'
-dados.original$Grupo[str_detect(dados.original$Curso,"Econ")] <- 'Econômicas'
-dados.original$Grupo[str_detect(dados.original$Curso,"Outros")] <- 'Outros'
-dados.original$Grupo[is.na(dados.original$Curso)] <- 'NA'
-
-# Comparação das mencoes finais dos alunos que fizeram subs antes e depois desta
-nota.3 <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],4]
-nota.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],5]
-
-mencao.3 <- mencao.m.prova[mencao.m.prova$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],4]
-mencao.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],7]
