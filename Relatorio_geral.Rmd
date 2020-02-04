@@ -43,13 +43,17 @@ Nosso primeiro gráfico mostra as notas dos alunos distribuídas de acordo com o
 
 A maioria dos cursos obteve uma média final próxima de 5, Engenharia Civil e Engenharia Mecânica obtiveram média `r round(medcurso[medcurso$Group.1=='Engenharia Civil',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Mecânica',2],2)`, respectivamente, e Computação e Engenharia Ambiental obtiveram as menores notas, `r round(medcurso[medcurso$Group.1=='Computação',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Ambiental',2],2)`.
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1}
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","fmsb")
 
 g_media_provas()
 
-g_radar()
+g_radar1()
+
+g_radar2()
+
+g_radar3()
 ```
 
 Interessante observar que na turma `r rownames(data1)[4]` a proporção média de acertos foi a menor, já na turma `r rownames(data1)[3]`, a quantidade de alunos que acertaram em cada tema foi relativamente alta em comparação com as outras turmas. A proporção de acertos de todos os alunos, ou seja, desconsiderando-se turma, está representada pela linha preta.
