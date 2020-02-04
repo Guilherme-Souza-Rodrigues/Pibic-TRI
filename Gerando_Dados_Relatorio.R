@@ -236,10 +236,9 @@ for (prova in 2:4){
     }
 }
 
-mencao.m.prova[,1] <- unique(dados.original$Matricula)
+mencao.m.prova[,1] <- media.prova[,1]
 mencao.m.prova <- data.frame(mencao.m.prova)
-colnames(mencao.m.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")
-mencao.m.prova <- mencao.m.prova %>% arrange(Matricula)    
+colnames(mencao.m.prova) <- c("Matricula", "Prova1", "Prova2", "Prova3")   
 
 matriz.notas <- cbind(coalesce(nota.prova$`Prova 1`, 0),
                       coalesce(nota.prova$`Prova 2`, 0),
