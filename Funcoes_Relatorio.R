@@ -855,7 +855,7 @@ g_fluxo_sankey <- function(){
 
 g_confusao_subs <- function(){tabela1 %>% 
   ggplot(aes(tabela1$MencaosemP4, tabela1$MencaoposP4)) + xlab("Menção sem P4") + ylab("Menção pós P4") +
-  geom_tile(aes(fill=tabela1$Quantidade)) +
+  geom_tile(aes(fill=Quantidade)) +
   scale_fill_gradient(low="white", high="red") +
   scale_x_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
   scale_y_continuous(breaks=0:4, expand=c(0, 0), labels=c("II","MI","MM","MS","SS")) +
