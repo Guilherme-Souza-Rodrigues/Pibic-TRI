@@ -106,7 +106,7 @@ g_rede_associacao()
 
 g_componentes_principais()
 
-g_confusao_tri()
+#g_confusao_tri()
 ```
 
 Esta rede foi obtida a partir do cálculo dos resíduos feito para cada questão feita por cada aluno. O gráfico mostra a associação dos resíduos de cada tema. Há também um correlograma dos temas acima.
