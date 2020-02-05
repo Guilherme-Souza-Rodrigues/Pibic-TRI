@@ -79,8 +79,8 @@ Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
   as.data.frame()%>%
   rownames_to_column()%>%
   rename(Prob=".",aux='rowname')%>%
-  mutate(prova=str_sub(aux,6,6),
-         tema=str_sub(aux,11,str_length(aux)-7),
+  mutate(prova=paste0("Prova ",str_sub(aux,6,6)),
+         tema=str_replace(str_sub(aux,11,str_length(aux)-7),"_"," "),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,prova,questao,Prob)%>%
   filter(prova!=4)
@@ -309,11 +309,8 @@ notas.finais.estimadas <- nota.prova.estimada %>%
 notas.ord <- notas.finais[order(notas.finais$Nota_final),]
 notas.ord.tri <- notas.finais.estimadas[order(notas.finais.estimadas$Nota_final),-7]
 
-len.men <- c(length(notas.ord$Mencao[notas.ord$Mencao=="II"]),
-             length(notas.ord$Mencao[notas.ord$Mencao=="MI"]),
-             length(notas.ord$Mencao[notas.ord$Mencao=="MM"]),
-             length(notas.ord$Mencao[notas.ord$Mencao=="MS"]),
-             length(notas.ord$Mencao[notas.ord$Mencao=="SS"]))
+notas.ord$Mencao[is.na(notas.ord$Mencao)] <- "II"
+len.men <- table(notas.ord$Mencao)
 notas.ord.tri$Mencao <- c(rep("II", len.men[1]),
                           rep("MI", len.men[2]),
                           rep("MM", len.men[3]),
