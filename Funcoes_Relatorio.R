@@ -314,7 +314,7 @@ sim.aluno.medio <- function(){
                                    pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),
                                dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
                                dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
-                                             colnames(respostas.dico[[prova]][, -c(1,2)])))
+                                             colnames(mcmc.itens[[prova]])))
     } 
   return(Pm.probs)
 }
@@ -331,7 +331,7 @@ prob.acerto.questoes <- function(){for (prova in 1:n.provas){
     
     P.probs[[prova]] <- data.frame(P.probs[[prova]])
     rownames(P.probs[[prova]]) <- colnames(mcmc.theta[[prova]])
-    colnames(P.probs[[prova]]) <- colnames(respostas.dico[[prova]][, -c(1,2)])
+    colnames(P.probs[[prova]]) <- rownames(itens.p[[prova]])
     
     
   }
