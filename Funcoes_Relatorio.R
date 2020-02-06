@@ -582,11 +582,11 @@ dados.fim <- function(){for(prova in 1:n.provas) {
 # Probabilidade de um aluno mediano passar por prova
 prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
   for (turma in 1:n.turmas){
-    P.am.passar[turma,prova] <- sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[,turma,prova]>=5)/(nchains*(niter/2))
+    P.am.passar[turma,prova] <- sum(soma.acerto[,turma,prova]>=5)/(nchains*(niter/2))
   }
 }
   return(P.am.passar)
-}
+} 
 
 
 # Notas dos alunos por prova
@@ -648,11 +648,27 @@ return(Passou)
 
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (simulacao in 1:(nchains*(niter/2))){
-  for (turma in 1:n.turmas){
+Sim.passar <- function(){for (turma in 1:n.turmas){
+  matriz.notas <- soma.acerto[,turma,]
+  descartada.sim <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
+  
+  condicao <- (pior.prova %in% 1:2) & 
+    ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
+  descartada[condicao] <- 3  
+  
+  matriz.notas <- cbind(matriz.notas, descartada=descartada)
+  
+  Nota_final <- numeric(nrow(nota.prova))
+  
+  for(aluno in 1:nrow(nota.prova)) {
+    if (matriz.notas[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
+    else pesos <- c(3,3,4)/10
+    Nota_final[aluno] <- matriz.notas[aluno, -c(matriz.notas[aluno, 5], 5)] %*% pesos
+  }
+  for (simulacao in 1:(nchains*(niter/2))){
     sim.passar[simulacao,turma] <- 
-      (sum(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,])-
-         min(apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)[simulacao,turma,]))/(n.provas-1)
+      (sum(soma.acerto[simulacao,turma,])-
+         min(soma.acerto[simulacao,turma,]))/(n.provas-1)
   }
 }
   return(sim.passar)
