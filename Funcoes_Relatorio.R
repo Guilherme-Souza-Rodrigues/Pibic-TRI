@@ -750,9 +750,9 @@ g_rede_associacao <- function(){
        vertex.frame.color="black"
   )
   
-  text(1.1,1,"Tema cluster network",col="black", cex=1.5)
-  legend(x=1.5, y=1, 
-         legend=levels(as.factor(cluster$cluster)), 
+  #text(0.1,1,"Rede de associação dos temas",col="black", cex=1.5)
+  legend(x=.8, y=.9, 
+         legend=paste("Prova", levels(as.factor(cluster$cluster))), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
          text.col="black" , horiz = F)
