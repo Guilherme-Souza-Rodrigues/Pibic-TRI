@@ -80,10 +80,10 @@ Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
   rownames_to_column()%>%
   rename(Prob=".",aux='rowname')%>%
   mutate(prova=paste0("Prova ",str_sub(aux,6,6)),
-         tema=str_replace(str_sub(aux,11,str_length(aux)-7),"_"," "),
+         tema=str_replace_all(str_sub(aux,11,str_length(aux)-7),"_"," "),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,prova,questao,Prob)%>%
-  filter(prova!=4)
+  filter(prova!="Prova 4")
   
 
 
