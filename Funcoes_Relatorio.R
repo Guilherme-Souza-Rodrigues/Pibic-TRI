@@ -648,8 +648,8 @@ return(Passou)
 
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (turma in 1:n.turmas){
-  matriz.notas <- soma.acerto[,turma,]
+Sim.passar <- function(){for (t in 1:n.turmas){
+  matriz.notas <- soma.acerto[,t,]
   descartada.sim <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
   
   condicao <- (pior.prova %in% 1:2) & 
@@ -666,9 +666,9 @@ Sim.passar <- function(){for (turma in 1:n.turmas){
     Nota_final[aluno] <- matriz.notas[aluno, -c(matriz.notas[aluno, 5], 5)] %*% pesos
   }
   for (simulacao in 1:(nchains*(niter/2))){
-    sim.passar[simulacao,turma] <- 
-      (sum(soma.acerto[simulacao,turma,])-
-         min(soma.acerto[simulacao,turma,]))/(n.provas-1)
+    sim.passar[simulacao,t] <- 
+      (sum(soma.acerto[simulacao,t,])-
+         min(soma.acerto[simulacao,t,]))/(n.provas-1)
   }
 }
   return(sim.passar)
@@ -750,9 +750,9 @@ g_rede_associacao <- function(){
        vertex.frame.color="black"
   )
   
-  text(1.1,1,"Tema cluster network",col="black", cex=1.5)
-  legend(x=1.5, y=1, 
-         legend=levels(as.factor(cluster$cluster)), 
+  #text(0.1,1,"Rede de associação dos temas",col="black", cex=1.5)
+  legend(x=.8, y=.9, 
+         legend=paste("Prova", levels(as.factor(cluster$cluster))), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
          text.col="black" , horiz = F)
