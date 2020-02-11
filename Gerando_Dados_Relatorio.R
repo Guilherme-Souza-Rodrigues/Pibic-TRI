@@ -83,6 +83,7 @@ itens <- rbind(itens.p[[1]],itens.p[[2]],itens.p[[3]])%>%
   
 parametros <- as.matrix(itens[,4:6])
 cci_cords <- irf(parametros)
+iif_cords <- iif(parametros)
   
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
