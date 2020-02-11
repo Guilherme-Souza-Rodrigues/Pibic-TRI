@@ -134,7 +134,6 @@ cci_p3()
 kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
            kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
   
-
 ```
 
 
