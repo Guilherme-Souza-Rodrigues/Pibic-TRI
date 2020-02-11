@@ -783,4 +783,47 @@ g_Pm.probs.means <- function(){
 }
 
 
+cci_p1 <- function() {
+  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
+  df <- gather(df,"var","cord",-c("tema","questao"))%>%
+    arrange(tema,questao)
+  a <- rep(cci_cords[['x']],189)
+  df <- cbind(df,a)
+  temas_p1 <- unique(df$tema)[1:10]
+  df <- df%>%
+    filter(tema %in% temas_p1)
+  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+    theme_light()
+  
+
+}
+
+cci_p2 <- function() {
+  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
+  df <- gather(df,"var","cord",-c("tema","questao"))%>%
+    arrange(tema,questao)
+  a <- rep(cci_cords[['x']],189)
+  df <- cbind(df,a)
+  temas_p1 <- unique(df$tema)[11:20]
+  df <- df%>%
+    filter(tema %in% temas_p1)
+  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+    theme_light()
+  
+  
+}
+cci_p3 <- function() {
+  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
+  df <- gather(df,"var","cord",-c("tema","questao"))%>%
+    arrange(tema,questao)
+  a <- rep(cci_cords[['x']],189)
+  df <- cbind(df,a)
+  temas_p1 <- unique(df$tema)[21:30]
+  df <- df%>%
+    filter(tema %in% temas_p1)
+  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+    theme_light()
+  
+}
+
 

@@ -125,6 +125,12 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
 g_Pm.probs.means()
 
+cci_p1()
+
+cci_p2()
+
+cci_p3()
+
 kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
            kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
   
