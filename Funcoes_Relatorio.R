@@ -779,7 +779,8 @@ g_Pm.probs.means <- function(){
     scale_colour_gradient(low="red",high="green")+
     xlab(aes(label=" "))+
     ylab(aes(label=" "))+
-    theme_bw()
+    theme_light()
 }
+
 
 

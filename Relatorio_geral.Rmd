@@ -18,7 +18,7 @@ Finalmente, uma análise via TRI será apresentada, verificando caso os temas de
 #Lendo os dados das provas e carregando os pacotes:
 if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","fmsb")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","fmsb","knitr","kableExtra")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
@@ -122,8 +122,12 @@ Esta matriz de confusão compara as menções reais obtidas com as menções que
 ```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano acertar a questão',fig.height=9,fig.width=7}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
 g_Pm.probs.means()
+
+kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
+  
 
 ```
 

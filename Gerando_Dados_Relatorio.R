@@ -69,6 +69,21 @@ itens.p <- data.i()
 list_of_datasets <- list("Prova 1" = itens.p[[1]], "Prova 2" = itens.p[[2]],
                          "Prova 3" = itens.p[[3]], "Prova 4" = itens.p[[4]])
 
+#Tabela dos parametrôs de cada questão
+round3 <- function(x) {
+  round(x,3)
+}
+itens <- rbind(itens.p[[1]],itens.p[[2]],itens.p[[3]])%>%
+  rownames_to_column("aux")%>%
+  mutate(tema=str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),
+         questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
+  dplyr::select(tema,questao,a,b,c)%>%
+  mutate_at(c("a","b","c"),round3)%>%
+  rownames_to_column(" ")
+  
+parametros <- as.matrix(itens[,4:6])
+cci_cords <- irf(parametros)
+  
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
 Pm.probs <- vector(n.provas, mode="list")
