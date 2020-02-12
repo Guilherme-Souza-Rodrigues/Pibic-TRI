@@ -761,10 +761,6 @@ g_rede_associacao <- function(){
          text.col="black" , horiz = F)
 }
 
-g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
-                                         ggtheme = theme_minimal(),
-                                         main = "Partição dos temas em Clusters")}
-
 g_confusao_tri <- function(){tabela %>% 
   ggplot(aes(Classico, TRI)) +
   geom_tile(aes(fill=Quantidade)) +
