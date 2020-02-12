@@ -104,8 +104,6 @@ g_correlograma()
 
 g_rede_associacao()
 
-g_componentes_principais()
-
 g_confusao_tri()
 ```
 
