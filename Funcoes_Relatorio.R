@@ -695,17 +695,20 @@ g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, gr
   ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
 }
 
-g_radar1 <- function(){radarchart(data[[1]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                 plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar1 <- function(){radarchart(data[[1]],  axistype=0, pcol=c(rep("azure4",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar2 <- function(){radarchart(data[[2]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
+g_radar2 <- function(){radarchart(data[[2]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
                                   plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar3 <- function(){radarchart(data[[3]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
+g_radar3 <- function(){radarchart(data[[3]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
                                   plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
 
 g_fluxo_sankey <- function(){
