@@ -10,7 +10,7 @@ dados.original <- read.csv2(choose.files(multi = FALSE,
                             fileEncoding = "UTF-8")
 
 # Carregando o arquivo com as funções 
-source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"))
+source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"),encoding = "UTF-8")
 
 # Variável Acertou como 0 e 1
 dados.original$Acertou[dados.original$Acertou==TRUE] <- 1
@@ -73,17 +73,22 @@ list_of_datasets <- list("Prova 1" = itens.p[[1]], "Prova 2" = itens.p[[2]],
 round3 <- function(x) {
   round(x,3)
 }
-itens <- rbind(itens.p[[1]],itens.p[[2]],itens.p[[3]])%>%
+itens <- rbind(cbind(itens.p[[1]],prova=1),cbind(itens.p[[2]],prova=2),cbind(itens.p[[3]],prova=3))%>%
   rownames_to_column("aux")%>%
   mutate(tema=str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
-  dplyr::select(tema,questao,a,b,c)%>%
-  mutate_at(c("a","b","c"),round3)%>%
-  rownames_to_column(" ")
-  
-parametros <- as.matrix(itens[,4:6])
-cci_cords <- irf(parametros)
-iif_cords <- iif(parametros)
+  dplyr::select(tema,questao,prova,a,b,c)%>%
+  mutate_at(c("a","b","c"),round3)
+cci <- NULL  
+for (i in 1:101) {
+  cci <- rbind(cci,itens) 
+}
+n.itens <- nrow(itens)
+cci <- cci%>%
+  arrange(tema,questao)%>%
+  cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
+  mutate(prob=P.acertar.probit(a,b,c,habilidade))
+
   
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
