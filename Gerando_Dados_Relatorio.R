@@ -79,9 +79,15 @@ itens <- rbind(cbind(itens.p[[1]],prova=1),cbind(itens.p[[2]],prova=2),cbind(ite
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,questao,prova,a,b,c)%>%
   mutate_at(c("a","b","c"),round3)
-  
-
-
+cci <- NULL  
+for (i in 1:101) {
+  cci <- rbind(cci,itens) 
+}
+n.itens <- nrow(itens)
+cci <- cci%>%
+  arrange(tema,questao)%>%
+  cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
+  mutate(prob=P.acertar.probit(a,b,c,habilidade))
 
   
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 

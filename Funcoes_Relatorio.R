@@ -285,7 +285,7 @@ rm(Questoes_equivalencia_p4,Matriculas_equivalencia_p4,dados_p4,fit.p4)
 #########################
 mcmc.itens <- list(itens.p1,itens.p2,itens.p3,itens.p4)
 mcmc.theta <- list(thetas.mcmc.p1,thetas.mcmc.p2,thetas.mcmc.p3,thetas.mcmc.p4)
-save(mcmc.itens, file = "Parametros_Itens.RData")
+#save(mcmc.itens, file = "Parametros_Itens.RData")
 return(list(thetas=mcmc.theta,itens=mcmc.itens))
 }
 
@@ -782,17 +782,14 @@ g_Pm.probs.means <- function(){
     theme_light()
 }
 
+P.acertar.probit <- function(a,b,c,habilidade) {
+  c+(1-c)*pnorm(a*habilidade-b)
+}
+
 
 cci_p1 <- function() {
-  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
-  df <- gather(df,"var","cord",-c("tema","questao"))%>%
-    arrange(tema,questao)
-  a <- rep(cci_cords[['x']],189)
-  df <- cbind(df,a)
-  temas_p1 <- unique(df$tema)[1:10]
-  df <- df%>%
-    filter(tema %in% temas_p1)
-  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+  ggplot(subset(cci,prova==1),aes(x=habilidade,y=prob,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
@@ -802,32 +799,17 @@ cci_p1 <- function() {
 }
 
 cci_p2 <- function() {
-  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
-  df <- gather(df,"var","cord",-c("tema","questao"))%>%
-    arrange(tema,questao)
-  a <- rep(cci_cords[['x']],189)
-  df <- cbind(df,a)
-  temas_p1 <- unique(df$tema)[11:20]
-  df <- df%>%
-    filter(tema %in% temas_p1)
-  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+  ggplot(subset(cci,prova==2),aes(x=habilidade,y=prob,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
   
-  
 }
 cci_p3 <- function() {
-  df <- cbind(itens[,2:3],t(cci_cords[['f']]))
-  df <- gather(df,"var","cord",-c("tema","questao"))%>%
-    arrange(tema,questao)
-  a <- rep(cci_cords[['x']],189)
-  df <- cbind(df,a)
-  temas_p1 <- unique(df$tema)[21:30]
-  df <- df%>%
-    filter(tema %in% temas_p1)
-  ggplot(df,aes(x=a,y=cord,color=questao))+geom_line()+facet_wrap(.~tema,ncol = 2)+
+  ggplot(subset(cci,prova==3),aes(x=habilidade,y=prob,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
