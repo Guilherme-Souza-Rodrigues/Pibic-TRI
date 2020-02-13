@@ -84,7 +84,7 @@ g_prob_mediano_passar()
 
 #TRI
 
-```{r , echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
+```{r , echo=FALSE, fig.cap='(a) Correlograma dos temas. (b) Esta rede foi obtida a partir do cálculo dos resíduos feito para cada questão feita por cada aluno. O gráfico mostra a associação dos resíduos de cada tema. (c) Esta matriz de confusão compara as menções reais obtidas com as menções que seriam atribuídas por TRI. Espera-se que haja uma concentração maior na diagonal.', fig.subcap=c('Correlograma dos Temas', 'Rede de associação entre os Temas', 'Matriz de Confusão relacionando as notas reais com as notas por TRI'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
@@ -95,16 +95,6 @@ g_rede_associacao()
 
 g_confusao_tri()
 ```
-
-Esta rede foi obtida a partir do cálculo dos resíduos feito para cada questão feita por cada aluno. O gráfico mostra a associação dos resíduos de cada tema. Há também um correlograma dos temas acima.
-
-Clusterização feita com uso de Componentes Principais.
-
-Esta matriz de confusão compara as menções reais obtidas com as menções que seriam atribuídas por TRI. Espera-se que haja uma concentração maior na diagonal.
-
-
-
-
 
 ```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano acertar a questão',fig.height=9,fig.width=7}
 library('igraph')
