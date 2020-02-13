@@ -82,9 +82,6 @@ g_prob_mediano_passar_prova()
 g_prob_mediano_passar()
 ```
 
-Há uma diferença de `r max(as.numeric(P.am.passar), na.rm = T) - min(as.numeric(P.am.passar), na.rm = T)` entre as probabilidades de que um aluno mediano passe estando matriculado na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.max(P.am.passar)>10,gsub("^?.","",which.max(P.am.passar)),which.max(P.am.passar)))]` ou `r rownames(P.am.passar)[as.numeric(ifelse(which.min(P.am.passar)>10,gsub("^?.","",which.min(P.am.passar)),which.min(P.am.passar)))]` (probabilidade de `r max(as.numeric(P.am.passar), na.rm = T)` na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.max(P.am.passar)>10,gsub("^?.","",which.max(P.am.passar)),which.max(P.am.passar)))]` menos probabilidade de `r min(as.numeric(P.am.passar), na.rm = T)` na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.min(P.am.passar)>10,gsub("^?.","",which.min(P.am.passar)),which.min(P.am.passar)))]`). Mas, quando se leva em conta o resultado final em PE, há uma disparidade menor entre a maior e a menor probabilidade entre as turmas: `r max(P.sim.passar[,1])-min(P.sim.passar[,1])` (`r max(P.sim.passar[,1])` na turma `r rownames(P.sim.passar)[which.max(P.sim.passar[,1])]` e `r min(P.sim.passar[,1])` na turma `r rownames(P.sim.passar)[which.min(P.sim.passar[,1])]`).
-
-
 #TRI
 
 ```{r , echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2}
