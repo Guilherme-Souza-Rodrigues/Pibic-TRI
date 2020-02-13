@@ -361,6 +361,12 @@ nota.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaalu
 mencao.3 <- mencao.m.prova[mencao.m.prova$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],4]
 mencao.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],7]
 
+# Textos
+texto.subs <- paste0(tabela1[6,3], " alunos aumentaram a menção de II para MI, ",
+                    tabela1[12,3], ", de MI para MM, ",
+                    tabela1[17,3], ", de MI para MS e ",
+                    tabela1[18,3], ", de MM para MS")
+
 # Medidas decritivas
 turma <- list(dados.original$Turma)
 medturma <- aggregate(dados.original[,"Nota_prova"],turma,mean)
