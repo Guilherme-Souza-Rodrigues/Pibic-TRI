@@ -87,7 +87,7 @@ n.itens <- nrow(itens)
 cci <- cci%>%
   arrange(tema,questao)%>%
   cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
-  mutate(prob=P.acertar.probit(a,b,c,habilidade))
+  mutate(prob=P.acertar.logit(a,b,c,habilidade))
 
   
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 

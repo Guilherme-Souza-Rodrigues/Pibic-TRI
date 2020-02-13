@@ -118,9 +118,9 @@ a~normal(0,1);
 b~normal(0,1);
 c~beta(5,17);
 theta~normal(0,1);
-y~bernoulli(c[item]+((1-c[item]) *normal_cdf((a[item] .*theta[aluno])-b[item],mu,sigma)));
-
-}"
+y~bernoulli(c[item]+((1-c[item]).*inv_logit((a[item] .*theta[aluno])-b[item])));
+}
+"
 
   )
   
@@ -776,7 +776,7 @@ g_Pm.probs.means <- function(){
     geom_point(aes(color=Prob),show.legend = FALSE)+
     scale_x_continuous(limits = c(0,1))+
     facet_grid(prova ~ ., scales="free_y", space="free_y")+
-    scale_colour_gradient(low="red",high="green")+
+    scale_colour_gradient(breaks=c(0,1),low="red",high="green")+
     xlab(aes(label=" "))+
     ylab(aes(label=" "))+
     theme_light()
@@ -786,11 +786,17 @@ P.acertar.probit <- function(a,b,c,habilidade) {
   c+(1-c)*pnorm(a*habilidade-b)
 }
 
+P.acertar.logit <- function(a,b,c,habilidade){
+  c+(1-c)*(1/(1+exp( -(a*habilidade-b) )))
+  
+}
+
 
 cci_p1 <- function() {
   ggplot(subset(cci,prova==1),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -802,6 +808,7 @@ cci_p2 <- function() {
   ggplot(subset(cci,prova==2),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -811,6 +818,7 @@ cci_p3 <- function() {
   ggplot(subset(cci,prova==3),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
