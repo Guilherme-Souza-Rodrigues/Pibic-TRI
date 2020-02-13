@@ -684,11 +684,9 @@ return(P.sim.passar)
 
 ### GRÁFICOS ###
 g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
-  geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
-  stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
-  ylab("Notas") + xlab("Curso") + 
-  ggtitle("Notas por Curso") +
-  coord_flip() + theme_classic()}
+    geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
+    stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
+    ylab("Notas") + xlab("Curso") + coord_flip() + theme_classic()}
 
 g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + 
     geom_point() + geom_line() + ylim(0,10) + ylab("Média") +
