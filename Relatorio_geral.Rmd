@@ -54,7 +54,7 @@ g_radar2()
 g_radar3()
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Fluxo das menções.Podemos observar a evolução das menções atribuídas ao longo do curso, sendo que, na prova 1, há apenas a menção da própria prova; na prova 2, fez-se a média aritmética das duas primeiras notas; na prova 3, calculou-se a nota final de acordo com os pesos atribuídos a cada avaliação e na prova 4, vemos a nota final obtida pelo aluno, após a prova substitutiva.'}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Fluxo das menções. Podemos observar a evolução das menções atribuídas ao longo do curso, sendo que, na prova 1, há apenas a menção da própria prova; na prova 2, fez-se a média aritmética das duas primeiras notas; na prova 3, calculou-se a nota final de acordo com os pesos atribuídos a cada avaliação e na prova 4, vemos a nota final obtida pelo aluno, após a prova substitutiva.'}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "networkD3")
 
