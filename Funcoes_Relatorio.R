@@ -1,17 +1,17 @@
 # Criacao da variavel Tema no banco de dados
 nomes.q <- c("...medida_probabilidade.......", "...propriedade_probabilidade.......",
-           "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
-           "...distribuicao_binomial.......", "...distribuicao_binomial.......", "...distribuicao_geometrica.......",
-           "...distribuicao_hipergeometrica.......", "...distribuicao_poisson.......", 
-           "...aproximacao_poisson_binomial.......", "...funcao_densidade.......",
-           "...distribuicao_acumulada.......", "...momentos.......", "...distribuicao_exponencial.......",
-           "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
-           "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
-           "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
-           "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......",
-           "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
-           "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
-           "...valor_esperado_e_variancia.......")
+             "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
+             "...distribuicao_binomial.......", "...distribuicao_binomial.......", "...distribuicao_geometrica.......",
+             "...distribuicao_hipergeometrica.......", "...distribuicao_poisson.......", 
+             "...aproximacao_poisson_binomial.......", "...funcao_densidade.......",
+             "...distribuicao_acumulada.......", "...momentos.......", "...distribuicao_exponencial.......",
+             "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
+             "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
+             "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
+             "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......", "...IC_proporcao.......",
+             "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
+             "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
+             "...valor_esperado_e_variancia.......")
 temas <- c("medida_probabilidade", "propriedade_probabilidade",
            "probabilidade_total", "teorema_Bayes", "variaveis_aleatorias",
            "distribuicao_binomial", "distribuicao_binomial", "distribuicao_geometrica",
@@ -21,7 +21,7 @@ temas <- c("medida_probabilidade", "propriedade_probabilidade",
            "distribuicao_normal", "distribuicao_normal", "aproximacao_normal_binomial",
            "distribuicao_condicional", "covariancia_correlacao", "distribuicao_media",
            "distribuicao_proporcao", "maxima_verossimilhanca",
-           "IC_media_normal", "IC_media_t", "IC_proporção",
+           "IC_media_normal", "IC_media_t", "IC_proporção", "IC_proporção",
            "TH_media", "tamanho_media", "TH_proporcao", 
            "pvalor_media", "tamanho_prop", "pvalor_proporcao", 
            "valor_esperado_e_variancia")
@@ -684,28 +684,30 @@ return(P.sim.passar)
 
 ### GRÁFICOS ###
 g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
-  geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
-  stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
-  ylab("Notas") + xlab("Curso") + 
-  ggtitle("Notas por Curso") +
-  coord_flip() + theme_classic()}
+    geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
+    stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
+    ylab("Notas") + xlab("Curso") + coord_flip() + theme_classic()}
 
-g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + geom_point() +
-  geom_line() + ylim(0,10) + scale_color_manual(values=c(rep("grey",10),'black')) +
-  ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
+g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + 
+    geom_point() + geom_line() + ylim(0,10) + ylab("Média") +
+    scale_color_manual(values=c(rep("grey",10),'black')) +
+    theme_classic() + theme(legend.position = "none")
 }
 
-g_radar1 <- function(){radarchart(data[[1]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                 plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar1 <- function(){radarchart(data[[1]],  axistype=0, pcol=c(rep("azure4",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar2 <- function(){radarchart(data[[2]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar2 <- function(){radarchart(data[[2]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar3 <- function(){radarchart(data[[3]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar3 <- function(){radarchart(data[[3]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
 
 g_fluxo_sankey <- function(){
@@ -757,10 +759,6 @@ g_rede_associacao <- function(){
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
          text.col="black" , horiz = F)
 }
-
-g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
-                                         ggtheme = theme_minimal(),
-                                         main = "Partição dos temas em Clusters")}
 
 g_confusao_tri <- function(){tabela %>% 
   ggplot(aes(Classico, TRI)) +
