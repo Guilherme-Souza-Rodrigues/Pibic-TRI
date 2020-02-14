@@ -154,7 +154,7 @@ fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matric
                                           N=nrow(dados_p1),
                                           aluno=dados_p1$Matricula.mod,
                                           item=dados_p1$Nome.questao.mod, 
-                                          y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
 
 params.p1 <- rstan::extract(fit.p1)
 itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
@@ -191,7 +191,7 @@ fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matric
                                           N=nrow(dados_p2),
                                           aluno=dados_p2$Matricula.mod,
                                           item=dados_p2$Nome.questao.mod, 
-                                          y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
   
 params.p2 <- rstan::extract(fit.p2)
 
@@ -229,7 +229,7 @@ fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matric
                                           N=nrow(dados_p3),
                                           aluno=dados_p3$Matricula.mod,
                                           item=dados_p3$Nome.questao.mod, 
-                                          y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
   
 params.p3 <- rstan::extract(fit.p3)
 
@@ -268,7 +268,7 @@ fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matric
                                           N=nrow(dados_p4),
                                           aluno=dados_p4$Matricula.mod,
                                           item=dados_p4$Nome.questao.mod, 
-                                          y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
 
 params.p4 <- rstan::extract(fit.p4)
 
