@@ -181,6 +181,7 @@ dados.finais <- vector(n.provas, mode="list")
 dados.finais <- dados.fim()
 
 # Probabilidade de um aluno mediano passar por prova
+soma.acerto <- apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)
 P.am.passar <- array(dim = c(n.turmas, n.provas+1), dimnames = list(dimnames(mapa.questoes)[[1]], c(dimnames(mapa.questoes)[[3]],"Turma")))
 P.am.passar <- prob.aluno.mediano.passar()
 P.am.passar[,5] <- dimnames(mapa.questoes)[[1]]
@@ -559,16 +560,9 @@ P.sim.passar <- data.frame(P.sim.passar,Turma=c(dimnames(mapa.questoes)[[1]]), L
 
 #
 adjm <- as.matrix(cor.tema)
+diag(adjm) <- 0
 
-#adjm[abs(adjm)<0.23] <- 0
-
-#for (lim in seq(0,1,.0001)){
-#  if(length(adjm[abs(adjm)>lim]) == 60){return(lim)} 
-#}
-
-#adjm[abs(adjm)<lim] <- 0 # 
-
-network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=F, mode = "undirected")
+network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=T, mode = "max")
 
 my_color <- c(rep("green", 10),
               rep("blue", 10),
