@@ -181,6 +181,7 @@ dados.finais <- vector(n.provas, mode="list")
 dados.finais <- dados.fim()
 
 # Probabilidade de um aluno mediano passar por prova
+soma.acerto <- apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)
 P.am.passar <- array(dim = c(n.turmas, n.provas+1), dimnames = list(dimnames(mapa.questoes)[[1]], c(dimnames(mapa.questoes)[[3]],"Turma")))
 P.am.passar <- prob.aluno.mediano.passar()
 P.am.passar[,5] <- dimnames(mapa.questoes)[[1]]
