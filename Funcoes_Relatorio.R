@@ -312,7 +312,7 @@ sim.aluno.medio <- function(){
   for(prova in 1:n.provas){
     Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
                                    (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                   (1/(1+exp( as.numeric(mcmc.itens[[prova]][,,2]))))),
+                                   (1/(1+exp( -as.numeric(mcmc.itens[[prova]][,,2]))))),
                                dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
                                dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
                                              colnames(mcmc.itens[[prova]])))
@@ -327,7 +327,7 @@ prob.acerto.questoes <- function(){for (prova in 1:n.provas){
     
     P.probs[[prova]][aluno,] <- c(
       itens.p[[prova]][,3] + (1-itens.p[[prova]][,3])*
-        (1/(1+exp( -(itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2]))))
+        (1/(1+exp((itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2]))))
     )
     
     P.probs[[prova]] <- data.frame(P.probs[[prova]])
@@ -651,7 +651,7 @@ return(Passou)
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
 Sim.passar <- function(){for (t in 1:n.turmas){
   matriz.notas <- soma.acerto[,t,]
-  descartada.sim <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
+  descartada <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
   
   condicao <- (pior.prova %in% 1:2) & 
     ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
@@ -750,11 +750,12 @@ g_rede_associacao <- function(){
        vertex.color=my_color, 
        vertex.label.cex=0.7,
        vertex.label.color="black",
-       vertex.frame.color="black"
+       vertex.frame.color=my_color, edge.width=(E(network)$weight*5),
+       edge.color="gray88",
+       edge.curved=0.4
   )
-  
-  #text(0.1,1,"Rede de associação dos temas",col="black", cex=1.5)
-  legend(x=.8, y=.9, 
+
+  legend(x=1, y=1.2, 
          legend=paste("Prova", levels(as.factor(cluster$cluster))), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
