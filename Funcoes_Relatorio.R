@@ -750,11 +750,12 @@ g_rede_associacao <- function(){
        vertex.color=my_color, 
        vertex.label.cex=0.7,
        vertex.label.color="black",
-       vertex.frame.color="black"
+       vertex.frame.color=my_color, edge.width=(E(network)$weight*5),
+       edge.color="gray88",
+       edge.curved=0.4
   )
-  
-  #text(0.1,1,"Rede de associação dos temas",col="black", cex=1.5)
-  legend(x=.8, y=.9, 
+
+  legend(x=1, y=1.2, 
          legend=paste("Prova", levels(as.factor(cluster$cluster))), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
