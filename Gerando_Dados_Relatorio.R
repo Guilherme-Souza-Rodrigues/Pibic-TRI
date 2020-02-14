@@ -3,7 +3,7 @@ if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt",
                "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally",
-               "pander", "rstan","fmsb","tibble","stringr")
+               "pander", "rstan","fmsb","tibble","stringr","antaresViz ")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
@@ -580,7 +580,21 @@ class(tabela$Classico) <- "numeric"
 class(tabela$TRI) <- "numeric"
 class(tabela$Quantidade) <- "numeric"
 tabela[, 1:2] <- tabela[, 1:2] - 1
-    
+
+require(networkD3)
+sankey <- sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name2", 
+              LinkGroup = 'energy_type', colourScale = JS(
+                sprintf(
+                  'd3.scaleOrdinal() .domain(%s)
+                                    .range(%s)',
+                  jsonlite::toJSON(color_scale$domain),
+                  jsonlite::toJSON(color_scale$range)
+                )
+              ), fontSize = 15, iteration=0)
+
+savePlotAsPng(sankey,file="sankey.png")
     
 # Savando os dados 
 save.image(file = "DadosPE.RData")

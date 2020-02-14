@@ -1,0 +1,139 @@
+---
+title: "Relatório Geral"
+author: "Guilherme Rodrigues"
+date: "13 de novembro de 2019"
+always_allow_html: true
+header-includes:
+   - \usepackage{caption,subfig, graphicx,  epstopdf, enumitem}
+output: pdf_document
+---
+
+Primeiramente, apresentaremos alguns gráficos descritivos do desempenho dos alunos de PE durante o semestre e ao longo deste, com análises por turma, curso e número da prova.
+
+Logo após, avaliaremos a qualidade das quatro provas aplicadas aos alunos de acordo com uma calibração adequada para o nível de dificuldade das questões selecionadas para cada turma.
+
+Finalmente, uma análise via TRI será apresentada, verificando caso os temas de cada prova estão realmente relacionados entre si (clusterização), e uma comparação entre a a avaliação por TRI e a Clássica, investigando se haveria algum benefício na utilização daquele.
+
+```{r ,echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE, results='hide'}
+#Lendo os dados das provas e carregando os pacotes:
+if(length(ls()) > 0) rm(list = ls())
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "pander", "networkD3","fmsb","knitr","kableExtra")
+
+dados.original <- read.csv2(choose.files(multi = FALSE, 
+                                         caption = "Escolha o arquivo com o Banco de Respostas"),
+                            fileEncoding = "UTF-8")
+
+load(choose.files(multi = FALSE, caption = "Escolha o arquivo com os dados do curso de PE")) # "DadosPE.RData"
+  
+```
+
+
+#Desempenho dos alunos
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
+
+g_notas_curso()
+
+```
+
+Nosso primeiro gráfico mostra as notas dos alunos distribuídas de acordo com o Curso, em que foi feito um "jitter" para que se possa observar a quantidade de alunos em cada faixa de menção obtida, além de uma indicação da média geral em cada Curso, representada pela linha preta.
+
+A maioria dos cursos obteve uma média final próxima de 5, Engenharia Civil e Engenharia Mecânica obtiveram média `r round(medcurso[medcurso$Group.1=='Engenharia Civil',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Mecânica',2],2)`, respectivamente, e Computação e Engenharia Ambiental obtiveram as menores notas, `r round(medcurso[medcurso$Group.1=='Computação',2],2)` e `r round(medcurso[medcurso$Group.1=='Engenharia Ambiental',2],2)`.
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Notas e Acertos por Turma', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=2,fig.pos="H"}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","fmsb")
+
+g_media_provas()
+
+g_radar1()
+
+g_radar2()
+
+g_radar3()
+```
+
+Interessante observar que na turma `r rownames(data1)[4]` a proporção média de acertos foi a menor, já na turma `r rownames(data1)[3]`, a quantidade de alunos que acertaram em cada tema foi relativamente alta em comparação com as outras turmas. A proporção de acertos de todos os alunos, ou seja, desconsiderando-se turma, está representada pela linha preta.
+
+<p align="center">
+![](sankey.png)
+</p>
+
+
+
+Podemos observar a evolução das menções atribuídas ao longo do curso, sendo que, na prova 1, há apenas a menção da própria prova; na prova 2, fez-se a média aritmética das duas primeiras notas; na prova 3, calculou-se a nota final de acordo com os pesos atribuídos a cada avaliação e na prova 4, vemos a nota final obtida pelo aluno, após a prova substitutiva.
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.pos="H"}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally", "knitr")
+
+g_confusao_subs()
+```
+
+Esta matriz de confusão compara as menções obtidas somente pelos alunos que fizeram a prova substitutiva, mostrando a menção final antes e depois de a terem feito.
+
+
+#Avaliações e Banco de Questões
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilidades de  que um aluno mediano passe', fig.subcap=c('Primeiro', 'Segundo'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1,fig.pos="H"}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
+
+g_prob_mediano_passar_prova()
+
+g_prob_mediano_passar()
+```
+
+Há uma diferença de `r max(as.numeric(P.am.passar), na.rm = T) - min(as.numeric(P.am.passar), na.rm = T)` entre as probabilidades de que um aluno mediano passe estando matriculado na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.max(P.am.passar)>10,gsub("^?.","",which.max(P.am.passar)),which.max(P.am.passar)))]` ou `r rownames(P.am.passar)[as.numeric(ifelse(which.min(P.am.passar)>10,gsub("^?.","",which.min(P.am.passar)),which.min(P.am.passar)))]` (probabilidade de `r max(as.numeric(P.am.passar), na.rm = T)` na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.max(P.am.passar)>10,gsub("^?.","",which.max(P.am.passar)),which.max(P.am.passar)))]` menos probabilidade de `r min(as.numeric(P.am.passar), na.rm = T)` na turma `r rownames(P.am.passar)[as.numeric(ifelse(which.min(P.am.passar)>10,gsub("^?.","",which.min(P.am.passar)),which.min(P.am.passar)))]`). Mas, quando se leva em conta o resultado final em PE, há uma disparidade menor entre a maior e a menor probabilidade entre as turmas: `r max(P.sim.passar[,1])-min(P.sim.passar[,1])` (`r max(P.sim.passar[,1])` na turma `r rownames(P.sim.passar)[which.max(P.sim.passar[,1])]` e `r min(P.sim.passar[,1])` na turma `r rownames(P.sim.passar)[which.min(P.sim.passar[,1])]`).
+
+
+#TRI
+
+```{r , echo=FALSE, fig.cap='Associação entre os Temas', fig.subcap=c('Rede', 'Correlograma', 'CP', 'Matriz de Confusao'), out.width='.49\\linewidth', fig.asp=1, fig.ncol=2, fig.nrow=1,fig.pos="H"}
+library('igraph')
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally")
+
+g_correlograma()
+
+g_rede_associacao()
+
+#g_componentes_principais()
+
+g_confusao_tri()
+```
+
+
+Esta rede foi obtida a partir do cálculo dos resíduos feito para cada questão feita por cada aluno. O gráfico mostra a associação dos resíduos de cada tema. Há também um correlograma dos temas acima.
+
+Clusterização feita com uso de Componentes Principais.
+
+Esta matriz de confusão compara as menções reais obtidas com as menções que seriam atribuídas por TRI. Espera-se que haja uma concentração maior na diagonal.
+
+
+
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano acertar a questão',fig.height=9,fig.width=7,fig.pos="H"}
+library('igraph')
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
+
+g_Pm.probs.means()
+
+cci_p1()
+
+cci_p2()
+
+cci_p3()
+
+kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
+  
+```
+
+
+
