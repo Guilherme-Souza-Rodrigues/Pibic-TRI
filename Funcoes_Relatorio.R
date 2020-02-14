@@ -311,7 +311,7 @@ sim.aluno.medio <- function(){
   for(prova in 1:n.provas){
     Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
                                    (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                   pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),
+                                   (1/(1+exp( as.numeric(mcmc.itens[[prova]][,,2]))))),
                                dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
                                dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
                                              colnames(mcmc.itens[[prova]])))
@@ -326,7 +326,7 @@ prob.acerto.questoes <- function(){for (prova in 1:n.provas){
     
     P.probs[[prova]][aluno,] <- c(
       itens.p[[prova]][,3] + (1-itens.p[[prova]][,3])*
-        pnorm(itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2])
+        (1/(1+exp( -(itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2]))))
     )
     
     P.probs[[prova]] <- data.frame(P.probs[[prova]])
@@ -772,9 +772,9 @@ g_confusao_tri <- function(){tabela %>%
 g_Pm.probs.means <- function(){
   ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
     geom_point(aes(color=Prob),show.legend = FALSE)+
-    scale_x_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     facet_grid(prova ~ ., scales="free_y", space="free_y")+
-    scale_colour_gradient(breaks=c(0,1),low="red",high="green")+
+    scale_colour_gradient(limits=c(0,1),low="red",high="green")+
     xlab(aes(label=" "))+
     ylab(aes(label=" "))+
     theme_light()
