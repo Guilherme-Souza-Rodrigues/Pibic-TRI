@@ -85,6 +85,7 @@ dico <- function(){for(prova in 1:n.provas) {
 # Cálculo dos estimadores dos parâmetros dos itens e do estimador do parâmetro de habilidade de
 #cada aluno via Monte Carlo Cadeia de Markov:
 mcmc<- function() {
+  require(rstan)
   model <- stan_model(model_code = 
                         
                         "data {
@@ -155,7 +156,7 @@ fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matric
                                           item=dados_p1$Nome.questao.mod, 
                                           y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
 
-params.p1 <- extract(fit.p1)
+params.p1 <- rstan::extract(fit.p1)
 itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p1), 3),
                     dimnames = list(paste("simulação",1:(nchains*(niter/2))),
@@ -192,7 +193,7 @@ fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matric
                                           item=dados_p2$Nome.questao.mod, 
                                           y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
   
-params.p2 <- extract(fit.p2)
+params.p2 <- rstan::extract(fit.p2)
 
 itens.p2 <- array(c(params.p2$a,params.p2$b,params.p2$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p2), 3),
@@ -230,7 +231,7 @@ fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matric
                                           item=dados_p3$Nome.questao.mod, 
                                           y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
   
-params.p3 <- extract(fit.p3)
+params.p3 <- rstan::extract(fit.p3)
 
 itens.p3 <- array(c(params.p3$a,params.p3$b,params.p3$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p3), 3),
@@ -269,7 +270,7 @@ fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matric
                                           item=dados_p4$Nome.questao.mod, 
                                           y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
 
-params.p4 <- extract(fit.p4)
+params.p4 <- rstan::extract(fit.p4)
 
 itens.p4 <- array(c(params.p4$a,params.p4$b,params.p4$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p4), 3),
@@ -786,7 +787,10 @@ P.acertar.probit <- function(a,b,c,habilidade) {
 
 P.acertar.logit <- function(a,b,c,habilidade){
   c+(1-c)*(1/(1+exp( -(a*habilidade-b) )))
-  
+}
+
+fii_cord <- function(a,c,prob){
+  a^(2)*((1-prob)/prob)*((prob-c)/(1-c))^(2)
 }
 
 
@@ -823,4 +827,38 @@ cci_p3 <- function() {
   
 }
 
+
+
+fii_p1 <- function() {
+  ggplot(subset(cci,prova==1),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="Probabilidade de acerto"))+
+    theme_light()
+  
+  
+}
+
+fii_p2 <- function() {
+  ggplot(subset(cci,prova==2),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="Probabilidade de acerto"))+
+    theme_light()
+  
+}
+fii_p3 <- function() {
+  ggplot(subset(cci,prova==3),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="Probabilidade de acerto"))+
+    theme_light()
+  
+}
 
