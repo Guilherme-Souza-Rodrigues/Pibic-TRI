@@ -122,11 +122,17 @@ pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt
 
 cci_p1()
 
-cci_p2()
-
-cci_p3()
-
 ```
+
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7}
+cci_p2()
+```
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7}
+cci_p3()
+```
+
 
 ```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7,fig.pos="H"}
 library('igraph')
