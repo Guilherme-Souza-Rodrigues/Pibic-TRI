@@ -651,7 +651,7 @@ return(Passou)
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
 Sim.passar <- function(){for (t in 1:n.turmas){
   matriz.notas <- soma.acerto[,t,]
-  descartada.sim <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
+  descartada <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
   
   condicao <- (pior.prova %in% 1:2) & 
     ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
