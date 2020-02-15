@@ -650,21 +650,21 @@ return(Passou)
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
 Sim.passar <- function(){for (t in 1:n.turmas){
-  matriz.notas <- soma.acerto[,t,]
-  descartada <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
+  matriz.notas.sim <- soma.acerto[,t,]
+  descartada.sim <- pior.prova.sim <- max.col(-matriz.notas.sim, ties.method="last") 
   
-  condicao <- (pior.prova %in% 1:2) & 
-    ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
-  descartada[condicao] <- 3  
+  condicao.sim <- (pior.prova.sim %in% 1:2) & 
+    ((matriz.notas.sim[, 4] - matriz.notas.sim[, 3])*4 > (matriz.notas.sim[, 4] - matriz.notas.sim[, pior.prova.sim])*3)
+  descartada.sim[condicao.sim] <- 3  
   
-  matriz.notas <- cbind(matriz.notas, descartada=descartada)
+  matriz.notas.sim <- cbind(matriz.notas.sim, descartada=descartada.sim)
   
-  Nota_final <- numeric(nrow(nota.prova))
+  Nota_final.sim <- numeric(nrow(nota.prova))
   
   for(aluno in 1:nrow(nota.prova)) {
-    if (matriz.notas[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
+    if (matriz.notas.sim[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
     else pesos <- c(3,3,4)/10
-    Nota_final[aluno] <- matriz.notas[aluno, -c(matriz.notas[aluno, 5], 5)] %*% pesos
+    Nota_final.sim[aluno] <- matriz.notas.sim[aluno, -c(matriz.notas.sim[aluno, 5], 5)] %*% pesos
   }
   for (simulacao in 1:(nchains*(niter/2))){
     sim.passar[simulacao,t] <- 
