@@ -211,6 +211,11 @@ N.passou <- vector(n.provas, mode="list")
 N.passou <- n.passou()
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
+matriz.notas.sim <- NULL
+descartada.sim <- NULL
+pior.prova.sim <- NULL
+condicao.sim <- NULL
+Nota_final.sim <- NULL
 sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
 sim.passar <- Sim.passar()
 
