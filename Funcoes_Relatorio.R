@@ -649,7 +649,13 @@ return(Passou)
 
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (t in 1:n.turmas){
+Sim.passar <- function(){
+  matriz.notas.sim <- NULL
+  descartada.sim <- NULL
+  pior.prova.sim <- NULL
+  condicao.sim <- NULL
+  Nota_final.sim <- NULL
+for (t in 1:n.turmas){
   matriz.notas.sim <- soma.acerto[,t,]
   descartada.sim <- pior.prova.sim <- max.col(-matriz.notas.sim, ties.method="last") 
   
@@ -676,7 +682,8 @@ Sim.passar <- function(){for (t in 1:n.turmas){
 }
 
 # Probabilidade de um aluno mediano passar em PE por turma
-p.sim.passar <- function(){for (turma in 1:n.turmas){
+p.sim.passar <- function(){
+for (turma in 1:n.turmas){
   P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/(nchains*(niter/2))
 }
 return(P.sim.passar)
@@ -825,41 +832,40 @@ cci_p3 <- function() {
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
-  
 }
-
 
 
 fii_p1 <- function() {
   ggplot(subset(cci,prova==1),aes(x=habilidade,y=fii,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
-    ylab(aes(label="Probabilidade de acerto"))+
+    ylab(aes(label="informação do item"))+
     theme_light()
-  
-  
 }
 
 fii_p2 <- function() {
   ggplot(subset(cci,prova==2),aes(x=habilidade,y=fii,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
-    ylab(aes(label="Probabilidade de acerto"))+
+    ylab(aes(label="informação do item"))+
     theme_light()
-  
 }
+
 fii_p3 <- function() {
   ggplot(subset(cci,prova==3),aes(x=habilidade,y=fii,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
-    ylab(aes(label="Probabilidade de acerto"))+
+    ylab(aes(label="informação do item"))+
     theme_light()
-  
 }
 
+teste.inf <- function(){
+  ggplot(subset(inf.teste.df),aes(x=habilidade,y=teste,color=Turma))+geom_line()+
+    facet_wrap(.~prova,nrow = 3)+scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="informação do teste"))+
+    theme_light()
+}

@@ -145,9 +145,17 @@ fii_p2()
 
 fii_p3()
 
+```
+
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7,fig.pos="H"}
+library('igraph')
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
+teste.inf()
+
 kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
            kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
   
 ```
-
 

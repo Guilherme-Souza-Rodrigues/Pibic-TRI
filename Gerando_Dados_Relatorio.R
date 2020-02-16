@@ -79,6 +79,15 @@ itens <- rbind(cbind(itens.p[[1]],prova=1),cbind(itens.p[[2]],prova=2),cbind(ite
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,questao,prova,a,b,c)%>%
   mutate_at(c("a","b","c"),round3)
+
+questoes.turma <- dados.original%>%
+  dplyr::select(Turma,Nome.questao)%>%
+  distinct()%>%
+  mutate(tema=str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(tema,questao,Turma)
+
+
 cci <- NULL  
 for (i in 1:101) {
   cci <- rbind(cci,itens) 
@@ -90,7 +99,14 @@ cci <- cci%>%
   mutate(prob=P.acertar.logit(a,b,c,habilidade),
          fii=fii_cord(a,c,prob))
 
-  
+inf.teste.df <- cci%>%
+  left_join(questoes.turma,by = c("tema","questao"))%>%
+  group_by(prova,habilidade,Turma)%>%
+  summarise(teste=sum(fii))%>%
+  ungroup()%>%
+  mutate(prova=paste0("Prova ",prova))
+ 
+
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
 Pm.probs <- vector(n.provas, mode="list")
