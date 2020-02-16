@@ -591,7 +591,8 @@ prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
 
 
 # Notas dos alunos por prova
-nota.prova <- function(){for (prova in 1:n.provas) {
+nota.prova <- function(){
+  for (prova in 1:n.provas) {
   notaaluno[[prova]] <- aggregate(dados.original$Nota_prova[dados.original$Numero.prova==prova],list(dados.original$Matricula[dados.original$Numero.prova==prova]),mean) 
   colnames(notaaluno[[prova]]) <- c("Matricula", "Nota")
 }

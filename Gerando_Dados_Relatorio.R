@@ -226,19 +226,6 @@ Passou <- passou()
 N.passou <- vector(n.provas, mode="list")
 N.passou <- n.passou()
 
-# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-matriz.notas.sim <- NULL
-descartada.sim <- NULL
-pior.prova.sim <- NULL
-condicao.sim <- NULL
-Nota_final.sim <- NULL
-sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
-sim.passar <- Sim.passar()
-
-# Probabilidade de um aluno mediano passar em PE por turma
-P.sim.passar <- array(dim = c(1,n.turmas), dimnames = list("Probabilidade",dimnames(mapa.questoes)[[1]]))
-P.sim.passar <- p.sim.passar()
-
 # Construção de matriz das notas finais
 nota.prova <- matrix(0, ncol = n.provas+1, nrow = length(unique(dados.original$Matricula)))
 nota.prova[,1] <- unique(dados.original$Matricula)
@@ -310,6 +297,19 @@ notas.finais <- nota.prova %>%
   arrange(Matricula) %>%
   mutate(Mencao=cut(Nota_final, righ=F, c(0.1,lim.mencao,10.1), 
                     labels=c("II", "MI", "MM", "MS", "SS")))
+
+# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
+matriz.notas.sim <- NULL
+descartada.sim <- NULL
+pior.prova.sim <- NULL
+condicao.sim <- NULL
+Nota_final.sim <- NULL
+sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
+sim.passar <- Sim.passar()
+
+# Probabilidade de um aluno mediano passar em PE por turma
+P.sim.passar <- array(dim = c(1,n.turmas), dimnames = list("Probabilidade",dimnames(mapa.questoes)[[1]]))
+P.sim.passar <- p.sim.passar()
 
 #estimadas por TRI  
 # Construção de matriz das notas finais estimadas
