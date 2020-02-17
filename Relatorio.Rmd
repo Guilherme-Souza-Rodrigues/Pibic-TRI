@@ -154,8 +154,17 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
 teste.inf()
 
-kable(itens,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão",align = c("l","l",rep("c",4)),digits = 3)%>%
-           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
+kable(itens_p1,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 1",align = c("l","l",rep("c",4)),digits = 3)%>%
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
+  footnote(general = "comentário geral")
+
+kable(itens_p2,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 2",align = c("l","l",rep("c",4)),digits = 3)%>%
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
+  footnote(general = "comentário geral")
+
+kable(itens_p3,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 3",align = c("l","l",rep("c",4)),digits = 3)%>%
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
+  footnote(general = "comentário geral")
   
 ```
 

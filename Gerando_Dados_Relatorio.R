@@ -75,19 +75,37 @@ round3 <- function(x) {
 }
 itens <- rbind(cbind(itens.p[[1]],prova=1),cbind(itens.p[[2]],prova=2),cbind(itens.p[[3]],prova=3))%>%
   rownames_to_column("aux")%>%
-  mutate(tema=str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),
+  mutate(tema= str_remove(str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),pattern = "^ " ),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,questao,prova,a,b,c)%>%
   mutate_at(c("a","b","c"),round3)
 
-questoes.turma <- dados.original%>%
-  dplyr::select(Turma,Nome.questao)%>%
-  distinct()%>%
-  mutate(tema=str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),
+aux1<- dados.original%>%
+  filter(Numero.prova!=4)%>%
+  dplyr::select(Matricula,Nome.questao,Acertou)%>%
+  mutate(tema= str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
          questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
-  dplyr::select(tema,questao,Turma)
+  dplyr::select(Matricula,tema,questao,Acertou)%>%
+  group_by(tema,questao)%>%
+  count()
 
+aux2<- dados.original%>%
+  filter(Numero.prova!=4)%>%
+  dplyr::select(Matricula,Nome.questao,Acertou)%>%
+  mutate(tema= str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(Matricula,tema,questao,Acertou)%>%
+  group_by(tema,questao,Acertou)%>%
+  count()%>%
+  ungroup()%>%
+  filter(Acertou==1)%>%
+  rename(acerto=n)%>%
+  dplyr::select(tema,questao,acerto)
 
+aux <- aux1%>%
+  left_join(aux2,by = c("tema","questao"))
+rm(aux1,aux2)
+#datframes para o gráfico de cuva caracteristica do item,informação do item e do teste.
 cci <- NULL  
 for (i in 1:101) {
   cci <- rbind(cci,itens) 
@@ -98,6 +116,13 @@ cci <- cci%>%
   cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
   mutate(prob=P.acertar.logit(a,b,c,habilidade),
          fii=fii_cord(a,c,prob))
+
+questoes.turma <- dados.original%>%
+  dplyr::select(Turma,Nome.questao)%>%
+  distinct()%>%
+  mutate(tema=str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(tema,questao,Turma)
 
 inf.teste.df <- cci%>%
   left_join(questoes.turma,by = c("tema","questao"))%>%
@@ -122,9 +147,27 @@ Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,prova,questao,Prob)%>%
   filter(prova!="Prova 4")
-  
 
+#juntando a probabilidade do aluno mediano acertar,numero de alunos que fizeram,
+#e número de acertos a questao na tabela de itens
+itens <- itens%>%
+  dplyr::select(-prova)%>%
+  left_join(Pm.probs.means,by = c("tema","questao"))%>%
+  left_join(aux,by = c("tema","questao"))%>%
+  mutate("% acerto"=(acerto/n)*100)
 
+#separando a tabela de itens por prova
+itens_p1 <- itens%>%
+  filter(prova=="Prova 1")%>%
+  dplyr::select(-prova)
+
+itens_p2 <- itens%>%
+  filter(prova=="Prova 2")%>%
+  dplyr::select(-prova)
+
+itens_p3 <- itens%>%
+  filter(prova=="Prova 3")%>%
+  dplyr::select(-prova)
 
 
 # Probabilidade de acerto de cada questão feita por cada aluno
