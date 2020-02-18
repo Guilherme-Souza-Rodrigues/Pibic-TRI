@@ -106,7 +106,7 @@ g_confusao_tri()
 
 
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano acertar a questão',fig.height=9,fig.width=7,fig.pos="H"}
+```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE, fig.cap='Probabilida de um aluno mediano (habilidade igual a zero) responder corretamente a questão segundo prova e tema',fig.height=9,fig.width=7,fig.pos="H"}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
@@ -115,7 +115,7 @@ g_Pm.probs.means()
 
 ```
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7}
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva caracteristica do item para cada item da primeira avaliação segundo tema " ,error=FALSE,fig.height=9,fig.width=7}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
@@ -125,46 +125,49 @@ cci_p1()
 ```
 
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7}
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva caracteristica do item para cada item da segunda avaliação segundo tema ", error=FALSE,fig.height=9,fig.width=7}
 cci_p2()
 ```
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7}
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva caracteristica do item para cada item da terceira avaliação segundo tema ", error=FALSE,fig.height=9,fig.width=7}
 cci_p3()
 ```
 
 
-```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7,fig.pos="H"}
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva de informação do item para cada item da primeira avaliação segundo tema ", error=FALSE,fig.height=9,fig.width=7,fig.pos="H"}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
 
 fii_p1()
-
-fii_p2()
-
-fii_p3()
-
 ```
 
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva de informação do item para cada item da terceira avaliação segundo tema ", error=FALSE,fig.height=9,fig.width=7}
+fii_p2()
+```
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva de informação do item para cada item da terceira avaliação segundo tema ", error=FALSE,fig.height=9,fig.width=7}
+fii_p3()
+```
+
+
+```{r , echo=FALSE, warning=FALSE, message=FALSE,fig.cap="Curva de informação do teste segunda avaliação e turma.", error=FALSE,fig.height=9,fig.width=7}
+teste.inf()
+```
 
 ```{r , echo=FALSE, warning=FALSE, message=FALSE, error=FALSE,fig.height=9,fig.width=7,fig.pos="H"}
 library('igraph')
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt", "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally","knitr","kableExtra")
-teste.inf()
 
 kable(itens_p1,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 1",align = c("l","l",rep("c",4)),digits = 3)%>%
-           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
-  footnote(general = "comentário geral")
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
 
 kable(itens_p2,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 2",align = c("l","l",rep("c",4)),digits = 3)%>%
-           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
-  footnote(general = "comentário geral")
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
 
 kable(itens_p3,"latex",longtable = T,booktabs=F,caption = "Parâmetros para cada questão para a prova 3",align = c("l","l",rep("c",4)),digits = 3)%>%
-           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))%>%
-  footnote(general = "comentário geral")
+           kable_styling(full_width=F,position="center",latex_options = c("repeat_header"))
   
 ```
 

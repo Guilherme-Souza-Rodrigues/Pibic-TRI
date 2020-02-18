@@ -154,7 +154,8 @@ itens <- itens%>%
   dplyr::select(-prova)%>%
   left_join(Pm.probs.means,by = c("tema","questao"))%>%
   left_join(aux,by = c("tema","questao"))%>%
-  mutate("% acerto"=(acerto/n)*100)
+  mutate("% acerto"=(acerto/n)*100)%>%
+  dplyr::select(-acerto)
 
 #separando a tabela de itens por prova
 itens_p1 <- itens%>%
