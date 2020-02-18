@@ -1,21 +1,22 @@
-Encoding
-Caption
-Remover linhas de grade e rótulos do gráfico de radar
-Radar P3 
-Rede do correlograma
-Sankey
-Remover linhas de grade e rótulos do gráfico de radar
-Calcular a média das notas da P4 considerando-se apenas os alunos que a fizeram.
-Trocar o latex para portugues
-Acrescentar as estatísticas da mudanças de menção após a Psub
-Corrigir os gráficos das probabilidades de aprovação dos alunos medianos
-Remover o gráfico do PCA 
-Verificar o gráfico da matriz de confusão
-Alterar o sistema de cores do gráfico da probabilidade de acerto de cada questão.
-Verificar o gráfico das curcas características (ver o valor de c).
+Encoding # - Ok
+Captions # - Ok
+Remover linhas 	de grade e rótulos do gráfico de radar # - Ok
+Radar P3 # - Ok
+Rede do correlograma - Ok
+Sankey # - Ok
+Calcular a média das notas da P4 considerando-se apenas os alunos que a fizeram. # (está correto)  - Ok
+Trocar o latex para portugues - Ok
+Acrescentar as estatísticas da mudanças de menção após a Psub #
+Corrigir os gráficos das probabilidades de aprovação dos alunos medianos # - Ok
+Remover o gráfico do PCA # - Ok
+Verificar o gráfico da matriz de confusão # - Ok
+Alterar o sistema de cores do gráfico da probabilidade de acerto de cada questão. - Ok
+
 Acrescentar na tabela das questões:
-	Percentual bruto de acertos 
-	Probabilidade de um aluno mediano acertar
-	Número de alunos que responderam ao item
+	Percentual bruto de acertos - Ok 
+	Probabilidade de um aluno mediano acertar - Ok
+	Número de alunos que responderam ao item - Ok
+
 	Questão foi usada nesse semestre
-	
+Verificar o gráfico das curcas características (ver o valor de c).
+Verificar a incoerência entre as Figuras 5 e 7 e os valores da Tabela 2 (ver o tema função de densidade)
