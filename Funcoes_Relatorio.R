@@ -312,7 +312,7 @@ sim.aluno.medio <- function(){
   for(prova in 1:n.provas){
     Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
                                    (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                   (1/(1+exp( -as.numeric(mcmc.itens[[prova]][,,2]))))),
+                                   (1/(1+exp(as.numeric(mcmc.itens[[prova]][,,2]))))),
                                dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
                                dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
                                              colnames(mcmc.itens[[prova]])))
