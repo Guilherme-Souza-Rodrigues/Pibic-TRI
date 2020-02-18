@@ -71,7 +71,7 @@ pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt
 g_confusao_subs()
 ```
 
-Esta matriz de confusão compara as menções obtidas somente pelos alunos que fizeram a prova substitutiva, mostrando a menção final antes e depois de a terem feito.
+Esta matriz de confusão compara as menções obtidas somente pelos alunos que fizeram a prova substitutiva, mostrando a menção final antes e depois de a terem feito. Com a aplicação da prova substitutiva, `r texto.subs`.
 
 
 #Avaliações e Banco de Questões

@@ -656,5 +656,12 @@ sankey <- sankeyNetwork(Links = links, Nodes = nodes,
 require(antaresViz)
 savePlotAsPng(sankey,file="sankey.png")
     
-# Savando os dados 
+
+# Textos
+texto.subs <- paste0(tabela1[6,3], " alunos aumentaram a menção de II para MI, ",
+                    tabela1[12,3], ", de MI para MM, ",
+                    tabela1[17,3], ", de MI para MS e ",
+                    tabela1[18,3], ", de MM para MS")
+    
+# Salvando os dados 
 save.image(file = "DadosPE.RData")
