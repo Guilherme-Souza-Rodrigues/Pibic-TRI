@@ -795,7 +795,7 @@ P.acertar.probit <- function(a,b,c,habilidade) {
 }
 
 P.acertar.logit <- function(a,b,c,habilidade){
- c+((1+c)*(exp(a*habilidade-b)/(1+exp(a*habilidade-b))))
+ c+((1-c)*( 1/(1+exp(-(a*habilidade-b))) ))
   
 }
 
