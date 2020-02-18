@@ -3,7 +3,7 @@ if(length(ls()) > 0) rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load("tidyverse", "dplyr", "tidyr", "reshape2", "irtoys", "ltm", "mirt",
                "bairt","ggplot2", "R.utils", "igraph", "factoextra", "threejs", "GGally",
-               "pander", "rstan","fmsb","tibble","stringr")
+               "pander", "rstan","fmsb","tibble","stringr","antaresViz ")
 
 dados.original <- read.csv2(choose.files(multi = FALSE, 
                                          caption = "Escolha o arquivo com o Banco de Respostas"),
@@ -75,10 +75,37 @@ round3 <- function(x) {
 }
 itens <- rbind(cbind(itens.p[[1]],prova=1),cbind(itens.p[[2]],prova=2),cbind(itens.p[[3]],prova=3))%>%
   rownames_to_column("aux")%>%
-  mutate(tema=str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),
+  mutate(tema= str_remove(str_replace_all(str_sub(aux,3,str_length(aux)-7),"_"," "),pattern = "^ " ),
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,questao,prova,a,b,c)%>%
   mutate_at(c("a","b","c"),round3)
+
+aux1<- dados.original%>%
+  filter(Numero.prova!=4)%>%
+  dplyr::select(Matricula,Nome.questao,Acertou)%>%
+  mutate(tema= str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(Matricula,tema,questao,Acertou)%>%
+  group_by(tema,questao)%>%
+  count()
+
+aux2<- dados.original%>%
+  filter(Numero.prova!=4)%>%
+  dplyr::select(Matricula,Nome.questao,Acertou)%>%
+  mutate(tema= str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(Matricula,tema,questao,Acertou)%>%
+  group_by(tema,questao,Acertou)%>%
+  count()%>%
+  ungroup()%>%
+  filter(Acertou==1)%>%
+  rename(acerto=n)%>%
+  dplyr::select(tema,questao,acerto)
+
+aux <- aux1%>%
+  left_join(aux2,by = c("tema","questao"))
+rm(aux1,aux2)
+#datframes para o gráfico de cuva caracteristica do item,informação do item e do teste.
 cci <- NULL  
 for (i in 1:101) {
   cci <- rbind(cci,itens) 
@@ -87,9 +114,24 @@ n.itens <- nrow(itens)
 cci <- cci%>%
   arrange(tema,questao)%>%
   cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
-  mutate(prob=P.acertar.probit(a,b,c,habilidade))
+  mutate(prob=P.acertar.logit(a,b,c,habilidade),
+         fii=fii_cord(a,c,prob))
 
-  
+questoes.turma <- dados.original%>%
+  dplyr::select(Turma,Nome.questao)%>%
+  distinct()%>%
+  mutate(tema=str_remove(str_replace_all(str_sub(Nome.questao,3,str_length(Nome.questao)-7),"_"," "),pattern = "^ " ),
+         questao=str_sub(Nome.questao,str_length(Nome.questao)-5,str_length(Nome.questao)-4))%>%
+  dplyr::select(tema,questao,Turma)
+
+inf.teste.df <- cci%>%
+  left_join(questoes.turma,by = c("tema","questao"))%>%
+  group_by(prova,habilidade,Turma)%>%
+  summarise(teste=sum(fii))%>%
+  ungroup()%>%
+  mutate(prova=paste0("Prova ",prova))
+ 
+
 # Simulação com as probabilidades de que um aluno mediano acerte a questão para cada questão 
 #selecionada em cada prova
 Pm.probs <- vector(n.provas, mode="list")
@@ -105,9 +147,28 @@ Pm.probs.means <- unlist(lapply(Pm.probs, colMeans))%>%
          questao=str_sub(aux,str_length(aux)-5,str_length(aux)-4))%>%
   dplyr::select(tema,prova,questao,Prob)%>%
   filter(prova!="Prova 4")
-  
 
+#juntando a probabilidade do aluno mediano acertar,numero de alunos que fizeram,
+#e número de acertos a questao na tabela de itens
+itens <- itens%>%
+  dplyr::select(-prova)%>%
+  left_join(Pm.probs.means,by = c("tema","questao"))%>%
+  left_join(aux,by = c("tema","questao"))%>%
+  mutate("% acerto"=(acerto/n)*100)%>%
+  dplyr::select(-acerto)
 
+#separando a tabela de itens por prova
+itens_p1 <- itens%>%
+  filter(prova=="Prova 1")%>%
+  dplyr::select(-prova)
+
+itens_p2 <- itens%>%
+  filter(prova=="Prova 2")%>%
+  dplyr::select(-prova)
+
+itens_p3 <- itens%>%
+  filter(prova=="Prova 3")%>%
+  dplyr::select(-prova)
 
 
 # Probabilidade de acerto de cada questão feita por cada aluno
@@ -180,6 +241,7 @@ dados.finais <- vector(n.provas, mode="list")
 dados.finais <- dados.fim()
 
 # Probabilidade de um aluno mediano passar por prova
+soma.acerto <- apply(dados.balanceamento[,,,,2], c(1,2,4), sum, na.rm = T)
 P.am.passar <- array(dim = c(n.turmas, n.provas+1), dimnames = list(dimnames(mapa.questoes)[[1]], c(dimnames(mapa.questoes)[[3]],"Turma")))
 P.am.passar <- prob.aluno.mediano.passar()
 P.am.passar[,5] <- dimnames(mapa.questoes)[[1]]
@@ -207,14 +269,6 @@ Passou <- passou()
 # Dataframes dos alunos que não passaram, em cada prova 
 N.passou <- vector(n.provas, mode="list")
 N.passou <- n.passou()
-
-# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
-sim.passar <- Sim.passar()
-
-# Probabilidade de um aluno mediano passar em PE por turma
-P.sim.passar <- array(dim = c(1,n.turmas), dimnames = list("Probabilidade",dimnames(mapa.questoes)[[1]]))
-P.sim.passar <- p.sim.passar()
 
 # Construção de matriz das notas finais
 nota.prova <- matrix(0, ncol = n.provas+1, nrow = length(unique(dados.original$Matricula)))
@@ -288,6 +342,19 @@ notas.finais <- nota.prova %>%
   mutate(Mencao=cut(Nota_final, righ=F, c(0.1,lim.mencao,10.1), 
                     labels=c("II", "MI", "MM", "MS", "SS")))
 
+# Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
+matriz.notas.sim <- NULL
+descartada.sim <- NULL
+pior.prova.sim <- NULL
+condicao.sim <- NULL
+Nota_final.sim <- NULL
+sim.passar <- array(dim = c(nchains * (niter/2),n.turmas), dimnames = list(paste("Simulacao", 1:(nchains*(niter/2))), dimnames(mapa.questoes)[[1]] ))
+sim.passar <- Sim.passar()
+
+# Probabilidade de um aluno mediano passar em PE por turma
+P.sim.passar <- array(dim = c(1,n.turmas), dimnames = list("Probabilidade",dimnames(mapa.questoes)[[1]]))
+P.sim.passar <- p.sim.passar()
+
 #estimadas por TRI  
 # Construção de matriz das notas finais estimadas
 nota.prova.estimada <- matrix(0, ncol = n.provas+1, nrow = length(unique(dados.original$Matricula)))
@@ -360,6 +427,12 @@ nota.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaalu
 
 mencao.3 <- mencao.m.prova[mencao.m.prova$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],4]
 mencao.subs <- notas.finais[notas.finais$Matricula %in% notaaluno[[3]][,1][notaaluno[[3]][,1] %in% notaaluno[[4]][,1]],7]
+
+# Textos
+texto.subs <- paste0(tabela1[6,3], " alunos aumentaram a menção de II para MI, ",
+                    tabela1[12,3], ", de MI para MM, ",
+                    tabela1[17,3], ", de MI para MS e ",
+                    tabela1[18,3], ", de MM para MS")
 
 # Medidas decritivas
 turma <- list(dados.original$Turma)
@@ -552,16 +625,9 @@ P.sim.passar <- data.frame(P.sim.passar,Turma=c(dimnames(mapa.questoes)[[1]]), L
 
 #
 adjm <- as.matrix(cor.tema)
+diag(adjm) <- 0
 
-#adjm[abs(adjm)<0.23] <- 0
-
-#for (lim in seq(0,1,.0001)){
-#  if(length(adjm[abs(adjm)>lim]) == 60){return(lim)} 
-#}
-
-#adjm[abs(adjm)<lim] <- 0 # 
-
-network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=F, mode = "undirected")
+network <- graph_from_adjacency_matrix(adjm, weighted=T, diag=F, mode = "plus")
 
 my_color <- c(rep("green", 10),
               rep("blue", 10),
@@ -574,7 +640,28 @@ class(tabela$Classico) <- "numeric"
 class(tabela$TRI) <- "numeric"
 class(tabela$Quantidade) <- "numeric"
 tabela[, 1:2] <- tabela[, 1:2] - 1
+
+require(networkD3)
+sankey <- sankeyNetwork(Links = links, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "value", NodeID = "name2", 
+              LinkGroup = 'energy_type', colourScale = JS(
+                sprintf(
+                  'd3.scaleOrdinal() .domain(%s)
+                                    .range(%s)',
+                  jsonlite::toJSON(color_scale$domain),
+                  jsonlite::toJSON(color_scale$range)
+                )
+              ), fontSize = 15, iteration=0)
+require(antaresViz)
+savePlotAsPng(sankey,file="sankey.png")
     
+
+# Textos
+texto.subs <- paste0(tabela1[6,3], " alunos aumentaram a menção de II para MI, ",
+                    tabela1[12,3], ", de MI para MM, ",
+                    tabela1[17,3], ", de MI para MS e ",
+                    tabela1[18,3], ", de MM para MS")
     
-# Savando os dados 
+# Salvando os dados 
 save.image(file = "DadosPE.RData")

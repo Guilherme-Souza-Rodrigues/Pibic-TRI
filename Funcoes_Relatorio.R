@@ -1,17 +1,17 @@
 # Criacao da variavel Tema no banco de dados
 nomes.q <- c("...medida_probabilidade.......", "...propriedade_probabilidade.......",
-           "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
-           "...distribuicao_binomial.......", "...distribuicao_binomial.......", "...distribuicao_geometrica.......",
-           "...distribuicao_hipergeometrica.......", "...distribuicao_poisson.......", 
-           "...aproximacao_poisson_binomial.......", "...funcao_densidade.......",
-           "...distribuicao_acumulada.......", "...momentos.......", "...distribuicao_exponencial.......",
-           "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
-           "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
-           "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
-           "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......",
-           "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
-           "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
-           "...valor_esperado_e_variancia.......")
+             "...probabilidade_total.......", "...teorema_Bayes.......", "...variaveis_aleatorias.......",
+             "...distribuicao_binomial.......", "...distribuicao_binomial.......", "...distribuicao_geometrica.......",
+             "...distribuicao_hipergeometrica.......", "...distribuicao_poisson.......", 
+             "...aproximacao_poisson_binomial.......", "...funcao_densidade.......",
+             "...distribuicao_acumulada.......", "...momentos.......", "...distribuicao_exponencial.......",
+             "...distribuicao_normal.......", "...distribuicao_normal...", "...aproximacao_normal_binomial.......",
+             "...distribuicao_condicional.......", "...covariancia_correlacao.......", "...distribuicao_media.......",
+             "...distribuicao_proporcao.......", "...maxima_verossimilhanca.......",
+             "...IC_media_normal.......", "...IC_media_t.......", "...IC_proporção.......", "...IC_proporcao.......",
+             "...TH_media.......", "...tamanho_media.......", "...TH_proporcao.......", 
+             "...pvalor_media.......", "...tamanho_prop.......", "...pvalor_proporcao.......", 
+             "...valor_esperado_e_variancia.......")
 temas <- c("medida_probabilidade", "propriedade_probabilidade",
            "probabilidade_total", "teorema_Bayes", "variaveis_aleatorias",
            "distribuicao_binomial", "distribuicao_binomial", "distribuicao_geometrica",
@@ -21,7 +21,7 @@ temas <- c("medida_probabilidade", "propriedade_probabilidade",
            "distribuicao_normal", "distribuicao_normal", "aproximacao_normal_binomial",
            "distribuicao_condicional", "covariancia_correlacao", "distribuicao_media",
            "distribuicao_proporcao", "maxima_verossimilhanca",
-           "IC_media_normal", "IC_media_t", "IC_proporção",
+           "IC_media_normal", "IC_media_t", "IC_proporção", "IC_proporção",
            "TH_media", "tamanho_media", "TH_proporcao", 
            "pvalor_media", "tamanho_prop", "pvalor_proporcao", 
            "valor_esperado_e_variancia")
@@ -85,6 +85,7 @@ dico <- function(){for(prova in 1:n.provas) {
 # Cálculo dos estimadores dos parâmetros dos itens e do estimador do parâmetro de habilidade de
 #cada aluno via Monte Carlo Cadeia de Markov:
 mcmc<- function() {
+  require(rstan)
   model <- stan_model(model_code = 
                         
                         "data {
@@ -118,9 +119,9 @@ a~normal(0,1);
 b~normal(0,1);
 c~beta(5,17);
 theta~normal(0,1);
-y~bernoulli(c[item]+((1-c[item]) *normal_cdf((a[item] .*theta[aluno])-b[item],mu,sigma)));
-
-}"
+y~bernoulli(c[item]+((1-c[item]).*inv_logit((a[item] .*theta[aluno])-b[item])));
+}
+"
 
   )
   
@@ -153,9 +154,9 @@ fit.p1 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p1$Matric
                                           N=nrow(dados_p1),
                                           aluno=dados_p1$Matricula.mod,
                                           item=dados_p1$Nome.questao.mod, 
-                                          y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p1$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
 
-params.p1 <- extract(fit.p1)
+params.p1 <- rstan::extract(fit.p1)
 itens.p1 <- array(c(params.p1$a,params.p1$b,params.p1$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p1), 3),
                     dimnames = list(paste("simulação",1:(nchains*(niter/2))),
@@ -190,9 +191,9 @@ fit.p2 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p2$Matric
                                           N=nrow(dados_p2),
                                           aluno=dados_p2$Matricula.mod,
                                           item=dados_p2$Nome.questao.mod, 
-                                          y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p2$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
   
-params.p2 <- extract(fit.p2)
+params.p2 <- rstan::extract(fit.p2)
 
 itens.p2 <- array(c(params.p2$a,params.p2$b,params.p2$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p2), 3),
@@ -228,9 +229,9 @@ fit.p3 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p3$Matric
                                           N=nrow(dados_p3),
                                           aluno=dados_p3$Matricula.mod,
                                           item=dados_p3$Nome.questao.mod, 
-                                          y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p3$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
   
-params.p3 <- extract(fit.p3)
+params.p3 <- rstan::extract(fit.p3)
 
 itens.p3 <- array(c(params.p3$a,params.p3$b,params.p3$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p3), 3),
@@ -267,9 +268,9 @@ fit.p4 <- sampling(object=model,data=list(N_alunos=length(unique(dados_p4$Matric
                                           N=nrow(dados_p4),
                                           aluno=dados_p4$Matricula.mod,
                                           item=dados_p4$Nome.questao.mod, 
-                                          y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4)
+                                          y=dados_p4$Acertou),iter=niter,chains=nchains,cores=4,control = list(max_treedepth = 15))
 
-params.p4 <- extract(fit.p4)
+params.p4 <- rstan::extract(fit.p4)
 
 itens.p4 <- array(c(params.p4$a,params.p4$b,params.p4$c),
                     dim = c(nchains*(niter/2) , nrow(Questoes_equivalencia_p4), 3),
@@ -311,7 +312,7 @@ sim.aluno.medio <- function(){
   for(prova in 1:n.provas){
     Pm.probs[[prova]] <- array(c(as.numeric(mcmc.itens[[prova]][,,3]) +                   
                                    (1-as.numeric(mcmc.itens[[prova]][,,3]))*
-                                   pnorm(-as.numeric(mcmc.itens[[prova]][,,2]))),
+                                   (1/(1+exp( -as.numeric(mcmc.itens[[prova]][,,2]))))),
                                dim=c(nchains*(niter/2), ncol(respostas.dico[[prova]])-2), 
                                dimnames=list(paste("Simulacao", 1:(nchains*(niter/2))),
                                              colnames(mcmc.itens[[prova]])))
@@ -326,7 +327,7 @@ prob.acerto.questoes <- function(){for (prova in 1:n.provas){
     
     P.probs[[prova]][aluno,] <- c(
       itens.p[[prova]][,3] + (1-itens.p[[prova]][,3])*
-        pnorm(itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2])
+        (1/(1+exp((itens.p[[prova]][,1]*colMeans(mcmc.theta[[prova]])[aluno] - itens.p[[prova]][,2]))))
     )
     
     P.probs[[prova]] <- data.frame(P.probs[[prova]])
@@ -590,7 +591,8 @@ prob.aluno.mediano.passar <- function(){for (prova in 1:n.provas){
 
 
 # Notas dos alunos por prova
-nota.prova <- function(){for (prova in 1:n.provas) {
+nota.prova <- function(){
+  for (prova in 1:n.provas) {
   notaaluno[[prova]] <- aggregate(dados.original$Nota_prova[dados.original$Numero.prova==prova],list(dados.original$Matricula[dados.original$Numero.prova==prova]),mean) 
   colnames(notaaluno[[prova]]) <- c("Matricula", "Nota")
 }
@@ -648,22 +650,28 @@ return(Passou)
 
 
 # Dataframe com as probabilidades das simulações com theta mediano passar em PE em cada turma
-Sim.passar <- function(){for (t in 1:n.turmas){
-  matriz.notas <- soma.acerto[,t,]
-  descartada.sim <- pior.prova <- max.col(-matriz.notas, ties.method="last") 
+Sim.passar <- function(){
+  matriz.notas.sim <- NULL
+  descartada.sim <- NULL
+  pior.prova.sim <- NULL
+  condicao.sim <- NULL
+  Nota_final.sim <- NULL
+for (t in 1:n.turmas){
+  matriz.notas.sim <- soma.acerto[,t,]
+  descartada.sim <- pior.prova.sim <- max.col(-matriz.notas.sim, ties.method="last") 
   
-  condicao <- (pior.prova %in% 1:2) & 
-    ((matriz.notas[, 4] - matriz.notas[, 3])*4 > (matriz.notas[, 4] - matriz.notas[, pior.prova])*3)
-  descartada[condicao] <- 3  
+  condicao.sim <- (pior.prova.sim %in% 1:2) & 
+    ((matriz.notas.sim[, 4] - matriz.notas.sim[, 3])*4 > (matriz.notas.sim[, 4] - matriz.notas.sim[, pior.prova.sim])*3)
+  descartada.sim[condicao.sim] <- 3  
   
-  matriz.notas <- cbind(matriz.notas, descartada=descartada)
+  matriz.notas.sim <- cbind(matriz.notas.sim, descartada=descartada.sim)
   
-  Nota_final <- numeric(nrow(nota.prova))
+  Nota_final.sim <- numeric(nrow(nota.prova))
   
   for(aluno in 1:nrow(nota.prova)) {
-    if (matriz.notas[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
+    if (matriz.notas.sim[aluno, 5] %in% 1:2) pesos <- c(3,4,3)/10
     else pesos <- c(3,3,4)/10
-    Nota_final[aluno] <- matriz.notas[aluno, -c(matriz.notas[aluno, 5], 5)] %*% pesos
+    Nota_final.sim[aluno] <- matriz.notas.sim[aluno, -c(matriz.notas.sim[aluno, 5], 5)] %*% pesos
   }
   for (simulacao in 1:(nchains*(niter/2))){
     sim.passar[simulacao,t] <- 
@@ -675,7 +683,8 @@ Sim.passar <- function(){for (t in 1:n.turmas){
 }
 
 # Probabilidade de um aluno mediano passar em PE por turma
-p.sim.passar <- function(){for (turma in 1:n.turmas){
+p.sim.passar <- function(){
+for (turma in 1:n.turmas){
   P.sim.passar[,turma] <- sum(sim.passar[,turma]>=5)/(nchains*(niter/2))
 }
 return(P.sim.passar)
@@ -684,28 +693,30 @@ return(P.sim.passar)
 
 ### GRÁFICOS ###
 g_notas_curso <- function(){ggplot(dados.original1, aes(factor(Curso, level = medcurso[,1]), Nota_prova)) + 
-  geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
-  stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
-  ylab("Notas") + xlab("Curso") + 
-  ggtitle("Notas por Curso") +
-  coord_flip() + theme_classic()}
+    geom_jitter(position=position_jitter(0.2), alpha=.4, aes(color=Grupo)) +
+    stat_summary(aes(y = Nota_prova, group=1), fun.y=mean, colour="black", geom="line",group=1) +
+    ylab("Notas") + xlab("Curso") + coord_flip() + theme_classic()}
 
-g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + geom_point() +
-  geom_line() + ylim(0,10) + scale_color_manual(values=c(rep("grey",10),'black')) +
-  ggtitle("Média das Turmas por Prova e Média Geral") + theme_classic() + theme(legend.position = "none")
+g_media_provas <- function(){ggplot(medpturma, aes(Prova, Media, color=Turma, group=Turma)) + 
+    geom_point() + geom_line() + ylim(0,10) + ylab("Média") +
+    scale_color_manual(values=c(rep("grey",10),'black')) +
+    theme_classic() + theme(legend.position = "none")
 }
 
-g_radar1 <- function(){radarchart(data[[1]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                 plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                 caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar1 <- function(){radarchart(data[[1]],  axistype=0, pcol=c(rep("azure4",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar2 <- function(){radarchart(data[[2]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar2 <- function(){radarchart(data[[2]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
-g_radar3 <- function(){radarchart(data[[3]],  axistype=2, pcol=c(rep("grey",10), 'black'), 
-                                  plwd=1, plty=1, cglcol="grey", cglty=1, 
-                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.8, vlcex=0.8)
+g_radar3 <- function(){radarchart(data[[3]],  axistype=0, pcol=c(rep("grey",10), 'black'), 
+                                  plwd=1, plty=1, cglcol="beige", cglty=1, 
+                                  caxislabels=seq(0,55,5), axislabcol="grey", cglwd=0.3, 
+                                  vlcex=0.8)
 }
 
 g_fluxo_sankey <- function(){
@@ -747,20 +758,17 @@ g_rede_associacao <- function(){
        vertex.color=my_color, 
        vertex.label.cex=0.7,
        vertex.label.color="black",
-       vertex.frame.color="black"
+       vertex.frame.color=my_color, edge.width=(E(network)$weight*5),
+       edge.color="gray88",
+       edge.curved=0.4
   )
-  
-  #text(0.1,1,"Rede de associação dos temas",col="black", cex=1.5)
-  legend(x=.8, y=.9, 
+
+  legend(x=1, y=1.2, 
          legend=paste("Prova", levels(as.factor(cluster$cluster))), 
          col = c("green", "blue", "red") , 
          bty = "n", pch=20 , pt.cex = 2, cex = 1,
          text.col="black" , horiz = F)
 }
-
-g_componentes_principais <- function(){fviz_cluster(cluster, data=t(cor.tema),
-                                         ggtheme = theme_minimal(),
-                                         main = "Partição dos temas em Clusters")}
 
 g_confusao_tri <- function(){tabela %>% 
   ggplot(aes(Classico, TRI)) +
@@ -774,9 +782,9 @@ g_confusao_tri <- function(){tabela %>%
 g_Pm.probs.means <- function(){
   ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
     geom_point(aes(color=Prob),show.legend = FALSE)+
-    scale_x_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     facet_grid(prova ~ ., scales="free_y", space="free_y")+
-    scale_colour_gradient(low="red",high="green")+
+    scale_colour_gradient(limits=c(0,1),low="red",high="green")+
     xlab(aes(label=" "))+
     ylab(aes(label=" "))+
     theme_light()
@@ -786,11 +794,20 @@ P.acertar.probit <- function(a,b,c,habilidade) {
   c+(1-c)*pnorm(a*habilidade-b)
 }
 
+P.acertar.logit <- function(a,b,c,habilidade){
+  c+(1-c)*(1/(1+exp( -(a*habilidade-b) )))
+}
+
+fii_cord <- function(a,c,prob){
+  a^(2)*((1-prob)/prob)*((prob-c)/(1-c))^(2)
+}
+
 
 cci_p1 <- function() {
   ggplot(subset(cci,prova==1),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -802,6 +819,7 @@ cci_p2 <- function() {
   ggplot(subset(cci,prova==2),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -811,10 +829,44 @@ cci_p3 <- function() {
   ggplot(subset(cci,prova==3),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1))+
+    scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
-  
 }
 
 
+fii_p1 <- function() {
+  ggplot(subset(cci,prova==1),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="informação do item"))+
+    theme_light()
+}
+
+fii_p2 <- function() {
+  ggplot(subset(cci,prova==2),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="informação do item"))+
+    theme_light()
+}
+
+fii_p3 <- function() {
+  ggplot(subset(cci,prova==3),aes(x=habilidade,y=fii,color=questao))+geom_line()+
+    facet_wrap(.~tema,ncol = 2)+
+    scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="informação do item"))+
+    theme_light()
+}
+
+teste.inf <- function(){
+  ggplot(subset(inf.teste.df),aes(x=habilidade,y=teste,color=Turma))+geom_line()+
+    facet_wrap(.~prova,nrow = 3)+scale_x_continuous(limits = c(-4,4))+
+    xlab(aes(label="habilidade"))+
+    ylab(aes(label="informação do teste"))+
+    theme_light()
+}
