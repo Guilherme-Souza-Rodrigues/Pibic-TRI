@@ -780,7 +780,7 @@ g_confusao_tri <- function(){tabela %>%
             color="red", alpha=0, size=1)}
 
 g_Pm.probs.means <- function(){
-  ggplot(Pm.probs.means,aes(x=Prob,y=reorder(tema,Prob,mean)))+geom_line()+
+  ggplot(Pm.probs.means,aes(x=Prob,y=tema))+geom_line()+
     geom_point(aes(color=Prob),show.legend = FALSE)+
     scale_x_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     facet_grid(prova ~ ., scales="free_y", space="free_y")+
@@ -795,7 +795,7 @@ P.acertar.probit <- function(a,b,c,habilidade) {
 }
 
 P.acertar.logit <- function(a,b,c,habilidade){
-  c+(1-c)*(1/(1+exp( -(a*habilidade-b) )))
+  c+((1-c)*(1/(1+exp( -(a*habilidade-b)))))
 }
 
 fii_cord <- function(a,c,prob){
@@ -806,7 +806,7 @@ fii_cord <- function(a,c,prob){
 cci_p1 <- function() {
   ggplot(subset(cci,prova==1),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
+    scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
@@ -818,7 +818,7 @@ cci_p1 <- function() {
 cci_p2 <- function() {
   ggplot(subset(cci,prova==2),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
+    scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
@@ -828,7 +828,7 @@ cci_p2 <- function() {
 cci_p3 <- function() {
   ggplot(subset(cci,prova==3),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
-    scale_y_continuous(limits = c(0,1))+
+    scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
     scale_x_continuous(limits = c(-4,4))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
