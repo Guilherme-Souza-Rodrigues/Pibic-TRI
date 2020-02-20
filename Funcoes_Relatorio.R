@@ -795,8 +795,7 @@ P.acertar.probit <- function(a,b,c,habilidade) {
 }
 
 P.acertar.logit <- function(a,b,c,habilidade){
- c+((1-c)*( 1/(1+exp(-(a*habilidade-b))) ))
-  
+ c+((1-c)*( 1/(1+exp(-(a*habilidade-b)))))
 }
 
 fii_cord <- function(a,c,prob){
