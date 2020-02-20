@@ -807,7 +807,7 @@ cci_p1 <- function() {
   ggplot(subset(cci,prova==1),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
-    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,1))+
+    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,2))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -819,7 +819,7 @@ cci_p2 <- function() {
   ggplot(subset(cci,prova==2),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
-    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,1))+
+    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,2))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
@@ -829,7 +829,7 @@ cci_p3 <- function() {
   ggplot(subset(cci,prova==3),aes(x=habilidade,y=prob,color=questao))+geom_line()+
     facet_wrap(.~tema,ncol = 2)+
     scale_y_continuous(limits = c(0,1),breaks = seq(0,1,0.2))+
-    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,1))+
+    scale_x_continuous(limits = c(-6,4),breaks = seq(-6,4,2))+
     xlab(aes(label="habilidade"))+
     ylab(aes(label="Probabilidade de acerto"))+
     theme_light()
