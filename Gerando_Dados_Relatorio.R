@@ -113,7 +113,7 @@ for (i in 1:101) {
 n.itens <- nrow(itens)
 cci <- cci%>%
   arrange(tema,questao)%>%
-  cbind(habilidade=rep(seq(-4, 4, length = 101),n.itens))%>%
+  cbind(habilidade=rep(seq(-6, 4, length = 101),n.itens))%>%
   mutate(prob=P.acertar.logit(a,b,c,habilidade),
          fii=fii_cord(a,c,prob))
 
