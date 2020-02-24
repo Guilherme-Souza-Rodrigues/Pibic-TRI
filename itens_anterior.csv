@@ -1,0 +1,301 @@
+"","tema","questao","a","b","c","prova","Prob","n","% acerto"
+"1","medida probabilidade","01",0.581,1.699,0.159,"Prova 1",0.300264267570893,53,26.4150943396226
+"2","medida probabilidade","02",1.215,0.776,0.192,"Prova 1",0.455547202283008,97,46.3917525773196
+"3","medida probabilidade","03",NA,NA,NA,"Prova 1",NA,NA,NA
+"4","medida probabilidade","04",NA,NA,NA,"Prova 1",NA,NA,NA
+"5","medida probabilidade","05",0.973,1.498,0.147,"Prova 1",0.312436938263749,56,30.3571428571429
+"6","medida probabilidade","06",1.186,-0.493,0.232,"Prova 1",0.70876352048175,53,69.811320754717
+"7","medida probabilidade","07",0.921,0.85,0.208,"Prova 1",0.457809418359617,43,46.5116279069767
+"8","medida probabilidade","08",NA,NA,NA,"Prova 1",NA,NA,NA
+"9","medida probabilidade","09",0.617,-0.227,0.246,"Prova 1",0.670019395164189,107,66.3551401869159
+"10","medida probabilidade","10",1.356,0.266,0.215,"Prova 1",0.562349587744721,79,55.6962025316456
+"11","propriedade probabilidade","01",1.264,0.95,0.179,"Prova 1",0.418757928837237,54,42.5925925925926
+"12","propriedade probabilidade","02",NA,NA,NA,"Prova 1",NA,NA,NA
+"13","propriedade probabilidade","03",NA,NA,NA,"Prova 1",NA,NA,NA
+"14","propriedade probabilidade","04",1.739,-1.283,0.232,"Prova 1",0.829528906641787,106,76.4150943396226
+"15","propriedade probabilidade","05",0.875,1.395,0.141,"Prova 1",0.319540082608479,105,32.3809523809524
+"16","propriedade probabilidade","06",NA,NA,NA,"Prova 1",NA,NA,NA
+"17","propriedade probabilidade","07",0.634,0.642,0.222,"Prova 1",0.502289089436686,69,49.2753623188406
+"18","propriedade probabilidade","08",1.745,0.479,0.177,"Prova 1",0.499171586234543,55,49.0909090909091
+"19","propriedade probabilidade","09",0.943,-0.601,0.254,"Prova 1",0.736041420455194,56,75
+"20","propriedade probabilidade","10",0.691,-1.267,0.253,"Prova 1",0.830701698954404,43,86.046511627907
+"21","probabilidade total","01",1.463,-1.033,0.238,"Prova 1",0.796541600269695,67,77.6119402985075
+"22","probabilidade total","02",NA,NA,NA,"Prova 1",NA,NA,NA
+"23","probabilidade total","03",1.139,-1.433,0.244,"Prova 1",0.852659166538148,153,82.3529411764706
+"24","probabilidade total","04",1.703,-0.393,0.221,"Prova 1",0.687389746430886,108,67.5925925925926
+"25","probabilidade total","05",1.568,-0.9,0.228,"Prova 1",0.772308607759765,54,74.0740740740741
+"26","probabilidade total","06",NA,NA,NA,"Prova 1",NA,NA,NA
+"27","probabilidade total","07",1.54,-1.02,0.232,"Prova 1",0.791612217503486,53,73.5849056603774
+"28","probabilidade total","08",1.327,-0.694,0.244,"Prova 1",0.746496587597289,53,73.5849056603774
+"29","probabilidade total","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"30","probabilidade total","10",NA,NA,NA,"Prova 1",NA,NA,NA
+"31","teorema Bayes","01",NA,NA,NA,"Prova 1",NA,NA,NA
+"32","teorema Bayes","02",1.383,0.106,0.205,"Prova 1",0.586551567122071,122,58.1967213114754
+"33","teorema Bayes","03",0.744,1.398,0.186,"Prova 1",0.358581775152179,96,35.4166666666667
+"34","teorema Bayes","04",NA,NA,NA,"Prova 1",NA,NA,NA
+"35","teorema Bayes","05",0.738,1.311,0.182,"Prova 1",0.367397208515448,54,35.1851851851852
+"36","teorema Bayes","06",1.752,-0.488,0.219,"Prova 1",0.701907998182867,56,69.6428571428571
+"37","teorema Bayes","07",1.424,0.247,0.208,"Prova 1",0.561612551970652,53,56.6037735849057
+"38","teorema Bayes","08",NA,NA,NA,"Prova 1",NA,NA,NA
+"39","teorema Bayes","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"40","teorema Bayes","10",1.443,-0.111,0.197,"Prova 1",0.624058310976682,107,60.7476635514019
+"41","variaveis aleatorias","01",1.39,0.817,0.171,"Prova 1",0.43442652378327,52,44.2307692307692
+"42","variaveis aleatorias","02",NA,NA,NA,"Prova 1",NA,NA,NA
+"43","variaveis aleatorias","03",1.308,-0.375,0.222,"Prova 1",0.685058521373087,96,68.75
+"44","variaveis aleatorias","04",1.445,0.348,0.216,"Prova 1",0.548424082144475,109,55.9633027522936
+"45","variaveis aleatorias","05",0.965,-2.232,0.259,"Prova 1",0.922249296696618,56,94.6428571428571
+"46","variaveis aleatorias","06",1.207,0.045,0.217,"Prova 1",0.604604634472029,53,60.377358490566
+"47","variaveis aleatorias","07",1.029,-1.521,0.257,"Prova 1",0.861048295965271,53,84.9056603773585
+"48","variaveis aleatorias","08",NA,NA,NA,"Prova 1",NA,NA,NA
+"49","variaveis aleatorias","09",0.817,0.655,0.223,"Prova 1",0.50101605519548,45,48.8888888888889
+"50","variaveis aleatorias","10",1.424,-0.702,0.229,"Prova 1",0.738618952837614,24,70.8333333333333
+"51","distribuicao binomial","01",1.837,0.09,0.188,"Prova 1",0.58016415177677,100,56
+"52","distribuicao binomial","02",1.026,0.015,0.221,"Prova 1",0.612554361640437,54,61.1111111111111
+"53","distribuicao binomial","03",NA,NA,NA,"Prova 1",NA,NA,NA
+"54","distribuicao binomial","04",1.06,-0.018,0.219,"Prova 1",0.617791446733304,109,62.3853211009174
+"55","distribuicao binomial","05",NA,NA,NA,"Prova 1",NA,NA,NA
+"56","distribuicao binomial","06",1.97,0.818,0.137,"Prova 1",0.408343317463913,105,42.8571428571429
+"57","distribuicao binomial","07",0.972,1.364,0.159,"Prova 1",0.343095154597529,24,25
+"58","distribuicao binomial","08",NA,NA,NA,"Prova 1",NA,NA,NA
+"59","distribuicao binomial","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"60","distribuicao binomial","10",1.53,-0.527,0.212,"Prova 1",0.706160321781039,53,69.811320754717
+"61","distribuicao geometrica","01",0.692,-1.525,0.253,"Prova 1",0.862046663305812,55,87.2727272727273
+"62","distribuicao geometrica","02",NA,NA,NA,"Prova 1",NA,NA,NA
+"63","distribuicao geometrica","03",NA,NA,NA,"Prova 1",NA,NA,NA
+"64","distribuicao geometrica","04",1.137,0.226,0.217,"Prova 1",0.571008541968577,77,57.1428571428571
+"65","distribuicao geometrica","05",1.61,0.756,0.159,"Prova 1",0.43453903660762,110,47.2727272727273
+"66","distribuicao geometrica","06",1.215,0.221,0.207,"Prova 1",0.565808453499455,148,56.7567567567568
+"67","distribuicao geometrica","07",NA,NA,NA,"Prova 1",NA,NA,NA
+"68","distribuicao geometrica","08",NA,NA,NA,"Prova 1",NA,NA,NA
+"69","distribuicao geometrica","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"70","distribuicao geometrica","10",0.987,-0.525,0.229,"Prova 1",0.713240049559493,53,71.6981132075472
+"71","distribuicao hipergeometrica","01",2.229,-0.86,0.183,"Prova 1",0.752294101338781,76,67.1052631578947
+"72","distribuicao hipergeometrica","02",0.786,0.908,0.212,"Prova 1",0.450405702803533,53,43.3962264150943
+"73","distribuicao hipergeometrica","03",1.401,-0.223,0.215,"Prova 1",0.654077577645818,106,65.0943396226415
+"74","distribuicao hipergeometrica","04",NA,NA,NA,"Prova 1",NA,NA,NA
+"75","distribuicao hipergeometrica","05",1.291,0.031,0.22,"Prova 1",0.609258149140411,55,60
+"76","distribuicao hipergeometrica","06",NA,NA,NA,"Prova 1",NA,NA,NA
+"77","distribuicao hipergeometrica","07",NA,NA,NA,"Prova 1",NA,NA,NA
+"78","distribuicao hipergeometrica","08",1.381,1.027,0.176,"Prova 1",0.403829623266676,56,42.8571428571429
+"79","distribuicao hipergeometrica","09",1.052,0.255,0.222,"Prova 1",0.569247939061293,45,55.5555555555556
+"80","distribuicao hipergeometrica","10",1.058,-0.837,0.244,"Prova 1",0.77122803770965,97,76.2886597938144
+"81","distribuicao poisson","01",1.199,1.096,0.167,"Prova 1",0.386823796273089,45,35.5555555555556
+"82","distribuicao poisson","02",NA,NA,NA,"Prova 1",NA,NA,NA
+"83","distribuicao poisson","03",1.146,1.013,0.158,"Prova 1",0.390201476775306,107,41.1214953271028
+"84","distribuicao poisson","04",0.603,-1.006,0.255,"Prova 1",0.798120399265952,53,81.1320754716981
+"85","distribuicao poisson","05",1.267,0.175,0.209,"Prova 1",0.575811748511673,99,59.5959595959596
+"86","distribuicao poisson","06",1.063,0.395,0.211,"Prova 1",0.53641715667994,107,54.2056074766355
+"87","distribuicao poisson","07",1.696,1.118,0.143,"Prova 1",0.363818056760968,53,33.9622641509434
+"88","distribuicao poisson","08",0.414,1.539,0.182,"Prova 1",0.341655132606233,24,25
+"89","distribuicao poisson","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"90","distribuicao poisson","10",NA,NA,NA,"Prova 1",NA,NA,NA
+"91","aproximacao poisson binomial","01",NA,NA,NA,"Prova 1",NA,NA,NA
+"92","aproximacao poisson binomial","02",1.808,-0.703,0.194,"Prova 1",0.733187283687081,208,69.2307692307692
+"93","aproximacao poisson binomial","03",NA,NA,NA,"Prova 1",NA,NA,NA
+"94","aproximacao poisson binomial","04",1.358,-0.182,0.223,"Prova 1",0.650789709317129,105,62.8571428571429
+"95","aproximacao poisson binomial","05",1.522,-0.083,0.206,"Prova 1",0.622825201113015,55,60
+"96","aproximacao poisson binomial","06",1.503,0.245,0.192,"Prova 1",0.552878732472391,24,50
+"97","aproximacao poisson binomial","07",0.941,1.178,0.163,"Prova 1",0.371914078502299,53,35.8490566037736
+"98","aproximacao poisson binomial","08",0.865,1.433,0.175,"Prova 1",0.345934594924946,43,32.5581395348837
+"99","aproximacao poisson binomial","09",NA,NA,NA,"Prova 1",NA,NA,NA
+"100","aproximacao poisson binomial","10",NA,NA,NA,"Prova 1",NA,NA,NA
+"101","funcao densidade","01",1.312,1.47,0.142,"Prova 2",0.311523032480494,109,31.1926605504587
+"102","funcao densidade","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"103","funcao densidade","03",1.242,0.016,0.224,"Prova 2",0.61439921440744,51,60.7843137254902
+"104","funcao densidade","04",0.868,0.278,0.228,"Prova 2",0.56823219859349,143,58.041958041958
+"105","funcao densidade","05",0.639,-0.611,0.247,"Prova 2",0.735071285538497,51,72.5490196078431
+"106","funcao densidade","06",1.389,-0.29,0.239,"Prova 2",0.676816460711194,53,66.0377358490566
+"107","funcao densidade","07",NA,NA,NA,"Prova 2",NA,NA,NA
+"108","funcao densidade","08",1.267,-1.081,0.243,"Prova 2",0.803548371794401,52,76.9230769230769
+"109","funcao densidade","09",NA,NA,NA,"Prova 2",NA,NA,NA
+"110","funcao densidade","10",NA,NA,NA,"Prova 2",NA,NA,NA
+"111","distribuicao acumulada","01",1.494,0.156,0.21,"Prova 2",0.580166868794268,53,56.6037735849057
+"112","distribuicao acumulada","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"113","distribuicao acumulada","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"114","distribuicao acumulada","04",NA,NA,NA,"Prova 2",NA,NA,NA
+"115","distribuicao acumulada","05",NA,NA,NA,"Prova 2",NA,NA,NA
+"116","distribuicao acumulada","06",NA,NA,NA,"Prova 2",NA,NA,NA
+"117","distribuicao acumulada","07",0.784,-0.47,0.245,"Prova 2",0.712419643838479,110,70
+"118","distribuicao acumulada","08",0.991,0.591,0.208,"Prova 2",0.500963407921891,51,47.0588235294118
+"119","distribuicao acumulada","09",0.719,-0.489,0.247,"Prova 2",0.715022727628157,50,74
+"120","distribuicao acumulada","10",1.21,0.087,0.228,"Prova 2",0.603790266695149,95,60
+"121","momentos","01",0.942,-0.272,0.237,"Prova 2",0.672829937972952,51,64.7058823529412
+"122","momentos","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"123","momentos","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"124","momentos","04",0.669,1.446,0.178,"Prova 2",0.346858500463215,52,30.7692307692308
+"125","momentos","05",NA,NA,NA,"Prova 2",NA,NA,NA
+"126","momentos","06",1.211,-0.321,0.23,"Prova 2",0.678148392260413,53,66.0377358490566
+"127","momentos","07",0.868,-0.466,0.246,"Prova 2",0.707413585673801,20,70
+"128","momentos","08",0.708,1.628,0.176,"Prova 2",0.322528241067701,101,32.6732673267327
+"129","momentos","09",NA,NA,NA,"Prova 2",NA,NA,NA
+"130","momentos","10",1.611,0.932,0.149,"Prova 2",0.399250988922272,45,40
+"131","distribuicao exponencial","01",NA,NA,NA,"Prova 2",NA,NA,NA
+"132","distribuicao exponencial","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"133","distribuicao exponencial","03",0.894,1.022,0.189,"Prova 2",0.412692563500415,201,42.7860696517413
+"134","distribuicao exponencial","04",NA,NA,NA,"Prova 2",NA,NA,NA
+"135","distribuicao exponencial","05",1.295,0.956,0.181,"Prova 2",0.41877180883078,53,41.5094339622642
+"136","distribuicao exponencial","06",0.798,1.127,0.187,"Prova 2",0.402028299458459,20,30
+"137","distribuicao exponencial","07",0.608,0.958,0.207,"Prova 2",0.439154267954531,101,42.5742574257426
+"138","distribuicao exponencial","08",0.859,0.627,0.21,"Prova 2",0.495178556708875,84,50
+"139","distribuicao exponencial","09",NA,NA,NA,"Prova 2",NA,NA,NA
+"140","distribuicao exponencial","10",NA,NA,NA,"Prova 2",NA,NA,NA
+"141","distribuicao normal","01",1.339,1.267,0.164,"Prova 2",0.359133209077203,51,35.2941176470588
+"142","distribuicao normal","02",1.902,0.585,0.158,"Prova 2",0.466249614123623,102,49.0196078431373
+"143","distribuicao normal","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"144","distribuicao normal","04",NA,NA,NA,"Prova 2",NA,NA,NA
+"145","distribuicao normal","05",0.759,1.49,0.178,"Prova 2",0.340257123598185,137,34.3065693430657
+"146","distribuicao normal","06",0.921,1.535,0.167,"Prova 2",0.324893579132096,99,31.3131313131313
+"147","distribuicao normal","07",1.188,0.26,0.209,"Prova 2",0.560047748752473,50,54
+"148","distribuicao normal","08",NA,NA,NA,"Prova 2",NA,NA,NA
+"149","distribuicao normal","09",0.942,-0.264,0.239,"Prova 2",0.669714783967578,20,65
+"150","distribuicao normal","10",NA,NA,NA,"Prova 2",NA,NA,NA
+"151","aproximacao normal binomial","01",1.222,1.268,0.161,"Prova 2",0.35422050799105,151,35.7615894039735
+"152","aproximacao normal binomial","02",0.895,1.031,0.199,"Prova 2",0.421914205130563,51,41.1764705882353
+"153","aproximacao normal binomial","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"154","aproximacao normal binomial","04",1.52,-0.019,0.205,"Prova 2",0.61031721207823,53,58.4905660377358
+"155","aproximacao normal binomial","05",0.646,0.863,0.208,"Prova 2",0.454788417709257,70,45.7142857142857
+"156","aproximacao normal binomial","06",NA,NA,NA,"Prova 2",NA,NA,NA
+"157","aproximacao normal binomial","07",1.404,-0.13,0.232,"Prova 2",0.644117815598595,45,64.4444444444444
+"158","aproximacao normal binomial","08",NA,NA,NA,"Prova 2",NA,NA,NA
+"159","aproximacao normal binomial","09",0.663,1.515,0.17,"Prova 2",0.336235972484302,14,14.2857142857143
+"160","aproximacao normal binomial","10",1.251,0.78,0.19,"Prova 2",0.454837441565653,39,43.5897435897436
+"161","distribuicao condicional","01",1.296,0.175,0.208,"Prova 2",0.57565209181218,20,50
+"162","distribuicao condicional","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"163","distribuicao condicional","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"164","distribuicao condicional","04",1.164,0.059,0.22,"Prova 2",0.604236033247513,52,57.6923076923077
+"165","distribuicao condicional","05",1.057,0.107,0.229,"Prova 2",0.600628573311819,99,59.5959595959596
+"166","distribuicao condicional","06",NA,NA,NA,"Prova 2",NA,NA,NA
+"167","distribuicao condicional","07",1.691,0.138,0.2,"Prova 2",0.578042850850073,101,57.4257425742574
+"168","distribuicao condicional","08",1.478,0.342,0.186,"Prova 2",0.52998871113363,89,51.685393258427
+"169","distribuicao condicional","09",1.401,0.282,0.206,"Prova 2",0.55409710243618,45,55.5555555555556
+"170","distribuicao condicional","10",1.401,-0.61,0.23,"Prova 2",0.727587074577428,53,69.811320754717
+"171","covariancia correlacao","01",1.798,-0.479,0.209,"Prova 2",0.69794132500517,97,64.9484536082474
+"172","covariancia correlacao","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"173","covariancia correlacao","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"174","covariancia correlacao","04",1.374,-0.579,0.236,"Prova 2",0.724346684955263,50,74
+"175","covariancia correlacao","05",1.181,0.356,0.226,"Prova 2",0.553333941815787,90,55.5555555555556
+"176","covariancia correlacao","06",1.249,-1.011,0.251,"Prova 2",0.795929469055053,53,77.3584905660377
+"177","covariancia correlacao","07",0.801,0.261,0.227,"Prova 2",0.57123840317205,50,56
+"178","covariancia correlacao","08",1.433,0.138,0.214,"Prova 2",0.586368249720693,68,55.8823529411765
+"179","covariancia correlacao","09",NA,NA,NA,"Prova 2",NA,NA,NA
+"180","covariancia correlacao","10",0.885,0.062,0.233,"Prova 2",0.610386904912554,51,58.8235294117647
+"181","distribuicao media","01",NA,NA,NA,"Prova 2",NA,NA,NA
+"182","distribuicao media","02",1.505,0.876,0.164,"Prova 2",0.419373810115643,45,42.2222222222222
+"183","distribuicao media","03",NA,NA,NA,"Prova 2",NA,NA,NA
+"184","distribuicao media","04",NA,NA,NA,"Prova 2",NA,NA,NA
+"185","distribuicao media","05",0.449,1.568,0.181,"Prova 2",0.333729389314072,90,31.1111111111111
+"186","distribuicao media","06",0.821,1.437,0.177,"Prova 2",0.345842690166129,120,35
+"187","distribuicao media","07",2.106,0.419,0.149,"Prova 2",0.493261039599344,48,45.8333333333333
+"188","distribuicao media","08",1.32,1.266,0.166,"Prova 2",0.360573595205741,51,35.2941176470588
+"189","distribuicao media","09",NA,NA,NA,"Prova 2",NA,NA,NA
+"190","distribuicao media","10",1.201,0.824,0.171,"Prova 2",0.431882414536253,105,42.8571428571429
+"191","distribuicao proporcao","01",NA,NA,NA,"Prova 2",NA,NA,NA
+"192","distribuicao proporcao","02",NA,NA,NA,"Prova 2",NA,NA,NA
+"193","distribuicao proporcao","03",1.311,0.826,0.186,"Prova 2",0.444326930223415,50,48
+"194","distribuicao proporcao","04",1.199,1.661,0.152,"Prova 2",0.298477491112993,73,28.7671232876712
+"195","distribuicao proporcao","05",NA,NA,NA,"Prova 2",NA,NA,NA
+"196","distribuicao proporcao","06",1.963,-0.093,0.187,"Prova 2",0.615720821526246,101,58.4158415841584
+"197","distribuicao proporcao","07",1.107,-0.095,0.232,"Prova 2",0.639308750075041,52,61.5384615384615
+"198","distribuicao proporcao","08",1.131,1.275,0.163,"Prova 2",0.357634428048238,51,31.3725490196078
+"199","distribuicao proporcao","09",1.874,0.381,0.173,"Prova 2",0.514317906943696,93,51.6129032258064
+"200","distribuicao proporcao","10",0.859,0.999,0.202,"Prova 2",0.429700536384758,39,41.025641025641
+"201","maxima verossimilhanca","01",0.675,1.521,0.169,"Prova 3",0.33033648789475,48,29.1666666666667
+"202","maxima verossimilhanca","02",NA,NA,NA,"Prova 3",NA,NA,NA
+"203","maxima verossimilhanca","03",0.608,0.868,0.216,"Prova 3",0.458599181634271,141,46.0992907801418
+"204","maxima verossimilhanca","04",0.725,1.607,0.157,"Prova 3",0.308662268943879,47,27.6595744680851
+"205","maxima verossimilhanca","05",NA,NA,NA,"Prova 3",NA,NA,NA
+"206","maxima verossimilhanca","06",1.301,0.347,0.188,"Prova 3",0.530231229653309,91,54.9450549450549
+"207","maxima verossimilhanca","07",NA,NA,NA,"Prova 3",NA,NA,NA
+"208","maxima verossimilhanca","08",NA,NA,NA,"Prova 3",NA,NA,NA
+"209","maxima verossimilhanca","09",0.863,1.614,0.144,"Prova 3",0.29602624557214,84,29.7619047619048
+"210","maxima verossimilhanca","10",0.735,1.286,0.178,"Prova 3",0.370937245321738,16,25
+"211","IC media normal","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"212","IC media normal","02",NA,NA,NA,"Prova 3",NA,NA,NA
+"213","IC media normal","03",1.598,-0.424,0.197,"Prova 3",0.683670289527222,137,63.5036496350365
+"214","IC media normal","04",1.675,-0.507,0.215,"Prova 3",0.702191742422982,38,63.1578947368421
+"215","IC media normal","05",1.709,-0.432,0.187,"Prova 3",0.68008221670936,95,68.4210526315789
+"216","IC media normal","06",1.657,-0.357,0.212,"Prova 3",0.677067030572556,110,67.2727272727273
+"217","IC media normal","07",1.815,-1.535,0.219,"Prova 3",0.853342907722536,47,80.8510638297872
+"218","IC media normal","08",NA,NA,NA,"Prova 3",NA,NA,NA
+"219","IC media normal","09",NA,NA,NA,"Prova 3",NA,NA,NA
+"220","IC media normal","10",NA,NA,NA,"Prova 3",NA,NA,NA
+"221","IC media t","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"222","IC media t","02",1.433,-0.122,0.238,"Prova 3",0.646556963524752,89,65.1685393258427
+"223","IC media t","03",0.841,0.433,0.217,"Prova 3",0.534477406220443,49,51.0204081632653
+"224","IC media t","04",1.231,0.319,0.24,"Prova 3",0.568701120166875,63,58.7301587301587
+"225","IC media t","05",1.434,0.4,0.215,"Prova 3",0.537522121620553,134,56.7164179104478
+"226","IC media t","06",NA,NA,NA,"Prova 3",NA,NA,NA
+"227","IC media t","07",1.249,0.671,0.182,"Prova 3",0.466390775742675,92,48.9130434782609
+"228","IC media t","08",NA,NA,NA,"Prova 3",NA,NA,NA
+"229","IC media t","09",NA,NA,NA,"Prova 3",NA,NA,NA
+"230","IC media t","10",NA,NA,NA,"Prova 3",NA,NA,NA
+"231","IC proporcao","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"232","IC proporcao","02",1.739,-1.054,0.207,"Prova 3",0.792338217214322,111,73.8738738738739
+"233","IC proporcao","03",1.861,-0.7,0.218,"Prova 3",0.736255931662976,46,76.0869565217391
+"234","IC proporcao","04",NA,NA,NA,"Prova 3",NA,NA,NA
+"235","IC proporcao","05",2.094,-1.225,0.207,"Prova 3",0.811741664955887,51,78.4313725490196
+"236","IC proporcao","06",2.338,-0.569,0.151,"Prova 3",0.690979114108692,93,62.3655913978495
+"237","IC proporcao","07",NA,NA,NA,"Prova 3",NA,NA,NA
+"238","IC proporcao","08",1.913,-0.556,0.198,"Prova 3",0.704915629603887,48,64.5833333333333
+"239","IC proporcao","09",1.356,-0.802,0.235,"Prova 3",0.758403220208602,38,71.0526315789474
+"240","IC proporcao","10",1.073,-0.386,0.237,"Prova 3",0.692155158827699,40,67.5
+"241","TH media","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"242","TH media","02",NA,NA,NA,"Prova 3",NA,NA,NA
+"243","TH media","03",NA,NA,NA,"Prova 3",NA,NA,NA
+"244","TH media","04",NA,NA,NA,"Prova 3",NA,NA,NA
+"245","TH media","05",1.16,0.588,0.203,"Prova 3",0.497264036704653,49,46.9387755102041
+"246","TH media","06",0.534,0.006,0.242,"Prova 3",0.626018749928706,40,62.5
+"247","TH media","07",1.618,0.644,0.178,"Prova 3",0.470022791198038,47,48.936170212766
+"248","TH media","08",1.606,1.127,0.15,"Prova 3",0.367806453068205,62,43.5483870967742
+"249","TH media","09",0.39,0.961,0.217,"Prova 3",0.4451356513553,178,44.3820224719101
+"250","TH media","10",0.797,0.379,0.232,"Prova 3",0.553582435139861,51,58.8235294117647
+"251","tamanho media","01",1.68,-0.849,0.23,"Prova 3",0.76827788191715,128,74.21875
+"252","tamanho media","02",2.139,-0.91,0.198,"Prova 3",0.76351709091338,51,74.5098039215686
+"253","tamanho media","03",1.472,-0.021,0.204,"Prova 3",0.609507337707739,40,57.5
+"254","tamanho media","04",NA,NA,NA,"Prova 3",NA,NA,NA
+"255","tamanho media","05",1.545,-0.166,0.211,"Prova 3",0.640016300811914,48,62.5
+"256","tamanho media","06",1.833,-1.167,0.217,"Prova 3",0.80677156692068,47,76.5957446808511
+"257","tamanho media","07",1.941,-0.496,0.187,"Prova 3",0.690842405215088,65,61.5384615384615
+"258","tamanho media","08",NA,NA,NA,"Prova 3",NA,NA,NA
+"259","tamanho media","09",NA,NA,NA,"Prova 3",NA,NA,NA
+"260","tamanho media","10",1.792,-0.604,0.21,"Prova 3",0.717686347797879,48,66.6666666666667
+"261","TH proporcao","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"262","TH proporcao","02",0.973,1.207,0.158,"Prova 3",0.360984158012159,95,37.8947368421053
+"263","TH proporcao","03",0.601,1.343,0.192,"Prova 3",0.370686228033772,131,37.4045801526718
+"264","TH proporcao","04",0.915,1.083,0.188,"Prova 3",0.408544777109222,16,31.25
+"265","TH proporcao","05",0.784,0.796,0.212,"Prova 3",0.469223890855296,48,45.8333333333333
+"266","TH proporcao","06",NA,NA,NA,"Prova 3",NA,NA,NA
+"267","TH proporcao","07",NA,NA,NA,"Prova 3",NA,NA,NA
+"268","TH proporcao","08",0.398,2.054,0.146,"Prova 3",0.254030505706378,48,18.75
+"269","TH proporcao","09",0.807,1.915,0.13,"Prova 3",0.251995762781654,38,15.7894736842105
+"270","TH proporcao","10",0.569,1.218,0.196,"Prova 3",0.392544275351325,51,39.2156862745098
+"271","pvalor media","01",1.565,-0.178,0.196,"Prova 3",0.636013237878654,98,61.2244897959184
+"272","pvalor media","02",1.532,-0.174,0.227,"Prova 3",0.649535158186497,51,68.6274509803922
+"273","pvalor media","03",NA,NA,NA,"Prova 3",NA,NA,NA
+"274","pvalor media","04",1.433,0.135,0.238,"Prova 3",0.599605945002177,93,64.5161290322581
+"275","pvalor media","05",NA,NA,NA,"Prova 3",NA,NA,NA
+"276","pvalor media","06",1.088,1.635,0.136,"Prova 3",0.286217268559485,97,27.8350515463918
+"277","pvalor media","07",NA,NA,NA,"Prova 3",NA,NA,NA
+"278","pvalor media","08",0.82,0.623,0.209,"Prova 3",0.496098098382487,40,47.5
+"279","pvalor media","09",0.744,0.851,0.22,"Prova 3",0.465819791529181,48,45.8333333333333
+"280","pvalor media","10",NA,NA,NA,"Prova 3",NA,NA,NA
+"281","tamanho prop","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"282","tamanho prop","02",2.306,-0.539,0.164,"Prova 3",0.690306692891326,92,65.2173913043478
+"283","tamanho prop","03",1.943,-0.33,0.196,"Prova 3",0.663311459448075,49,59.1836734693878
+"284","tamanho prop","04",2.399,-1.051,0.179,"Prova 3",0.783684422709649,141,71.6312056737589
+"285","tamanho prop","05",1.421,-0.112,0.214,"Prova 3",0.632159616967964,38,57.8947368421053
+"286","tamanho prop","06",NA,NA,NA,"Prova 3",NA,NA,NA
+"287","tamanho prop","07",2.05,-1.008,0.213,"Prova 3",0.785464954267594,91,73.6263736263736
+"288","tamanho prop","08",0.94,-1.218,0.25,"Prova 3",0.816935927476143,16,87.5
+"289","tamanho prop","09",NA,NA,NA,"Prova 3",NA,NA,NA
+"290","tamanho prop","10",NA,NA,NA,"Prova 3",NA,NA,NA
+"291","pvalor proporcao","01",NA,NA,NA,"Prova 3",NA,NA,NA
+"292","pvalor proporcao","02",1.552,0.179,0.192,"Prova 3",0.565047126706406,40,52.5
+"293","pvalor proporcao","03",1.481,0.588,0.166,"Prova 3",0.470112519823921,142,50.7042253521127
+"294","pvalor proporcao","04",NA,NA,NA,"Prova 3",NA,NA,NA
+"295","pvalor proporcao","05",0.881,1.195,0.193,"Prova 3",0.393460857336694,48,37.5
+"296","pvalor proporcao","06",1.851,0.426,0.173,"Prova 3",0.505844121133078,89,52.8089887640449
+"297","pvalor proporcao","07",1.308,0.022,0.217,"Prova 3",0.608827437213606,48,60.4166666666667
+"298","pvalor proporcao","08",0.576,1.556,0.174,"Prova 3",0.333989030950774,16,18.75
+"299","pvalor proporcao","09",1.169,0.291,0.204,"Prova 3",0.551167678334215,44,56.8181818181818
+"300","pvalor proporcao","10",NA,NA,NA,"Prova 3",NA,NA,NA

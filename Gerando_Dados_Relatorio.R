@@ -11,7 +11,10 @@ dados.original <- read.csv2(choose.files(multi = FALSE,
 
 # Carregando o arquivo com as funções 
 source(choose.files(multi = FALSE, caption = "Escolha o arquivo com as Funcoes suplementares"),encoding = "UTF-8")
-
+#carregando tabelas de itens do semestre anterior
+itens.anterior <- read.csv2(choose.files(multi = FALSE, 
+                                         caption = "Escolha o arquivo com itens do semestre passado"),
+                            fileEncoding = "UTF-8")
 # Variável Acertou como 0 e 1
 dados.original$Acertou[dados.original$Acertou==TRUE] <- 1
 dados.original$Acertou[dados.original$Acertou==FALSE] <- 0
@@ -155,7 +158,8 @@ itens <- itens%>%
   left_join(Pm.probs.means,by = c("tema","questao"))%>%
   left_join(aux,by = c("tema","questao"))%>%
   mutate("% acerto"=(acerto/n)*100)%>%
-  dplyr::select(-acerto)
+  dplyr::select(-acerto)%>%
+  right_join(itens.anterior,by = c("tema","questao","prova"))
 
 #separando a tabela de itens por prova
 itens_p1 <- itens%>%
@@ -665,3 +669,4 @@ texto.subs <- paste0(tabela1[6,3], " alunos aumentaram a menção de II para MI,
     
 # Salvando os dados 
 save.image(file = "DadosPE.RData")
+write.csv(itens,"itens_anterior.csv")
