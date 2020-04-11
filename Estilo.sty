@@ -1,0 +1,31 @@
+\usepackage{titlesec, pdfpages, spverbatim, fancyvrb, fvextra, caption, color,  subfig,  graphicx,  epstopdf,  enumitem}
+\usepackage[pages=some]{background}
+\usepackage{setspace, float}
+\usepackage[brazil]{babel}
+\doublespacing
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\center}{}{0pt}{\Huge}
+\titlespacing*{\chapter}
+  {0pt}{0pt}{40pt}
+
+\newcommand{\red}[1]{\textcolor{red}{{#1}}} 
+
+\newcommand{\fakesection}[1]{
+  \par\refstepcounter{section} % Increase section counter
+  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}
+}
+
+
+\backgroundsetup{
+scale=1.2,
+color=black,
+opacity=0.08,
+angle=0,
+pages=all,
+contents={%
+  \includegraphics[width=\paperwidth, height=\paperheight]{imagens/ChicagoCrime.png}
+  }%
+}
+
+

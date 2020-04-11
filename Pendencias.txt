@@ -1,22 +1,22 @@
-Encoding # - Ok
-Captions # - Ok
-Remover linhas 	de grade e rótulos do gráfico de radar # - Ok
-Radar P3 # - Ok
-Rede do correlograma - Ok
-Sankey # - Ok
-Calcular a média das notas da P4 considerando-se apenas os alunos que a fizeram. # (está correto)  - Ok
-Trocar o latex para portugues - Ok
-Acrescentar as estatísticas da mudanças de menção após a Psub #
-Corrigir os gráficos das probabilidades de aprovação dos alunos medianos # - Ok
-Remover o gráfico do PCA # - Ok
-Verificar o gráfico da matriz de confusão # - Ok
-Alterar o sistema de cores do gráfico da probabilidade de acerto de cada questão. - Ok
+Incluir folha de agradecimentos junto da capa.
 
-Acrescentar na tabela das questões:
-	Percentual bruto de acertos - Ok 
-	Probabilidade de um aluno mediano acertar - Ok
-	Número de alunos que responderam ao item - Ok
+Falar sobre o kit prova
 
-	Questão foi usada nesse semestre
-Verificar o gráfico das curcas características (ver o valor de c).
-Verificar a incoerência entre as Figuras 5 e 7 e os valores da Tabela 2 (ver o tema função de densidade)
+Falar sobre o código da prova substitutiva: 
+	gerar menções finais, fazendo a substituição da menor nota
+	Redefinir a estrutura dos tópicos.
+
+Fazer a referência das figuras para a citação.
+
+Falar o que fazer quando precisar anular questões
+	Caso 1: Quando não há solução correta. 
+		Opção 1: Dar os pontos 
+		Opção 2: Redistribuir os pontos 
+		Trocar os Datens, etc... 
+	Caso 2: quando o item indicado como correto estiver errado. 
+		Gerar novamente a prova alterando-se a linha 
+		"solutions <- c(TRUE, rep(FALSE, 4))" por "solutions <- c(F, T, F, F, F)", se a segunda alternativa estiver correta e assim por diante.
+		Isso fará com que o metainfo seja atualizado e, ao corrigir novamente as respostas, a alternativa correta será devidamente identificada.
+
+
+

@@ -1,0 +1,25 @@
+\usepackage{titlesec}
+\usepackage{pdfpages} 
+\usepackage{spverbatim}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage[pages=some]{background}
+%\usepackage{background}
+\usepackage{setspace, float}
+\onehalfspacing
+
+
+\titleformat*{\section}{\center\huge\bfseries}
+\titleformat*{\subsection}{\center\Large\bfseries}
+\titleformat*{\subsubsection}{\large\bfseries}
+
+\backgroundsetup{
+scale=1.2,
+color=black,
+opacity=0.13,
+angle=0,
+pages=all,
+contents={%
+  \includegraphics[width=\paperwidth,height=\paperheight]{ChicagoCrime.png}
+  }%
+}

@@ -1,0 +1,18 @@
+library(exams)
+source(paste0(pasta.suplementos, "\\Funcoes_Extras.R"))  # Complementando o pacote Exams 
+- copiar arquivos para a pasta respostas
+- fazer backup
+- rodar até digitalizar respostas, depois checar os nops.scan, daten para buscar erros.
+	Se houver uma linha com ERROR no daten, copiar a linha de cima, abrir o arquivo no nopsscan e copiar os dados, 
+	salvar e ao fechar o nops scan selecionar a opção de aceitar mudanças no arquivo zip.
+- olhar o pdf com todas as provas de cada turma para ver quem marcou o quadrado todo e alterar o arquivo daten
+- rodar checar.leituras e corrigir as marcações erradas
+- rodar checar.leituras e verificar se ficou tudo certo
+- fazer a ata da correção
+- rodar fix(leitura.correta) e inserir manualmente caso a dupla marcação tenha sido um equivoco (checar pelo nops_scan), só fechar o arquivo
+se não houver nenhum erro, basta fechar o arquivo
+
+- rodar os demais topicos
+
+
+
